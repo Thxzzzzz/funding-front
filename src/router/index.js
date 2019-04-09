@@ -18,14 +18,14 @@ const support = () => import('/page/User/children/support.vue')
 const checkout = () => import('/page/Checkout/checkout.vue')
 const payment = () => import('/page/Order/payment.vue')
 const paysuccess = () => import('/page/Order/paysuccess.vue')
-const Thanks = () => import('/page/Thanks/thanks.vue')
+// const Thanks = () => import('/page/Thanks/thanks.vue')
 const Search = () => import('/page/Search/search.vue')
 const RefreshSearch = () => import('/page/Refresh/refreshsearch.vue')
 const RefreshGoods = () => import('/page/Refresh/refreshgoods.vue')
 const orderDetail = () => import('/page/User/children/orderDetail.vue')
-const Alipay = () => import('/page/Order/alipay.vue')
-const Wechat = () => import('/page/Order/wechat.vue')
-const QQpay = () => import('/page/Order/qqpay.vue')
+// const Alipay = () => import('/page/Order/alipay.vue')
+// const Wechat = () => import('/page/Order/wechat.vue')
+// const QQpay = () => import('/page/Order/qqpay.vue')
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -38,7 +38,7 @@ export default new Router({
         {path: 'home', component: Home},
         {path: 'goods', component: GoodS},
         {path: 'goodsDetails', name: 'goodsDetails', component: goodsDetails},
-        {path: 'thanks', name: 'thanks', component: Thanks},
+        // {path: 'thanks', name: 'thanks', component: Thanks},
         {path: '/refreshgoods', name: 'refreshgoods', component: RefreshGoods}
       ]
     },
@@ -53,10 +53,10 @@ export default new Router({
       children: [
         {path: 'paysuccess', name: 'paysuccess', component: paysuccess},
         {path: 'payment', name: 'payment', component: payment},
-        {path: '/search', name: 'search', component: Search},
-        {path: 'alipay', name: 'alipay', component: Alipay},
-        {path: 'wechat', name: 'wechat', component: Wechat},
-        {path: 'qqpay', name: 'qqpay', component: QQpay}
+        {path: '/search', name: 'search', component: Search}
+        // {path: 'alipay', name: 'alipay', component: Alipay},
+        // {path: 'wechat', name: 'wechat', component: Wechat},
+        // {path: 'qqpay', name: 'qqpay', component: QQpay}
       ]
     },
     {

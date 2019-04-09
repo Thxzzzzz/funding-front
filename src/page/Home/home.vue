@@ -2,6 +2,7 @@
   <div class="home">
     
   <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;" v-if="!error">
+    <!-- 轮播图 -->
     <div class="banner" >
       <div class="bg" ref="bg"
         @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
@@ -22,6 +23,7 @@
 
     <div v-for="(item,i) in home" :key="i">
 
+      <!-- 活动板块  -->
       <div class="activity-panel" v-if="item.type === 1">
         <ul class="box">
           <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
@@ -31,6 +33,9 @@
         </ul>
       </div>
 
+ 
+
+      <!-- 热门商品 -->
       <section class="w mt30 clearfix" v-if="item.type === 2">
         <y-shelf :title="item.name">
           <div slot="content" class="hot">
@@ -39,13 +44,16 @@
         </y-shelf>
       </section>
 
+       <!-- xx精选 -->
       <section class="w mt30 clearfix" v-if="item.type === 3">
         <y-shelf :title="item.name">
           <div slot="content" class="floors" >
+            <!-- 大图 -->
             <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
               <img v-lazy="iitem.picUrl">
               <a class="cover-link"></a>
             </div>
+            <!-- 小图 -->
             <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j+'key'" v-if="iitem.type != 2 && iitem.type != 3"></mall-goods>
           </div>
         </y-shelf>

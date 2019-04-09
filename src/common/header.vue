@@ -5,7 +5,7 @@
         <div class="w-box">
           <div class="nav-logo">
             <h1 @click="changePage(-1)">
-              <router-link to="/" title="XMall商城官网">XMall商城</router-link>
+              <router-link to="/" title="Funding 众筹系统">Funding 众筹系统</router-link>
             </h1>
           </div>
           <div class="right-box">
