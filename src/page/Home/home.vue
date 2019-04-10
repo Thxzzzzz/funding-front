@@ -7,10 +7,10 @@
       <div class="bg" ref="bg"
         @mouseover="bgOver($refs.bg)" @mousemove="bgMove($refs.bg,$event)" @mouseout="bgOut($refs.bg)">
         <transition name="fade">
-          <div v-for="(item, i) in banner" v-if="i===mark" :key="i" style="position:absolute" @click="linkTo(item)" @mouseover="stopTimer" @mouseout="startTimer">
-            <img v-if="item.picUrl" class="img1" :src="item.picUrl"/>
-            <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
-            <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/>
+          <div v-for="(item, i) in banner"  :key="i" style="position:absolute" @click="linkTo(item)" @mouseover="stopTimer" @mouseout="startTimer">
+            <img v-if="item.big_img" class="img1" :src="item.big_img"/>
+            <!-- <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
+            <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/> -->
           </div>
         </transition>
       </div>
@@ -26,7 +26,7 @@
       <!-- 活动板块  -->
       <div class="activity-panel" v-if="item.type === 1">
         <ul class="box">
-          <li class="content" v-for="(iitem,j) in item.panelContents" :key="j" @click="linkTo(iitem)">
+          <li class="content" v-for="(iitem,j) in item.product_contents" :key="j" @click="linkTo(iitem)">
             <img class="i" :src="iitem.picUrl">
             <a class="cover-link"></a>
           </li>
@@ -39,7 +39,7 @@
       <section class="w mt30 clearfix" v-if="item.type === 2">
         <y-shelf :title="item.name">
           <div slot="content" class="hot">
-            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j"></mall-goods>
+            <mall-goods :msg="iitem" v-for="(iitem,j) in item.product_contents" :key="j"></mall-goods>
           </div>
         </y-shelf>
       </section>
@@ -49,12 +49,12 @@
         <y-shelf :title="item.name">
           <div slot="content" class="floors" >
             <!-- 大图 -->
-            <div class="imgbanner" v-for="(iitem,j) in item.panelContents" :key="j" v-if="iitem.type === 2 || iitem.type === 3" @click="linkTo(iitem)">
-              <img v-lazy="iitem.picUrl">
+            <div class="imgbanner" v-for="(iitem,j) in item.product_contents" :key="j" v-if="j === 0" @click="linkTo(iitem)">
+              <img v-lazy="iitem.big_img">
               <a class="cover-link"></a>
             </div>
             <!-- 小图 -->
-            <mall-goods :msg="iitem" v-for="(iitem,j) in item.panelContents" :key="j+'key'" v-if="iitem.type != 2 && iitem.type != 3"></mall-goods>
+            <mall-goods :msg="iitem" v-for="(iitem,j) in item.product_contents" :key="j+'key'"  v-if="j !== 0"></mall-goods>
           </div>
         </y-shelf>
       </section>
@@ -118,18 +118,24 @@
         clearInterval(this.timer)
       },
       linkTo (item) {
-        if (item.type === 0 || item.type === 2) {
-          // 关联商品
-          this.$router.push({
-            path: '/goodsDetails',
-            query: {
-              productId: item.productId
-            }
-          })
-        } else {
-          // 完整链接
-          window.location.href = item.fullUrl
-        }
+        this.$router.push({
+          path: '/goodsDetails',
+          query: {
+            productId: item.product_id
+          }
+        })
+        // if (item.type === 0 || item.type === 2) {
+        //   // 关联商品
+        //   this.$router.push({
+        //     path: '/goodsDetails',
+        //     query: {
+        //       productId: item.product_id
+        //     }
+        //   })
+        // } else {
+        //   // 完整链接
+        //   window.location.href = item.fullUrl
+        // }
       },
       bgOver (e) {
         this.bgOpt.px = e.offsetLeft
@@ -169,16 +175,16 @@
     },
     mounted () {
       productHome().then(res => {
-        if (res.success === false) {
+        if (res.code !== 200) {
           this.error = true
           return
         }
-        let data = res.result
+        let data = res.data
         this.home = data
         this.loading = false
         for (let i = 0; i < data.length; i++) {
           if (data[i].type === 0) {
-            this.banner = data[i].panelContents
+            this.banner = data[i].product_contents
           }
         }
       })

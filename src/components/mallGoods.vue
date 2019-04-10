@@ -2,24 +2,26 @@
   <div class="good-item">
     <div style="">
       <div class="good-img">
-        <a @click="openProduct(msg.productId)">
-          <img v-lazy="msg.productImageBig" :alt="msg.productName" :key="msg.productImageBig">
+        <a @click="openProduct(msg.product_id)">
+          <img v-lazy="msg.small_img" :alt="msg.name" :key="msg.small_img">
         </a>
       </div>
-      <h6 class="good-title" v-html="msg.productName">{{msg.productName}}</h6>
-      <h3 class="sub-title ellipsis">{{msg.subTitle}}</h3>
+      <h6 class="good-title" v-html="msg.name">{{msg.name}}</h6>
+
+      <h3 class="sub-title ellipsis">{{msg.name}}</h3>
+
       <div class="good-price pr">
         <div class="ds pa">
-          <a @click="openProduct(msg.productId)">
+          <a @click="openProduct(msg.product_id)">
             <y-button text="查看详情" style="margin: 0 5px"></y-button>
           </a>
           <y-button text="加入购物车"
                     style="margin: 0 5px"
-                    @btnClick="addCart(msg.productId,msg.salePrice,msg.productName,msg.productImageBig)"
+                    @btnClick="addCart(msg.product_id,msg.current_price,msg.name,msg.small_img)"
                     classStyle="main-btn"
           ></y-button>
         </div>
-        <p><span style="font-size:14px">￥</span>{{Number(msg.salePrice).toFixed(2)}}</p>
+        <p><span style="font-size:14px">￥</span>{{Number(msg.current_price).toFixed(2)}}</p>
       </div>
     </div>
   </div>
@@ -106,8 +108,8 @@
 
     .good-img {
       img {
-        margin: 50px auto 10px;
-        @include wh(206px);
+        margin: 10px auto 10px;
+        @include wh(290px);
         display: block;
       }
     }
