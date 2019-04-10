@@ -31,11 +31,23 @@
   import { addCart } from '/api/goods.js'
   import { mapMutations, mapState } from 'vuex'
   import { getStore } from '/utils/storage'
+
+  const template = {
+    product_id: 11118,
+    name: '鑫乐迪运动手环蓝牙耳机二合一7',
+    big_img: 'https://img30.360buyimg.com/cf/jfs/t1/21081/18/6891/106614/5c6639a2E4d110821/c5802dca70419338.jpg',
+    small_img: 'https://img30.360buyimg.com/cf/jfs/t1/28544/16/6906/44121/5c66399bE78db06bd/0b919fb33eaccc26.jpg',
+    product_type: 2,
+    current_price: 1098900,
+    target_price: 100000,
+    backers: 2897,
+    current_time: '2019-04-10T21:20:06.0493347+08:00',
+    end_time: '2019-04-09T19:43:04+08:00'
+  }
+
   export default {
     props: {
-      msg: {
-        salePrice: 0
-      }
+      msg: template
     },
     data () {
       return {}
