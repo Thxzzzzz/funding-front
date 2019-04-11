@@ -5,36 +5,40 @@
         <div class="w-box">
           <div class="nav-logo">
             <h1 @click="changePage(-1)">
-              <router-link to="/" title="Funding 众筹系统">Funding 众筹系统</router-link>
+              <router-link to="/"
+                           title="Funding 众筹系统">Funding 众筹系统</router-link>
             </h1>
           </div>
           <div class="right-box">
             <div class="nav-list">
-              <el-autocomplete
-                placeholder="请输入商品信息"
-                icon="search"
-                v-model="input"
-                minlength=1
-                maxlength=100
-                :fetch-suggestions="querySearchAsync"
-                @select="handleSelect"
-                :on-icon-click="handleIconClick"
-                @keydown.enter.native="handleIconClick">
+              <el-autocomplete placeholder="请输入商品信息"
+                               icon="search"
+                               v-model="input"
+                               minlength=1
+                               maxlength=100
+                               :fetch-suggestions="querySearchAsync"
+                               @select="handleSelect"
+                               :on-icon-click="handleIconClick"
+                               @keydown.enter.native="handleIconClick">
               </el-autocomplete>
               <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
-       
+
             </div>
-            <div class="nav-aside" ref="aside" :class="{fixed:st}">
+            <div class="nav-aside"
+                 ref="aside"
+                 :class="{fixed:st}">
               <div class="user pr">
                 <router-link to="/user">个人中心</router-link>
                 <!--用户信息显示-->
-                <div class="nav-user-wrapper pa" v-if="login">
+                <div class="nav-user-wrapper pa"
+                     v-if="login">
                   <div class="nav-user-list">
                     <ul>
                       <!--头像-->
                       <li class="nav-user-avatar">
                         <div>
-                          <span class="avatar" :style="{backgroundImage:'url('+userInfo.info.file+')'}">
+                          <span class="avatar"
+                                :style="{backgroundImage:'url('+userInfo.info.file+')'}">
                           </span>
                         </div>
                         <p class="name">{{userInfo.info.username}}</p>
@@ -55,25 +59,33 @@
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li>
                       <li>
-                        <a href="javascript:;" @click="_loginOut">退出</a>
+                        <a href="javascript:;"
+                           @click="_loginOut">退出</a>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="shop pr" @mouseover="cartShowState(true)" @mouseout="cartShowState(false)"
+              <div class="shop pr"
+                   @mouseover="cartShowState(true)"
+                   @mouseout="cartShowState(false)"
                    ref="positionMsg">
                 <router-link to="/cart"></router-link>
                 <span class="cart-num">
-                  <i class="num" :class="{no:totalNum <= 0,move_in_cart:receiveInCart}">{{totalNum}}</i></span>
+                  <i class="num"
+                     :class="{no:totalNum <= 0,move_in_cart:receiveInCart}">{{totalNum}}</i></span>
                 <!--购物车显示块-->
-                <div class="nav-user-wrapper pa active" v-show="showCart">
+                <div class="nav-user-wrapper pa active"
+                     v-show="showCart">
                   <div class="nav-user-list">
-                    <div class="full" v-show="totalNum">
+                    <div class="full"
+                         v-show="totalNum">
                       <!--购物列表-->
                       <div class="nav-cart-items">
                         <ul>
-                          <li class="clearfix" v-for="(item,i) in cartList" :key="i">
+                          <li class="clearfix"
+                              v-for="(item,i) in cartList"
+                              :key="i">
                             <div class="cart-item">
                               <div class="cart-item-inner">
                                 <a @click="openProduct(item.productId)">
@@ -81,34 +93,39 @@
                                     <img :src="item.productImg">
                                   </div>
                                   <div class="item-desc">
-                                    <div class="cart-cell"><h4>
-                                      <a href="" v-text="item.productName"></a>
-                                    </h4>
+                                    <div class="cart-cell">
+                                      <h4>
+                                        <a href=""
+                                           v-text="item.productName"></a>
+                                      </h4>
                                       <!-- <p class="attrs"><span>白色</span></p> -->
-                                      <h6><span class="price-icon">¥</span><span
-                                        class="price-num">{{item.salePrice}}</span><span
-                                        class="item-num">x {{item.productNum}}</span>
-                                      </h6></div>
+                                      <h6><span class="price-icon">¥</span><span class="price-num">{{item.salePrice}}</span><span class="item-num">x {{item.productNum}}</span>
+                                      </h6>
+                                    </div>
                                   </div>
                                 </a>
-                                <div class="del-btn del" @click="delGoods(item.productId)">删除</div>
+                                <div class="del-btn del"
+                                     @click="delGoods(item.productId)">删除</div>
                               </div>
                             </div>
                           </li>
                         </ul>
                       </div>
                       <!--总件数-->
-                      <div class="nav-cart-total"><p>共 <strong>{{totalNum}}</strong> 件商品</p> <h5>合计：<span
-                        class="price-icon">¥</span><span
-                        class="price-num">{{totalPrice}}</span></h5>
+                      <div class="nav-cart-total">
+                        <p>共 <strong>{{totalNum}}</strong> 件商品</p>
+                        <h5>合计：<span class="price-icon">¥</span><span class="price-num">{{totalPrice}}</span></h5>
                         <h6>
                           <y-button classStyle="main-btn"
                                     style="height: 40px;width: 100%;margin: 0;color: #fff;font-size: 14px;line-height: 38px"
-                                    text="去购物车" @btnClick="toCart"></y-button>
+                                    text="去购物车"
+                                    @btnClick="toCart"></y-button>
                         </h6>
                       </div>
                     </div>
-                    <div v-show="!totalNum" style="height: 313px;text-align: center" class="cart-con">
+                    <div v-show="!totalNum"
+                         style="height: 313px;text-align: center"
+                         class="cart-con">
                       <p>您的购物车竟然是空的!</p>
                     </div>
                   </div>
@@ -119,19 +136,25 @@
         </div>
       </header>
       <slot name="nav">
-        <div class="nav-sub" :class="{fixed:st}">
+        <div class="nav-sub"
+             :class="{fixed:st}">
           <div class="nav-sub-bg"></div>
-          <div class="nav-sub-wrapper" :class="{fixed:st}">
+          <div class="nav-sub-wrapper"
+               :class="{fixed:st}">
             <div class="w">
               <ul class="nav-list2">
                 <li>
-                  <router-link to="/"><a @click="changGoods(-1)" :class="{active:choosePage===-1}">首页</a></router-link>
+                  <router-link to="/"><a @click="changGoods(-1)"
+                       :class="{active:choosePage===-1}">首页</a></router-link>
                 </li>
                 <li>
-                  <a @click="changGoods(-2)" :class="{active:choosePage===-2}">全部</a>
+                  <a @click="changGoods(-2)"
+                     :class="{active:choosePage===-2}">全部</a>
                 </li>
-                <li v-for="(item,i) in navList" :key="i">
-                  <a @click="changGoods(i, item)" :class="{active:i===choosePage}">{{item.picUrl}}</a>
+                <li v-for="(item,i) in navList"
+                    :key="i">
+                  <a @click="changGoods(i, item)"
+                     :class="{active:i===choosePage}">{{item.picUrl}}</a>
                 </li>
               </ul>
               <div></div>
