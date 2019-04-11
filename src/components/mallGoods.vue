@@ -40,7 +40,7 @@
           </div>
           <!-- 众筹剩余时间 -->
            <div class="price price-left">
-            <p>？天 </p> 
+            <p>{{dayLeft}} 天 </p> 
             <p class="price-des-text">剩余时间</p>
           </div>
 
@@ -55,7 +55,7 @@
   import { addCart } from '/api/goods.js'
   import { mapMutations, mapState } from 'vuex'
   import { getStore } from '/utils/storage'
-
+  import { calcDayBetween } from '/utils/dateUtil'
   const template = {
     product_id: 11118,
     name: '鑫乐迪运动手环蓝牙耳机二合一7',
@@ -108,7 +108,12 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart'])
+      ...mapState(['login', 'showMoveImg', 'showCart']),
+      dayLeft: function () {
+        let date1 = new Date(this.msg.current_time)
+        let date2 = new Date(this.msg.end_time)
+        return calcDayBetween(date1, date2)
+      }
     },
     mounted () {
     },
