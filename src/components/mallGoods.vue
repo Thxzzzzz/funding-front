@@ -1,28 +1,52 @@
 <template>
   <div class="good-item">
     <div style="">
+      <!-- 图片 -->
       <div class="good-img">
         <a @click="openProduct(msg.product_id)">
           <img v-lazy="msg.small_img" :alt="msg.name" :key="msg.small_img">
         </a>
       </div>
+      <!-- 标题 （产品名） -->
       <h6 class="good-title" v-html="msg.name">{{msg.name}}</h6>
 
+      <!-- 副标题 （简介，暂时没有）  -->
       <h3 class="sub-title ellipsis">{{msg.name}}</h3>
 
+      <!-- 查看详情按钮  -->
       <div class="good-price pr">
-        <div class="ds pa">
+        <div class="ds pa" style="margin-top:15px;">
           <a @click="openProduct(msg.product_id)">
             <y-button text="查看详情" style="margin: 0 5px"></y-button>
           </a>
-          <y-button text="加入购物车"
+          <!-- <y-button text="加入购物车"
                     style="margin: 0 5px"
                     @btnClick="addCart(msg.product_id,msg.current_price,msg.name,msg.small_img)"
                     classStyle="main-btn"
-          ></y-button>
+          ></y-button> -->
         </div>
-        <p><span style="font-size:14px">￥</span>{{Number(msg.current_price).toFixed(2)}}</p>
+
+        <!-- 金额筹集信息 -->
+        <div class="price-info">
+          <!-- 已筹金额与目标金额百分比 -->
+          <div class="price price-persent">
+            <p>{{Number(msg.current_price/msg.target_price * 100).toFixed(0)}}%</p> 
+            <p class="price-des-text">已达</p>
+          </div>
+          <!-- 已筹金额 -->
+          <div class="price price-current">
+            <p>￥{{Number(msg.current_price).toFixed(0)}}  </p> 
+            <p class="price-des-text">已筹</p>
+          </div>
+          <!-- 众筹剩余时间 -->
+           <div class="price price-left">
+            <p>？天 </p> 
+            <p class="price-des-text">剩余时间</p>
+          </div>
+
+        </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -99,13 +123,16 @@
 
   .good-item {
     background: #fff;
+    border : none;
+    border-right: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
     width: 25%;
     transition: all .5s;
     height: 430px;
     &:hover {
       transform: translateY(-3px);
       box-shadow: 1px 1px 20px #999;
-      .good-price p {
+      .good-price .price {
         display: none;
       }
       .ds {
@@ -120,8 +147,9 @@
 
     .good-img {
       img {
-        margin: 10px auto 10px;
-        @include wh(290px);
+        margin: auto auto 30px;
+        width:99%;
+        // @include wh(303px);
         display: block;
       }
     }
@@ -130,10 +158,10 @@
       height: 30px;
       text-align: center;
       line-height: 30px;
-      color: #d44d44;
+      color: gray;//#d44d44
       font-family: Arial;
       font-size: 18px;
-      font-weight: 700;
+      font-weight: 500;
     }
     .good-title {
       line-height: 1.2;
@@ -144,6 +172,33 @@
       text-align: center;
       overflow: hidden;
     }
+    .price-info{
+      margin:0 auto;
+      width:90%
+    }
+    .price{  
+      text-align: left;
+      font-size:16px; 
+      color: #5e5e5e;
+      padding-left: 10px;
+      float:left;
+    }
+    .price-des-text{
+      color: #a5a5a5;
+      font-size: 12px;
+    }
+    .price-persent {
+      width: 30%;//22.5%;
+      border-right: 1px solid #e7e7e7;
+    }
+    .price-current {
+      width: 43%;//37.5%;
+      border-right: 1px solid #e7e7e7;
+    }
+    .price-left {
+      width: 25%;//22.5%;
+    }
+ 
     h3 {
       text-align: center;
       line-height: 1.2;
