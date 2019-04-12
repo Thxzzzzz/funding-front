@@ -310,7 +310,6 @@
     display: flex;
     padding: 10px 10px 10px 0px;
     margin: 0px 0px 20px 0px;
-    height: 420px;
     .gallery-wrapper {
       .gallery {
         display: flex;
@@ -344,7 +343,7 @@
           }
           img {
             display: block;
-            height: 100%;
+            height: 400px;
           }
         }
       }
