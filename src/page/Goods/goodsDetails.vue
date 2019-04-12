@@ -4,17 +4,6 @@
     <div class="gray-box">
       <div class="gallery-wrapper">
         <div class="gallery">
-          <!-- <div class="thumbnail">
-            <ul>
-              <li v-for="(item,i) in small"
-                  :key="i"
-                  :class="{on:big===item}"
-                  @click="big=item">
-                <img v-lazy="item"
-                     :alt="product.name">
-              </li>
-            </ul>
-          </div> -->
           <div class="thumb">
             <div class="big">
               <img :src="product.big_img"
@@ -25,31 +14,29 @@
       </div>
       <!--右边-->
       <div class="banner">
-        <div class="sku-custom-title">
-          <h4>{{product.name}}</h4>
-          <h6>
-            <span>{{product.name}}</span>
-            <span class="price">
-              <em>¥</em><i>{{product.current_price.toFixed(2)}}</i></span>
-          </h6>
-        </div>
-        <div class="num">
-          <span class="params-name">数量</span>
-          <buy-num @edit-num="editNum"
-                   :limit="100"></buy-num>
-        </div>
-        <div class="buy">
-          <y-button text="加入购物车"
-                    @btnClick="addCart(product.id,product.salePrice,product.name,product.small_img)"
-                    classStyle="main-btn"
-                    style="width: 145px;height: 50px;line-height: 48px"></y-button>
-          <y-button text="现在购买"
-                    @btnClick="checkout(product.id)"
-                    style="width: 145px;height: 50px;line-height: 48px;margin-left: 10px"></y-button>
+        <div class="card horizontal-left text-left"
+             :style="{'height':'100%'}">
+          <div style="color:black;font-size:24px;margin:3px">{{product.name}}</div>
+          <div style="color:black;font-size:16px;text-align:left;left:0;;margin:3px 5px 5px 5px">已筹到</div>
+          <div>
+            <span style="font-size:24px;">￥</span>
+            <span style="font-size:48px;">{{product.current_price}}</span>
+          </div>
+          <div>
+            <el-progress :show-text="false"
+                         :stroke-width="10"
+                         :percentage="percentage"></el-progress>
+          </div>
+          <div style="font-size:14px; font-weight:700;margin-top:5px">
+            <span style="float:left; color: rgb(161, 6, 224);">当前进度{{progressPercent}}%</span>
+            <span style="float:right">{{product.backers}}名支持者</span>
+          </div>
+
         </div>
       </div>
     </div>
-    <!--产品信息-->
+
+    <!--产品信息 左侧大板块-->
     <div class="item-info">
       <y-shelf title="产品信息">
         <div slot="content">
@@ -65,6 +52,68 @@
           </div>
         </div>
       </y-shelf>
+    </div>
+
+    <!-- 产品信息 右侧小卡片 -->
+    <div class="right-zone">
+
+      <!-- 项目发起人 -->
+      <div class="info-card">
+        <y-shelf title="项目发起人">
+          <div slot="right">
+
+          </div>
+          <div slot="content">
+
+          </div>
+        </y-shelf>
+      </div>
+
+      <!-- 项目发起人 -->
+      <div v-for="(item,key) in product.product_packages"
+           :key="key"
+           class="info-card">
+        <y-shelf :title="'￥'+item.price">
+          <div slot="right">
+            <span style="font-size:16px; color:gray;">{{item.backers}} 位支持者</span>
+          </div>
+          <div slot="content"
+               style="padding:15px">
+            <div class="left-label"
+                 style="font-size:15px; font-weight:bold;">
+              <span>限额{{item.total}}份</span>
+              <span>&nbsp;|&nbsp;剩余{{item.stock}}份</span>
+            </div>
+            <div style="clear:both;text-align:left">{{item.description}}</div>
+            <div>
+              <img :src="item.image_url"
+                   alt="图片"
+                   style="width:70px;height:70px;float:left;">
+            </div>
+            <div style="clear:both;text-align:left">
+              <span>配送费用：</span>
+              <span v-if="item.freight != 0">{{item.freight}}</span>
+              <span v-else
+                    style="font-weight:bold;">免运费</span>
+            </div>
+            <div style="clear:both;text-align:left">
+              <span>预计回报发送时间：</span>
+              <span style="font-weight:bold;">
+                <span>项目众筹成功后</span>
+                <span style="color:red;">{{item.delivery_day}}</span>
+                <span>天内</span>
+              </span>
+            </div>
+            <div align="left"
+                 style="clear:both;">
+              <el-button style="width:160px; margin-top:10px;margin-bottom:10px;"
+                         type="success"
+                         size="large">支持￥{{item.price}}</el-button>
+            </div>
+          </div>
+        </y-shelf>
+      </div>
+
     </div>
   </div>
 </template>
@@ -174,7 +223,15 @@
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart'])
+      ...mapState(['login', 'showMoveImg', 'showCart']),
+      progressPercent: function () {
+        return Number(this.product.current_price / this.product.target_price * 100).toFixed(0)
+      },
+      percentage: function () {
+        let percent = this.progressPercent
+        if (percent > 100) percent = 100
+        return Number(percent)
+      }
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
@@ -252,11 +309,12 @@
   .gray-box {
     display: flex;
     padding: 10px 10px 10px 0px;
-    margin: 0px 0;
+    margin: 0px 0px 20px 0px;
+    height: 420px;
     .gallery-wrapper {
       .gallery {
         display: flex;
-        width: 790px;
+        width: 64%;
         .thumbnail {
           li:first-child {
             margin-top: 0px;
@@ -282,19 +340,18 @@
         }
         .thumb {
           .big {
-            margin-left: 20px;
+            margin-left: 10px;
           }
           img {
             display: block;
-            width: 100%
-            // @include wh(440px)
+            height: 100%;
           }
         }
       }
     }
     // 右边
     .banner {
-      width: 450px;
+      width: 34%;
       margin-left: 10px;
       h4 {
         font-size: 24px;
@@ -335,14 +392,47 @@
     }
   }
 
-  .item-info {
+  // 详情右边
+  .right-zone{
+    float: left;
+    width: 32%;
+    margin: 0px 0px 0px 2%;
+   
+  }
 
+  .info-card{
+    width:100%;
+    .gray-box {
+      padding: 0;
+      display: block;
+    }
+    .left-label {
+      text-align: left;
+      float: left;
+      height: 30px;
+      font-size: 20px;
+      margin: 0 0 10px;
+    }
+
+    .right-label {
+      text-align: right;
+      float: right;
+      height: 30px;
+      font-size: 20px;
+      margin: 0 0 10px;
+    }
+  }
+
+  // 详情
+  .item-info {
+    float: left;
+    width: 66%;
     .gray-box {
       padding: 0;
       display: block;
     }
     .img-item {
-      width: 1220px;
+      width: 100%;
       // padding: 1vw;
       text-align: center;
       img {
