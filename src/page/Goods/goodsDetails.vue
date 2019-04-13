@@ -69,7 +69,7 @@
         </y-shelf>
       </div>
 
-      <!-- 项目发起人 -->
+      <!-- 套餐信息-->
       <div v-for="(item,key) in product.product_packages"
            :key="key"
            class="info-card">
@@ -78,9 +78,11 @@
             <span style="font-size:16px; color:gray;">{{item.backers}} 位支持者</span>
           </div>
           <div slot="content"
-               style="padding:15px">
+               class="info-des"
+               style="padding:25px">
             <div class="left-label"
-                 style="font-size:15px; font-weight:bold;">
+                 style="font-size:15px; 
+                 font-weight:bold;">
               <span>限额{{item.total}}份</span>
               <span>&nbsp;|&nbsp;剩余{{item.stock}}份</span>
             </div>
@@ -88,7 +90,7 @@
             <div>
               <img :src="item.image_url"
                    alt="图片"
-                   style="width:70px;height:70px;float:left;">
+                   style="width:70px;height:70px;margin:15px 0px;float:left;">
             </div>
             <div style="clear:both;text-align:left">
               <span>配送费用：</span>
@@ -113,7 +115,6 @@
           </div>
         </y-shelf>
       </div>
-
     </div>
   </div>
 </template>
@@ -126,7 +127,7 @@
   import { getStore } from '/utils/storage'
   const tmp = {
     'id': 11111,
-    'name': '鑫乐迪运动手环蓝牙耳机二合一',
+    'name': '鑫乐迪运动手环蓝牙耳机二合一（测试数据）',
     'big_img': 'https://img30.360buyimg.com/cf/jfs/t1/21081/18/6891/106614/5c6639a2E4d110821/c5802dca70419338.jpg',
     'small_img': 'https://img30.360buyimg.com/cf/jfs/t1/28544/16/6906/44121/5c66399bE78db06bd/0b919fb33eaccc26.jpg',
     'product_type': 1,
@@ -214,11 +215,11 @@
   export default {
     data () {
       return {
-        productMsg: {},
-        small: [],
-        big: '',
+        // productMsg: {},
+        // small: [],
+        // big: '',
         product: tmp,
-        productNum: 1,
+        // productNum: 1,
         userId: ''
       }
     },
@@ -235,13 +236,13 @@
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
-      _productDet (productId) {
-        productDet({params: {productId}}).then(res => {
-          let result = res.result
+      _productDet (id) {
+        productDet({params: {id}}).then(res => {
+          let result = res.data
           this.product = result
-          this.productMsg = result.detail || ''
-          this.small = result.small_img
-          this.big = this.small[0]
+          // this.productMsg = result.detail_html || ''
+          // this.small = result.small_img
+          // this.big = this.small[0]
         })
       },
       addCart (id, price, name, img) {
@@ -254,7 +255,8 @@
                 salePrice: price,
                 productName: name,
                 productImg: img,
-                productNum: this.productNum
+                // productNum: this.productNum
+                productNum: 1
               })
             })
           } else { // 未登录 vuex
@@ -263,7 +265,8 @@
               salePrice: price,
               productName: name,
               productImg: img,
-              productNum: this.productNum
+              // productNum: this.productNum
+              productNum: 1
             })
           }
           // 加入购物车动画
@@ -289,8 +292,8 @@
       YShelf, BuyNum, YButton
     },
     created () {
-      // let id = this.$route.query.productId
-      // this._productDet(id)
+      let id = this.$route.query.productId
+      this._productDet(id)
       this.userId = getStore('userId')
     }
   }
@@ -419,6 +422,9 @@
       height: 30px;
       font-size: 20px;
       margin: 0 0 10px;
+    }
+    .info-des span{
+      margin: 10px 0px
     }
   }
 
