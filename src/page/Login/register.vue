@@ -1,15 +1,19 @@
 <template>
   <div class="login v2">
     <div class="wrapper">
-      <div class="dialog dialog-shadow" style="display: block; margin-top: -362px;">
+      <div class="dialog dialog-shadow"
+           style="display: block; margin-top: -362px;">
         <div class="registered">
           <h4>注册 XMall 账号</h4>
-          <div class="content" style="margin-top: 20px;">
+          <div class="content"
+               style="margin-top: 20px;">
             <ul class="common-form">
               <li class="username border-1p">
-                <div style="margin-top: 40px;" class="input">
+                <div style="margin-top: 40px;"
+                     class="input">
                   <input type="text"
-                         v-model="registered.userName" placeholder="账号"
+                         v-model="registered.userName"
+                         placeholder="账号"
                          @keyup="registered.userName=registered.userName.replace(/[^\w\.\/]/ig,'')">
                 </div>
               </li>
@@ -27,31 +31,31 @@
                          placeholder="重复密码">
                 </div>
               </li>
-              <li>
+              <!-- <li>
                 <div id="captcha">
                   <p id="wait">正在加载验证码...</p>
                 </div>
-              </li>
+              </li> -->
             </ul>
-            <el-checkbox class="agree" v-model="agreement">
-              我已阅读并同意遵守 
-              <a @click="open('法律声明','此仅为个人练习开源模仿项目，仅供学习参考，承担不起任何法律问题')">法律声明</a> 和 
-              <a @click="open('隐私条款','本网站将不会严格遵守有关法律法规和本隐私政策所载明的内容收集、使用您的信息')">隐私条款</a>
+            <el-checkbox class="agree"
+                         v-model="agreement">
+              我已阅读并同意遵守
+              <a @click="open('法律声明','请准守国家法律法规')">法律声明</a> 和
+              <a @click="open('隐私条款','本网站将严格遵守有关法律法规')">隐私条款</a>
             </el-checkbox>
             <div style="margin-bottom: 30px;">
-              <y-button
-                :classStyle="registered.userPwd&&registered.userPwd2&&registered.userName&&registxt==='注册'?'main-btn':'disabled-btn'"
-                :text="registxt"
-                style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"
-                @btnClick="regist"
-              >
+              <y-button :classStyle="registered.userPwd&&registered.userPwd2&&registered.userName&&registxt==='注册'?'main-btn':'disabled-btn'"
+                        :text="registxt"
+                        style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"
+                        @btnClick="regist">
               </y-button>
             </div>
-            <div class="border" style="margin-bottom: 10px;"></div>
+            <div class="border"
+                 style="margin-bottom: 10px;"></div>
             <ul class="common-form pr">
               <!-- <li class="pa" style="left: 0;top: 0;margin: 0;color: #d44d44">{{registered.errMsg}}</li> -->
               <li style="text-align: center;line-height: 48px;margin-bottom: 0;font-size: 12px;color: #999;">
-                <span>如果您已拥有 XMall 账号，则可在此</span>
+                <span>如果您已拥有账号，则可在此</span>
                 <a href="javascript:;"
                    style="margin: 0 5px"
                    @click="toLogin">登陆</a>

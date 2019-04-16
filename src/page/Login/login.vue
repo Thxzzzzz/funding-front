@@ -1,80 +1,97 @@
 <template>
   <div class="login v2">
     <div class="wrapper">
-      <div class="dialog dialog-shadow" style="display: block; margin-top: -362px;">
+      <div class="dialog dialog-shadow"
+           style="display: block; margin-top: -362px;">
         <div class="title">
-          <h4>使用 XMall 账号 登录官网</h4>
+          <h4>使用 Funding 账号 登录官网</h4>
         </div>
-        <div v-if="loginPage" class="content">
+        <div v-if="loginPage"
+             class="content">
           <ul class="common-form">
             <li class="username border-1p">
               <div class="input">
-                <input type="text" v-model="ruleForm.userName" placeholder="账号">
+                <input type="text"
+                       v-model="ruleForm.username"
+                       placeholder="账号">
               </div>
             </li>
             <li>
               <div class="input">
-                <input type="password" v-model="ruleForm.userPwd" @keyup.enter="login" placeholder="密码">
+                <input type="password"
+                       v-model="ruleForm.password"
+                       @keyup.enter="login"
+                       placeholder="密码">
               </div>
             </li>
-            <li>
+
+            <!-- <li>
               <div id="captcha">
                 <p id="wait">正在加载验证码...</p>
               </div>
-            </li>
-            <li style="text-align: right" class="pr">
-              <el-checkbox class="auto-login" v-model="autoLogin">记住密码</el-checkbox>
+            </li> -->
+
+            <li style="text-align: right"
+                class="pr">
+              <el-checkbox class="auto-login"
+                           v-model="autoLogin">记住密码</el-checkbox>
               <!-- <span class="pa" style="top: 0;left: 0;color: #d44d44">{{ruleForm.errMsg}}</span> -->
-              <a href="javascript:;" class="register" @click="toRegister">注册 XMall 账号</a>
-              <a style="padding: 1px 0 0 10px" @click="open('找回密码','请联系作者邮箱找回密码或使用测试账号登录：test | test')">忘记密码 ?</a>
+              <a href="javascript:;"
+                 class="register"
+                 @click="toRegister">注册账号</a>
+              <a style="padding: 1px 0 0 10px"
+                 @click="open('找回密码','请联系作者邮箱找回密码或使用测试账号登录：test | test')">忘记密码 ?</a>
             </li>
           </ul>
           <!--登陆-->
           <div style="margin-top: 25px">
             <y-button :text="logintxt"
-                      :classStyle="ruleForm.userPwd&& ruleForm.userName&& logintxt === '登录'?'main-btn':'disabled-btn'"
+                      :classStyle="ruleForm.password&& ruleForm.username&& logintxt === '登录'?'main-btn':'disabled-btn'"
                       @btnClick="login"
                       style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"></y-button>
           </div>
           <!--返回-->
           <div>
-            <y-button text="返回" @btnClick="login_back"
-              style="marginTop: 10px;marginBottom: 15px;width: 100%;height: 48px;font-size: 18px;line-height: 48px">
+            <y-button text="返回"
+                      @btnClick="login_back"
+                      style="marginTop: 10px;marginBottom: 15px;width: 100%;height: 48px;font-size: 18px;line-height: 48px">
             </y-button>
           </div>
           <div class="border"></div>
           <div class="footer">
             <div class="other">其它账号登录：</div>
-            <a><img @click="open('待开发','此功能开发中...')" style="height: 15px; margin-top: 22px;" src="/static/images/other-login.png"></a>
+            <a><img @click="open('待开发','此功能开发中...')"
+                   style="height: 15px; margin-top: 22px;"
+                   src="/static/images/other-login.png"></a>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<script src="../../../static/geetest/gt.js"></script>
+// <script src="../../../static/geetest/gt.js"></script>
 <script>
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
 import { userLogin, geetest } from '/api/index.js'
 import { addCart } from '/api/goods.js'
 import { setStore, getStore, removeStore } from '/utils/storage.js'
-require('../../../static/geetest/gt.js')
-var captcha
+// require('../../../static/geetest/gt.js')
+// var captcha
 export default {
   data () {
     return {
       cart: [],
       loginPage: true,
       ruleForm: {
-        userName: '',
-        userPwd: '',
+        username: '',
+        password: '',
         errMsg: ''
       },
       registered: {
-        userName: '',
-        userPwd: '',
-        userPwd2: '',
+        username: '',
+        password: '',
+        password2: '',
         errMsg: ''
       },
       autoLogin: false,
@@ -109,15 +126,15 @@ export default {
       var judge = getStore('remember')
       if (judge === 'true') {
         this.autoLogin = true
-        this.ruleForm.userName = getStore('rusername')
-        this.ruleForm.userPwd = getStore('rpassword')
+        this.ruleForm.username = getStore('rusername')
+        this.ruleForm.password = getStore('rpassword')
       }
     },
     rememberPass () {
       if (this.autoLogin === true) {
         setStore('remember', 'true')
-        setStore('rusername', this.ruleForm.userName)
-        setStore('rpassword', this.ruleForm.userPwd)
+        setStore('rusername', this.ruleForm.username)
+        setStore('rpassword', this.ruleForm.password)
       } else {
         setStore('remember', 'false')
         removeStore('rusername')
@@ -151,34 +168,33 @@ export default {
     login () {
       this.logintxt = '登录中...'
       this.rememberPass()
-      if (!this.ruleForm.userName || !this.ruleForm.userPwd) {
+      if (!this.ruleForm.username || !this.ruleForm.password) {
         // this.ruleForm.errMsg = '账号或者密码不能为空!'
         this.message('账号或者密码不能为空!')
         return false
       }
-      var result = captcha.getValidate()
-      if (!result) {
-        this.message('请完成验证')
-        this.logintxt = '登录'
-        return false
-      }
+      // var result = captcha.getValidate()
+      // if (!result) {
+      //   this.message('请完成验证')
+      //   this.logintxt = '登录'
+      //   return false
+      // }
       var params = {
-        userName: this.ruleForm.userName,
-        userPwd: this.ruleForm.userPwd,
-        challenge: result.geetest_challenge,
-        validate: result.geetest_validate,
-        seccode: result.geetest_seccode,
-        statusKey: this.statusKey
+        username: this.ruleForm.username,
+        password: this.ruleForm.password
+        // challenge: result.geetest_challenge,
+        // validate: result.geetest_validate,
+        // seccode: result.geetest_seccode,
+        // statusKey: this.statusKey
       }
       userLogin(params).then(res => {
-        if (res.result.state === 1) {
-          setStore('token', res.result.token)
-          setStore('userId', res.result.id)
+        if (res.code === 200) {
+          setStore('userId', res.data.id)
           // 登录后添加当前缓存中的购物车
           if (this.cart.length) {
             for (var i = 0; i < this.cart.length; i++) {
               addCart(this.cart[i]).then(res => {
-                if (res.success === true) {
+                if (res.code === 200) {
                 }
               })
             }
@@ -193,12 +209,13 @@ export default {
           }
         } else {
           this.logintxt = '登录'
-          this.message(res.result.message)
-          captcha.reset()
+          this.message(res.message)
+          // captcha.reset()
           return false
         }
       })
     },
+    // 验证码，暂时不用
     init_geetest () {
       geetest().then(res => {
         this.statusKey = res.statusKey
@@ -210,7 +227,7 @@ export default {
           product: 'popup',
           width: '100%'
         }, function (captchaObj) {
-          captcha = captchaObj
+          // captcha = captchaObj
           captchaObj.appendTo('#captcha')
           captchaObj.onReady(function () {
             document.getElementById('wait').style.display = 'none'
@@ -222,8 +239,8 @@ export default {
   mounted () {
     this.getRemembered()
     this.login_addCart()
-    this.init_geetest()
-    this.open('登录提示', '测试体验账号密码：test | test')
+    // this.init_geetest()
+    this.open('登录提示', '测试体验账号密码：test1 | 123456')
   },
   components: {
     YFooter,

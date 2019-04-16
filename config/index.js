@@ -40,6 +40,10 @@ module.exports = {
       '/product/*': {
         target: 'http://127.0.0.1:8080/v1',  // 请求本地 需要xmall后台项目 默认127.0.0.1:7777
         changeOrigin: true,
+      },
+      '/user/*': {
+        target: 'http://127.0.0.1:8080/v1',  // 请求本地 需要xmall后台项目 默认127.0.0.1:7777
+        changeOrigin: true,
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

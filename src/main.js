@@ -37,20 +37,21 @@ Vue.use(VueLazyload, {
   // attempt: 1
 })
 Vue.config.productionTip = false
-const whiteList = ['/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
+const whiteList = ['/', '/home', '/goods', '/login', '/register', '/goodsDetails', '/thanks', '/search', '/refreshsearch', '/refreshgoods'] // 不需要登陆的页面
 router.beforeEach(function (to, from, next) {
   let params = {
     params: {
       token: getStore('token')
     }
   }
+  // 处于白名单中的 Url 不需要验证
+  if (whiteList.indexOf(to.path) !== -1) { // 白名单
+    next()
+    return
+  }
   userInfo(params).then(res => {
-    if (res.result.state !== 1) { // 没登录
-      if (whiteList.indexOf(to.path) !== -1) { // 白名单
-        next()
-      } else {
-        next('/login')
-      }
+    if (res.code !== 200) { // 没登录
+      next('/login')
     } else {
       store.commit('RECORD_USERINFO', {info: res.result})
       if (to.path === '/login') { //  跳转到
