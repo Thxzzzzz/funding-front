@@ -38,10 +38,10 @@
                       <li class="nav-user-avatar">
                         <div>
                           <span class="avatar"
-                                :style="{backgroundImage:'url('+userInfo.info.file+')'}">
+                                :style="{backgroundImage:'url('+userInfo.info.icon_url+')'}">
                           </span>
                         </div>
-                        <p class="name">{{userInfo.info.username}}</p>
+                        <p class="name">{{userInfo.info.nickname}}</p>
                       </li>
                       <li>
                         <router-link to="/user/orderList">我的订单</router-link>
@@ -354,12 +354,12 @@
       },
       // 退出登陆
       _loginOut () {
-        let params = {
-          params: {
-            token: this.token
-          }
-        }
-        loginOut(params).then(res => {
+        // let params = {
+        //   params: {
+        //     token: this.token
+        //   }
+        // }
+        loginOut().then(res => {
           removeStore('buyCart')
           window.location.href = '/'
         })

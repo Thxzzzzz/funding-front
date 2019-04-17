@@ -21,7 +21,7 @@ export const userLogin = (params) => {
 }
 // 退出登陆
 export const loginOut = (params) => {
-  return http.fetchGet('/user/logout', params)
+  return http.fetchPost('/user/logout', params)
 }
 // 用户信息
 export const userInfo = (params) => {

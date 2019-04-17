@@ -4,7 +4,7 @@
       <div class="dialog dialog-shadow"
            style="display: block; margin-top: -362px;">
         <div class="registered">
-          <h4>注册 XMall 账号</h4>
+          <h4>注册 Funding 众筹系统账号</h4>
           <div class="content"
                style="margin-top: 20px;">
             <ul class="common-form">
@@ -12,23 +12,44 @@
                 <div style="margin-top: 40px;"
                      class="input">
                   <input type="text"
-                         v-model="registered.userName"
-                         placeholder="账号"
-                         @keyup="registered.userName=registered.userName.replace(/[^\w\.\/]/ig,'')">
+                         v-model="registered.username"
+                         placeholder="用户名"
+                         @keyup="registered.username=registered.username.replace(/[^\w\.\/]/ig,'')">
                 </div>
               </li>
               <li>
                 <div class="input">
                   <input type="password"
-                         v-model="registered.userPwd"
+                         v-model="registered.password"
                          placeholder="密码">
                 </div>
               </li>
               <li>
                 <div class="input">
                   <input type="password"
-                         v-model="registered.userPwd2"
-                         placeholder="重复密码">
+                         v-model="registered.password2"
+                         placeholder="确认密码">
+                </div>
+              </li>
+              <li>
+                <div class="input">
+                  <input type="text"
+                         v-model="registered.nickname"
+                         placeholder="昵称">
+                </div>
+              </li>
+              <li>
+                <div class="input">
+                  <input type="text"
+                         v-model="registered.email"
+                         placeholder="邮箱">
+                </div>
+              </li>
+              <li>
+                <div class="input">
+                  <input type="text"
+                         v-model="registered.phone"
+                         placeholder="手机号">
                 </div>
               </li>
               <!-- <li>
@@ -44,7 +65,7 @@
               <a @click="open('隐私条款','本网站将严格遵守有关法律法规')">隐私条款</a>
             </el-checkbox>
             <div style="margin-bottom: 30px;">
-              <y-button :classStyle="registered.userPwd&&registered.userPwd2&&registered.userName&&registxt==='注册'?'main-btn':'disabled-btn'"
+              <y-button :classStyle="registered.password&&registered.password2&&registered.username&&registxt==='注册'?'main-btn':'disabled-btn'"
                         :text="registxt"
                         style="margin: 0;width: 100%;height: 48px;font-size: 18px;line-height: 48px"
                         @btnClick="regist">
@@ -67,27 +88,32 @@
     </div>
   </div>
 </template>
-<script src="../../../static/geetest/gt.js"></script>
+// <script src="../../../static/geetest/gt.js"></script>
 <script>
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
-import { register, geetest } from '/api/index.js'
-require('../../../static/geetest/gt.js')
-var captcha
+import { register } from '/api/index.js'
+// import { register, geetest } from '/api/index.js'
+// require('../../../static/geetest/gt.js')
+// var captcha
 export default {
   data () {
     return {
       cart: [],
       loginPage: true,
       ruleForm: {
-        userName: '',
-        userPwd: '',
-        errMsg: ''
+        username: '',
+        nickname: '',
+        email: '',
+        phone: '',
+        password: ''
       },
       registered: {
-        userName: '',
-        userPwd: '',
-        userPwd2: '',
+        username: '',
+        password: '',
+        password2: '',
+        email: '',
+        phone: '',
         errMsg: ''
       },
       agreement: false,
@@ -125,15 +151,15 @@ export default {
     },
     regist () {
       this.registxt = '注册中...'
-      let userName = this.registered.userName
-      let userPwd = this.registered.userPwd
-      let userPwd2 = this.registered.userPwd2
-      if (!userName || !userPwd || !userPwd2) {
+      let username = this.registered.username
+      let password = this.registered.password
+      let password2 = this.registered.password2
+      if (!username || !password || !password2) {
         this.message('账号密码不能为空!')
         this.registxt = '注册'
         return false
       }
-      if (userPwd2 !== userPwd) {
+      if (password2 !== password) {
         this.message('两次输入的密码不相同!')
         this.registxt = '注册'
         return false
@@ -143,52 +169,46 @@ export default {
         this.registxt = '注册'
         return false
       }
-      var result = captcha.getValidate()
-      if (!result) {
-        this.message('请完成验证')
-        this.registxt = '注册'
-        return false
-      }
-      register({
-        userName,
-        userPwd,
-        challenge: result.geetest_challenge,
-        validate: result.geetest_validate,
-        seccode: result.geetest_seccode,
-        statusKey: this.statusKey }).then(res => {
-          if (res.success === true) {
-            this.messageSuccess()
-            this.toLogin()
-          } else {
-            this.message(res.message)
-            captcha.reset()
-            this.regist = '注册'
-            return false
-          }
-        })
+      // var result = captcha.getValidate()
+      // if (!result) {
+      //   this.message('请完成验证')
+      //   this.registxt = '注册'
+      //   return false
+      // }
+      register(this.registered).then(res => {
+        if (res.code === 200) {
+          this.messageSuccess()
+          this.toLogin()
+        } else {
+          this.message(res.message)
+            // captcha.reset()
+          this.regist = '注册'
+          return false
+        }
+      })
     },
     init_geetest () {
-      geetest().then(res => {
-        this.statusKey = res.statusKey
-        window.initGeetest({
-          gt: res.gt,
-          challenge: res.challenge,
-          new_captcha: res.new_captcha,
-          offline: !res.success,
-          product: 'popup',
-          width: '100%'
-        }, function (captchaObj) {
-          captcha = captchaObj
-          captchaObj.appendTo('#captcha')
-          captchaObj.onReady(function () {
-            document.getElementById('wait').style.display = 'none'
-          })
-        })
-      })
+      // geetest().then(res => {
+      //   this.statusKey = res.statusKey
+      //   window.initGeetest({
+      //     gt: res.gt,
+      //     challenge: res.challenge,
+      //     new_captcha: res.new_captcha,
+      //     offline: !res.success,
+      //     product: 'popup',
+      //     width: '100%'
+      //   }, function (captchaObj) {
+      //     captcha = captchaObj
+      //     captchaObj.appendTo('#captcha')
+      //     captchaObj.onReady(function () {
+      //       document.getElementById('wait').style.display = 'none'
+      //     })
+      //   })
+      // })
     }
   },
   mounted () {
-    this.init_geetest()
+    // this.init_geetest()
   },
   components: {
     YFooter,
