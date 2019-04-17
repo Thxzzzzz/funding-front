@@ -31,9 +31,13 @@ export const editCheckAll = (params) => {
 export const cartDel = (params) => {
   return http.fetchPost('/member/cartDel', params)
 }
+// // 获取用户地址
+// export const addressList = (params) => {
+//   return http.fetchPost('/member/addressList', params)
+// }
 // 获取用户地址
 export const addressList = (params) => {
-  return http.fetchPost('/member/addressList', params)
+  return http.fetchGet('/user/address/all', params)
 }
 // 通过id获取地址
 export const getAddress = (params) => {

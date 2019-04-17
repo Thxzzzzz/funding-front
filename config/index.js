@@ -29,20 +29,24 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/member/*': {
-        target: 'https://easy-mock.com/mock/5cab39ebfd0ae959461376ba/v1',  // 请求本地 需要xmall后台项目 默认127.0.0.1:7777 
+        target: 'https://easy-mock.com/mock/5cab39ebfd0ae959461376ba/v1',  // 请求本地 需要后台项目 默认127.0.0.1:8080 
         changeOrigin: true,
       },
       '/goods/*': {
-        target: 'https://easy-mock.com/mock/5cab39ebfd0ae959461376ba/v1',  // 请求本地 需要xmall后台项目 默认127.0.0.1:7777
+        target: 'https://easy-mock.com/mock/5cab39ebfd0ae959461376ba/v1',  // 请求本地后台项目 默认127.0.0.1:8080
         changeOrigin: true,
       }
       ,
       '/product/*': {
-        target: 'http://127.0.0.1:8080/v1',  // 请求本地 需要xmall后台项目 默认127.0.0.1:7777
+        target: 'http://127.0.0.1:8080/v1',  // 请求本地后台项目 默认127.0.0.1:8080
         changeOrigin: true,
       },
-      '/user/*': {
-        target: 'http://127.0.0.1:8080/v1',  // 请求本地 需要xmall后台项目 默认127.0.0.1:7777
+      '^/user/*': {
+        target: 'http://127.0.0.1:8080/v1',  // 请求本地后台项目 默认127.0.0.1:8080
+        changeOrigin: true,
+      },
+      '/user/address/*': {
+        target: 'http://127.0.0.1:8080/v1',  // 请求本地后台项目 默认127.0.0.1:8080
         changeOrigin: true,
       }
     },
