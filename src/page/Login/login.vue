@@ -40,7 +40,7 @@
                  class="register"
                  @click="toRegister">注册账号</a>
               <a style="padding: 1px 0 0 10px"
-                 @click="open('找回密码','请联系作者邮箱找回密码或使用测试账号登录：test | test')">忘记密码 ?</a>
+                 @click="open('找回密码','请联系作者邮箱找回密码')">忘记密码 ?</a>
             </li>
           </ul>
           <!--登陆-->
@@ -240,7 +240,7 @@ export default {
     this.getRemembered()
     this.login_addCart()
     // this.init_geetest()
-    this.open('登录提示', '测试体验账号密码：test1 | 123456')
+    // this.open('登录提示', '测试体验账号密码：test1 | 123456')
   },
   components: {
     YFooter,

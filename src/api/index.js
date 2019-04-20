@@ -1,20 +1,6 @@
 import http from './public'
-// // 登陆
-// export const userLogin = (params) => {
-//   return http.fetchPost('/member/login', params)
-// }
-// // 退出登陆
-// export const loginOut = (params) => {
-//   return http.fetchGet('/member/loginOut', params)
-// }
-// // 用户信息
-// export const userInfo = (params) => {
-//   return http.fetchGet('/member/checkLogin', params)
-// }
-// // 注册账号
-// export const register = (params) => {
-//   return http.fetchPost('/member/register', params)
-// }
+
+//            登录相关          //
 // 登陆
 export const userLogin = (params) => {
   return http.fetchPost('/user/login', params)
@@ -31,6 +17,7 @@ export const userInfo = (params) => {
 export const register = (params) => {
   return http.fetchPost('/user/register', params)
 }
+
 // 上传图片
 export const upload = (params) => {
   return http.fetchPost('/member/imgaeUpload', params)
@@ -43,10 +30,7 @@ export const updateheadimage = (params) => {
 export const thanksList = (params) => {
   return http.fetchGet('/member/thanks', params)
 }
-// 首页接口
-// export const productHome = (params) => {
-//   return http.fetchGet('/goods/home', params)
-// }
+
 // 首页接口
 export const productHome = (params) => {
   return http.fetchGet('/product/home', params)

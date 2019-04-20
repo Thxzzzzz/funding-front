@@ -21,8 +21,8 @@
             <div class="defalut">
               <a @click="changeDef(item)"
                  href="javascript:;"
-                 v-text="item.isDefault?'( 默认地址 )':'设为默认'"
-                 :class="{'defalut-address':item.isDefault}"></a>
+                 v-text="isDefaultAddress(item.id)?'( 默认地址 )':'设为默认'"
+                 :class="{'defalut-address':isDefaultAddress(item.id)}"></a>
             </div>
             <div class="operation">
               <el-button type="primary"
@@ -71,12 +71,12 @@
         </div>
         <div>
           <el-checkbox class="auto-login"
-                       v-model="msg.isDefault">设为默认</el-checkbox>
+                       v-model="msg.default">设为默认</el-checkbox>
         </div>
         <y-button text='保存'
                   class="btn"
                   :classStyle="btnHighlight?'main-btn':'disabled-btn'"
-                  @btnClick="save({userId:userId,id:msg.id,name:msg.name,phone:msg.phone,address:msg.address,isDefault:msg.isDefault})">
+                  @btnClick="save({userId:userId,id:msg.id,name:msg.name,phone:msg.phone,address:msg.address,default:msg.default})">
         </y-button>
       </div>
     </y-popup>
@@ -88,6 +88,7 @@
   import YPopup from '/components/popup'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -99,12 +100,16 @@
           name: '',
           phone: '',
           address: '',
-          isDefault: false
+          default: false
         },
-        userId: ''
+        userId: '',
+        isDefaultAddress: function (addressId) {
+          return this.userInfo.info.default_address_id === addressId
+        }
       }
     },
     computed: {
+      ...mapState(['userInfo']),
       btnHighlight () {
         let msg = this.msg
         return msg.name && msg.phone && msg.address
@@ -116,34 +121,41 @@
           message: m
         })
       },
+      // 地址列表
       _addressList () {
         addressList().then(res => {
           let data = res.data
           if (data.length) {
             this.addList = res.data
-            this.id = res.result[0].id || '1'
+            this.id = res.data[0].id || '1'
           } else {
             this.addList = []
           }
         })
       },
+      // 更新地址
       _addressUpdate (params) {
         addressUpdate(params).then(res => {
+          if (res.code === 200 && params.default) {
+            this.userInfo.info.default_address_id = params.id
+          }
           this._addressList()
         })
       },
+      // 新增地址
       _addressAdd (params) {
         addressAdd(params).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             this._addressList()
           } else {
             this.message(res.message)
           }
         })
       },
+      // 设置为默认地址
       changeDef (item) {
-        if (!item.isDefault) {
-          item.isDefault = true
+        if (!this.isDefaultAddress(item.id)) {
+          item.default = true
           this._addressUpdate(item)
         }
         return false
@@ -161,7 +173,7 @@
       // 删除
       del (id, i) {
         addressDel({id: id}).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             this.addList.splice(i, 1)
           } else {
             this.message('删除失败')
@@ -176,14 +188,14 @@
           this.msg.name = item.name
           this.msg.phone = item.phone
           this.msg.address = item.address
-          this.msg.isDefault = item.isDefault
+          this.msg.default = this.isDefaultAddress(item.id)
           this.msg.id = item.id
         } else {
           this.popupTitle = '新增收货地址'
           this.msg.name = ''
           this.msg.phone = ''
           this.msg.address = ''
-          this.msg.isDefault = false
+          this.msg.default = false
           this.msg.id = ''
         }
       }
@@ -272,8 +284,9 @@
     pointer-events: none;
     cursor: default;
   }
-
+ 
   .md {
+      width: 400px;
     > div {
       text-align: left;
       margin-bottom: 15px;
