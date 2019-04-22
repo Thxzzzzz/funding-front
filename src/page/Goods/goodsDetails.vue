@@ -167,18 +167,18 @@
         popupOpen: false,
         selectedItem: {},
         product: {},
-        // productNum: 1,
+        productNum: 1,
         cartItem: {
           product_id: 0,
           prodcut_package_id: 0,
           nums: 0,
           unit_price: 0
         },
-        userId: ''
+        userId: 0
       }
     },
     computed: {
-      ...mapState(['login', 'showMoveImg', 'showCart']),
+      ...mapState(['login', 'showMoveImg', 'showCart', 'userInfo']),
       progressPercent: function () {
         return Number(this.product.current_price / this.product.target_price * 100).toFixed(0)
       },
@@ -204,9 +204,8 @@
         let prodcut_package_id = item.id
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
-            addCart({user_id: this.userId,
-              prodcut_package_id: item.id,
-              product_id: item.product_id,
+            addCart({userId: this.userInfo.info.userId,
+              productPackageId: item.id,
               nums: this.productNum}).then(res => {
               // 并不重新请求数据
                 this.ADD_CART({

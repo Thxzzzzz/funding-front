@@ -23,31 +23,31 @@ export const getQuickSearch = (params) => {
 
 // 获取购物车列表
 export const getCartList = (params) => {
-  return http.fetchPost('/member/cartList', params)
+  return http.fetchPost('/user/cartList', params)
 }
 // 加入购物车
 export const addCart = (params) => {
-  return http.fetchPost('/member/addCart', params)
+  return http.fetchPost('/user/addCart', params)
 }
 // 删除购物车
 export const delCart = (params) => {
-  return http.fetchPost('/member/delCart', params)
+  return http.fetchPost('/user/delCart', params)
 }
 // 删除购物车勾选商品
 export const delCartChecked = (params) => {
-  return http.fetchPost('/member/delCartChecked', params)
+  return http.fetchPost('/user/delCartChecked', params)
 }
 // 编辑购物车
 export const cartEdit = (params) => {
-  return http.fetchPost('/member/cartEdit', params)
+  return http.fetchPost('/user/cartEdit', params)
 }
 // 全选
 export const editCheckAll = (params) => {
-  return http.fetchPost('/member/editCheckAll', params)
+  return http.fetchPost('/user/editCheckAll', params)
 }
 // 删除整条购物车
 export const cartDel = (params) => {
-  return http.fetchPost('/member/cartDel', params)
+  return http.fetchPost('/user/cartDel', params)
 }
 
 //            地址相关              //

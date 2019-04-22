@@ -843,13 +843,13 @@
           }
           .attrs span {
             position: relative;
-            // display: inline-block;
+            display: inline-block;
             text-overflow: ellipsis;
-            width: 200px;
+            width: 190px;
             margin-right: 20px;
-            overflow:hidden;
-            font-size: 13px;
-            line-height: 13px;
+            overflow: hidden;
+            font-size: 10px;
+            line-height: 12px;
             color: #999;
           }
           .attrs span:last-child {
