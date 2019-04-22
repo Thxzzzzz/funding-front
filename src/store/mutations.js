@@ -18,18 +18,21 @@ export default {
     }
   },
   // 加入购物车
-  [ADD_CART] (state, {productId, salePrice, productName, productImg, productNum = 1}) {
+  [ADD_CART] (state, {productPackageId, productId, salePrice, productName, description, productImg, productNum = 1}) {
     let cart = state.cartList // 购物车
     let falg = true
+    // 购物车定义
     let goods = {
+      productPackageId,
       productId,
       salePrice,
       productName,
+      description,
       productImg
     }
     if (cart.length) {        // 有内容
       cart.forEach(item => {
-        if (item.productId === productId) {
+        if (item.productPackageId === productPackageId) {
           if (item.productNum >= 0) {
             falg = false
             item.productNum += productNum
@@ -72,10 +75,10 @@ export default {
     // }
   },
   // 移除商品
-  [REDUCE_CART] (state, {productId}) {
+  [REDUCE_CART] (state, {productPackageId}) {
     let cart = state.cartList
     cart.forEach((item, i) => {
-      if (item.productId === productId) {
+      if (item.productPackageId === productPackageId) {
         if (item.productNum > 1) {
           item.productNum--
         } else {
@@ -88,18 +91,18 @@ export default {
     setStore('buyCart', state.cartList)
   },
   // 修改购物车
-  [EDIT_CART] (state, {productId, productNum, checked}) {
+  [EDIT_CART] (state, {productPackageId, productNum, checked}) {
     let cart = state.cartList
     if (productNum) {
       cart.forEach((item, i) => {
-        if (item.productId === productId) {
+        if (item.productPackageId === productPackageId) {
           item.productNum = productNum
           item.checked = checked
         }
       })
-    } else if (productId) {
+    } else if (productPackageId) {
       cart.forEach((item, i) => {
-        if (item.productId === productId) {
+        if (item.productPackageId === productPackageId) {
           cart.splice(i, 1)
         }
       })

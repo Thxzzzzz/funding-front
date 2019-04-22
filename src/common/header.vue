@@ -98,14 +98,14 @@
                                         <a href=""
                                            v-text="item.productName"></a>
                                       </h4>
-                                      <!-- <p class="attrs"><span>白色</span></p> -->
+                                      <p class="attrs"><span>{{item.description}}</span></p>
                                       <h6><span class="price-icon">¥</span><span class="price-num">{{item.salePrice}}</span><span class="item-num">x {{item.productNum}}</span>
                                       </h6>
                                     </div>
                                   </div>
                                 </a>
                                 <div class="del-btn del"
-                                     @click="delGoods(item.productId)">删除</div>
+                                     @click="delGoods(item.productPackageId)">删除</div>
                               </div>
                             </div>
                           </li>
@@ -319,20 +319,20 @@
       // 登陆时获取一次购物车商品
       _getCartList () {
         getCartList({userId: getStore('userId')}).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             setStore('buyCart', res.result)
           }
           // 重新初始化一次本地数据
         }).then(this.INIT_BUYCART)
       },
       // 删除商品
-      delGoods (productId) {
+      delGoods (productPackageId) {
         if (this.login) { // 登陆了
-          cartDel({userId: getStore('userId'), productId}).then(res => {
-            this.EDIT_CART({productId})
+          cartDel({userId: getStore('userId'), productPackageId: productPackageId}).then(res => {
+            this.EDIT_CART({productPackageId: productPackageId})
           })
         } else {
-          this.EDIT_CART({productId})
+          this.EDIT_CART({productPackageId: productPackageId})
         }
       },
       toCart () {
@@ -832,7 +832,7 @@
           @include wh(205px, 80px);
           h4 {
             color: #000;
-            width: 185px;
+            width: 200  px;
             overflow: hidden;
             word-break: keep-all;
             white-space: nowrap;
@@ -843,10 +843,13 @@
           }
           .attrs span {
             position: relative;
-            display: inline-block;
+            // display: inline-block;
+            text-overflow: ellipsis;
+            width: 200px;
             margin-right: 20px;
-            font-size: 14px;
-            line-height: 14px;
+            overflow:hidden;
+            font-size: 13px;
+            line-height: 13px;
             color: #999;
           }
           .attrs span:last-child {
@@ -855,8 +858,8 @@
           h6 {
             color: #cacaca;
             font-size: 12px;
-            line-height: 14px;
-            margin-top: 20px;
+            line-height: 12px;
+            margin-top: 8px;
             span {
               display: inline-block;
               font-weight: 700;
