@@ -204,10 +204,10 @@
         let prodcut_package_id = item.id
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
-            addCart({userId: this.userId,
+            addCart({user_id: this.userId,
               prodcut_package_id: item.id,
-              productId: item.product_id,
-              productNum: this.productNum}).then(res => {
+              product_id: item.product_id,
+              nums: this.productNum}).then(res => {
               // 并不重新请求数据
                 this.ADD_CART({
                   productPackageId: prodcut_package_id,
