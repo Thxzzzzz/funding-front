@@ -23,31 +23,31 @@ export const getQuickSearch = (params) => {
 
 // 获取购物车列表
 export const getCartList = (params) => {
-  return http.fetchPost('/user/cartList', params)
+  return http.fetchGet('/user/cart/cartList', params)
 }
 // 加入购物车
 export const addCart = (params) => {
-  return http.fetchPost('/user/addCart', params)
+  return http.fetchPost('/user/cart/addCart', params)
 }
 // 删除购物车
 export const delCart = (params) => {
-  return http.fetchPost('/user/delCart', params)
+  return http.fetchPost('/user/cart/delCart', params)
 }
 // 删除购物车勾选商品
 export const delCartChecked = (params) => {
-  return http.fetchPost('/user/delCartChecked', params)
+  return http.fetchPost('/user/cart/delCartChecked', params)
 }
 // 编辑购物车
 export const cartEdit = (params) => {
-  return http.fetchPost('/user/cartEdit', params)
+  return http.fetchPost('/user/cart/cartEdit', params)
 }
 // 全选
 export const editCheckAll = (params) => {
-  return http.fetchPost('/user/editCheckAll', params)
+  return http.fetchPost('/user/cart/editCheckAll', params)
 }
 // 删除整条购物车
 export const cartDel = (params) => {
-  return http.fetchPost('/user/cartDel', params)
+  return http.fetchPost('/user/cart/cartDel', params)
 }
 
 //            地址相关              //
@@ -58,7 +58,7 @@ export const addressList = (params) => {
 }
 // TODO 通过id获取地址
 export const getAddress = (params) => {
-  return http.fetchPost('/user/address', params)
+  return http.fetchGet('/user/address', params)
 }
 // 修改收货地址
 export const addressUpdate = (params) => {

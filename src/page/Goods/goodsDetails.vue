@@ -167,7 +167,7 @@
         popupOpen: false,
         selectedItem: {},
         product: {},
-        productNum: 1,
+        nums: 1,
         cartItem: {
           product_id: 0,
           prodcut_package_id: 0,
@@ -205,28 +205,28 @@
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
             addCart({userId: this.userInfo.info.userId,
-              productPackageId: item.id,
-              nums: this.productNum}).then(res => {
+              prodcut_package_id: item.id,
+              nums: this.nums}).then(res => {
               // 并不重新请求数据
                 this.ADD_CART({
-                  productPackageId: prodcut_package_id,
-                  productId: item.product_id,
-                  salePrice: item.price,
-                  productName: this.product.name,
+                  prodcut_package_id: prodcut_package_id,
+                  product_id: item.product_id,
+                  price: item.price,
+                  product_name: this.product.name,
                   description: item.description,
-                  productImg: item.image_url,
-                  productNum: this.productNum
+                  image_url: item.image_url,
+                  nums: this.nums
                 })
               })
           } else { // 未登录 vuex
             this.ADD_CART({
-              productPackageId: prodcut_package_id,
-              productId: item.product_id,
-              salePrice: item.price,
-              productName: this.product.name,
+              prodcut_package_id: prodcut_package_id,
+              product_id: item.product_id,
+              price: item.price,
+              product_name: this.product.name,
               description: item.description,
-              productImg: item.image_url,
-              productNum: this.productNum
+              image_url: item.image_url,
+              nums: this.nums
             })
           }
           this.popupOpen = false
@@ -242,18 +242,18 @@
           }
         }
       },
-      checkout (productId) {
-        this.$router.push({path: '/checkout', query: {productId, num: this.productNum}})
+      checkout (product_id) {
+        this.$router.push({path: '/checkout', query: {product_id, num: this.nums}})
       },
       editNum (num) {
-        this.productNum = num
+        this.nums = num
       }
     },
     components: {
       YShelf, BuyNum, YButton, YPopup
     },
     created () {
-      let id = this.$route.query.productId
+      let id = this.$route.query.product_id
       this._productDet(id)
       this.userId = getStore('userId')
     }

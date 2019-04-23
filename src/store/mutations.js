@@ -18,30 +18,31 @@ export default {
     }
   },
   // 加入购物车
-  [ADD_CART] (state, {productPackageId, productId, salePrice, productName, description, productImg, productNum = 1}) {
+  [ADD_CART] (state, {product_package_id, product_id, price, product_name, description, image_url, nums = 1}) {
     let cart = state.cartList // 购物车
     let falg = true
     // 购物车定义
     let goods = {
-      productPackageId,
-      productId,
-      salePrice,
-      productName,
+      product_package_id,
+      product_id,
+      price,
+      product_name,
       description,
-      productImg
+      image_url
     }
+
     if (cart.length) {        // 有内容
       cart.forEach(item => {
-        if (item.productPackageId === productPackageId) {
-          if (item.productNum >= 0) {
+        if (item.product_package_id === product_package_id) {
+          if (item.nums >= 0) {
             falg = false
-            item.productNum += productNum
+            item.nums += nums
           }
         }
       })
     }
     if (!cart.length || falg) {
-      goods.productNum = productNum
+      goods.nums = nums
       goods.checked = '1'
       cart.push(goods)
     }
@@ -75,12 +76,12 @@ export default {
     // }
   },
   // 移除商品
-  [REDUCE_CART] (state, {productPackageId}) {
+  [REDUCE_CART] (state, {product_package_id}) {
     let cart = state.cartList
     cart.forEach((item, i) => {
-      if (item.productPackageId === productPackageId) {
-        if (item.productNum > 1) {
-          item.productNum--
+      if (item.product_package_id === product_package_id) {
+        if (item.nums > 1) {
+          item.nums--
         } else {
           cart.splice(i, 1)
         }
@@ -91,18 +92,18 @@ export default {
     setStore('buyCart', state.cartList)
   },
   // 修改购物车
-  [EDIT_CART] (state, {productPackageId, productNum, checked}) {
+  [EDIT_CART] (state, {product_package_id, nums, checked}) {
     let cart = state.cartList
-    if (productNum) {
+    if (nums) {
       cart.forEach((item, i) => {
-        if (item.productPackageId === productPackageId) {
-          item.productNum = productNum
+        if (item.product_package_id === product_package_id) {
+          item.nums = nums
           item.checked = checked
         }
       })
-    } else if (productPackageId) {
+    } else if (product_package_id) {
       cart.forEach((item, i) => {
-        if (item.productPackageId === productPackageId) {
+        if (item.product_package_id === product_package_id) {
           cart.splice(i, 1)
         }
       })

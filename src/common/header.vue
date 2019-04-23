@@ -88,24 +88,24 @@
                               :key="i">
                             <div class="cart-item">
                               <div class="cart-item-inner">
-                                <a @click="openProduct(item.productId)">
+                                <a @click="openProduct(item.product_id)">
                                   <div class="item-thumb">
-                                    <img :src="item.productImg">
+                                    <img :src="item.image_url">
                                   </div>
                                   <div class="item-desc">
                                     <div class="cart-cell">
                                       <h4>
                                         <a href=""
-                                           v-text="item.productName"></a>
+                                           v-text="item.product_name"></a>
                                       </h4>
                                       <p class="attrs"><span>{{item.description}}</span></p>
-                                      <h6><span class="price-icon">¥</span><span class="price-num">{{item.salePrice}}</span><span class="item-num">x {{item.productNum}}</span>
+                                      <h6><span class="price-icon">¥</span><span class="price-num">{{item.price}}</span><span class="item-num">x {{item.nums}}</span>
                                       </h6>
                                     </div>
                                   </div>
                                 </a>
                                 <div class="del-btn del"
-                                     @click="delGoods(item.productPackageId)">删除</div>
+                                     @click="delGoods(item.product_package_id)">删除</div>
                               </div>
                             </div>
                           </li>
@@ -200,7 +200,7 @@
       totalPrice () {
         var totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
-          totalPrice += (item.productNum * item.salePrice)
+          totalPrice += (item.nums * item.price)
         })
         return totalPrice
       },
@@ -208,7 +208,7 @@
       totalNum () {
         var totalNum = 0
         this.cartList && this.cartList.forEach(item => {
-          totalNum += (item.productNum)
+          totalNum += (item.nums)
         })
         return totalNum
       }
@@ -273,7 +273,7 @@
             return
           }
           if (res.error) {
-            this.showError(res.error.reason)
+            this.showError(res.message)
             return
           }
           var array = []
@@ -283,7 +283,7 @@
           }
           for (var i = 0; i < maxSize; i++) {
             var obj = {}
-            obj.value = res.hits.hits[i]._source.productName
+            obj.value = res.hits.hits[i]._source.product_name
             array.push(obj)
           }
           if (array.length !== 0) {
@@ -318,21 +318,21 @@
       },
       // 登陆时获取一次购物车商品
       _getCartList () {
-        getCartList({userId: getStore('userId')}).then(res => {
+        getCartList().then(res => {
           if (res.code === 200) {
-            setStore('buyCart', res.result)
+            setStore('buyCart', res.data)
           }
           // 重新初始化一次本地数据
         }).then(this.INIT_BUYCART)
       },
       // 删除商品
-      delGoods (productPackageId) {
+      delGoods (product_package_id) {
         if (this.login) { // 登陆了
-          cartDel({userId: getStore('userId'), productPackageId: productPackageId}).then(res => {
-            this.EDIT_CART({productPackageId: productPackageId})
+          cartDel({userId: getStore('userId'), product_package_id: product_package_id}).then(res => {
+            this.EDIT_CART({product_package_id: product_package_id})
           })
         } else {
-          this.EDIT_CART({productPackageId: productPackageId})
+          this.EDIT_CART({product_package_id: product_package_id})
         }
       },
       toCart () {
