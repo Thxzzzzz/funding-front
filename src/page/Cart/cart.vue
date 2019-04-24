@@ -237,24 +237,24 @@
       editCart (type, item) {
         if (type && item) {
           let checked = item.checked
-          let product_id = item.product_id
+          let product_package_id = product_package_id.product_id
           let nums = item.nums
           // 勾选
           if (type === 'check') {
             let newChecked = checked === '1' ? '0' : '1'
-            this._cartEdit(this.userId, product_id, nums, newChecked)
+            this._cartEdit(product_package_id, nums, newChecked)
           }
         } else {
           console.log('缺少所需参数')
         }
       },
-      EditNum (nums, product_id, checked) { // 数量
-        this._cartEdit(this.userId, product_id, nums, checked)
+      EditNum (nums, product_package_id, checked) { // 数量
+        this._cartEdit(this.userId, product_package_id, nums, checked)
       },
       // 删除整条购物车
-      cartdel (product_id) {
-        cartDel({userId: this.userId, product_id}).then(res => {
-          this.EDIT_CART({product_id})
+      cartdel (product_package_id) {
+        cartDel({product_package_id}).then(res => {
+          this.EDIT_CART({product_package_id})
         })
       },
       checkout () {
@@ -267,13 +267,13 @@
           if (res.success === true) {
             res.result.forEach(item => {
               if (item.checked === '1') {
-                let product_id = item.product_id
-                this.EDIT_CART({product_id})
+                let product_package_id = item.product_package_id
+                this.EDIT_CART({product_package_id})
               }
             })
           }
         })
-        delCartChecked({userId: this.userId}).then(res => {
+        delCartChecked().then(res => {
           if (res.success !== true) {
             this.message('删除失败')
           }
