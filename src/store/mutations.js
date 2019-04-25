@@ -109,7 +109,7 @@ export default {
       })
     } else {
       cart.forEach((item) => {
-        item.checked = checked ? '1' : '0'
+        item.checked = checked
       })
     }
     state.cartList = cart
