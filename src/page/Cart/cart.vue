@@ -28,7 +28,7 @@
                       <div class="items-choose">
                         <span class="blue-checkbox-new "
                               :class="{'checkbox-on':item.checked}"
-                              @click="editCart('check',item)"></span>
+                              @click="editCart('check', item)"></span>
                       </div>
                       <!--图片-->
                       <div class="items-thumb fl">
@@ -224,6 +224,7 @@
           if (res.code === 200) {
             this.EDIT_CART(
               {
+                product_package_id,
                 checked,
                 nums
               }
@@ -239,7 +240,7 @@
           let nums = item.nums
           // 勾选
           if (type === 'check') {
-            this._cartEdit(product_package_id, nums, checked)
+            this._cartEdit(product_package_id, nums, !checked)
           }
         } else {
           console.log('缺少所需参数')
@@ -261,9 +262,9 @@
       },
       delChecked () {
         getCartList({userId: getStore('userId')}).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             res.result.forEach(item => {
-              if (item.checked === '1') {
+              if (item.checked) {
                 let product_package_id = item.product_package_id
                 this.EDIT_CART({product_package_id})
               }
@@ -271,7 +272,7 @@
           }
         })
         delCartChecked().then(res => {
-          if (res.success !== true) {
+          if (res.code !== 200) {
             this.message('删除失败')
           }
         })
