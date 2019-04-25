@@ -30,9 +30,9 @@ export const addCart = (params) => {
   return http.fetchPost('/user/cart/addCart', params)
 }
 // 删除购物车
-export const delCart = (params) => {
-  return http.fetchPost('/user/cart/delCart', params)
-}
+// export const delCart = (params) => {
+//   return http.fetchPost('/user/cart/delCart', params)
+// }
 // 删除购物车勾选商品
 export const delCartChecked = (params) => {
   return http.fetchPost('/user/cart/delCartChecked', params)

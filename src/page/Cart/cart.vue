@@ -27,7 +27,7 @@
                       <!--勾选-->
                       <div class="items-choose">
                         <span class="blue-checkbox-new "
-                              :class="{'checkbox-on':item.checked === '1'}"
+                              :class="{'checkbox-on':item.checked}"
                               @click="editCart('check',item)"></span>
                       </div>
                       <!--图片-->
@@ -61,14 +61,14 @@
                         <div class="subtotal"
                              style="font-size: 14px">¥ {{item.price * item.nums}}</div>
                         <!--数量-->
-                        <buy-num :num="item.nums"
-                                 :id="item.product_id"
-                                 :checked="item.checked"
+                        <buy-num  :num="item.nums"     
+                                  :id="item.product_package_id"
+                                  :check="item.checked"
                                  style="height: 140px;
                                    display: flex;
                                    align-items: center;
                                    justify-content: center;"
-                                 :limit="item.limitNum"
+                                 :limit="item.stock"
                                  @edit-num="EditNum">
                         </buy-num>
                         <!--价格-->
@@ -160,7 +160,7 @@
       checkedCount () {
         var i = 0
         this.cartList && this.cartList.forEach((item) => {
-          if (item.checked === '1') i++
+          if (item.checked) i++
         })
         return Number(i)
       },
@@ -176,7 +176,7 @@
       checkPrice () {
         var totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
-          if (item.checked === '1') {
+          if (item.checked) {
             totalPrice += (item.nums * item.price)
           }
         })
@@ -186,7 +186,7 @@
       checkNum () {
         var checkNum = 0
         this.cartList && this.cartList.forEach(item => {
-          if (item.checked === '1') {
+          if (item.checked) {
             checkNum += (item.nums)
           }
         })
@@ -213,19 +213,17 @@
         })
       },
       // 修改购物车
-      _cartEdit (userId, product_id, nums, checked) {
+      _cartEdit (product_package_id, nums, checked) {
         cartEdit(
           {
-            userId,
-            product_id,
+            product_package_id,
             nums,
             checked
           }
         ).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             this.EDIT_CART(
               {
-                product_id,
                 checked,
                 nums
               }
@@ -237,19 +235,18 @@
       editCart (type, item) {
         if (type && item) {
           let checked = item.checked
-          let product_package_id = product_package_id.product_id
+          let product_package_id = item.product_package_id
           let nums = item.nums
           // 勾选
           if (type === 'check') {
-            let newChecked = checked === '1' ? '0' : '1'
-            this._cartEdit(product_package_id, nums, newChecked)
+            this._cartEdit(product_package_id, nums, checked)
           }
         } else {
           console.log('缺少所需参数')
         }
       },
-      EditNum (nums, product_package_id, checked) { // 数量
-        this._cartEdit(this.userId, product_package_id, nums, checked)
+      EditNum (num, id, checked) { // 数量
+        this._cartEdit(id, num, checked)
       },
       // 删除整条购物车
       cartdel (product_package_id) {

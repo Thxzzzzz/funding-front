@@ -170,7 +170,7 @@
         nums: 1,
         cartItem: {
           product_id: 0,
-          prodcut_package_id: 0,
+          product_package_id: 0,
           nums: 0,
           unit_price: 0
         },
@@ -201,32 +201,36 @@
         })
       },
       addCart (item) {
-        let prodcut_package_id = item.id
+        let product_package_id = item.id
+        console.log(product_package_id)
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
             addCart({userId: this.userInfo.info.userId,
-              prodcut_package_id: item.id,
-              nums: this.nums}).then(res => {
+              product_package_id: product_package_id,
+              nums: this.nums,
+              checked: true}).then(res => {
               // 并不重新请求数据
                 this.ADD_CART({
-                  prodcut_package_id: prodcut_package_id,
+                  product_package_id: product_package_id,
                   product_id: item.product_id,
                   price: item.price,
                   product_name: this.product.name,
                   description: item.description,
                   image_url: item.image_url,
-                  nums: this.nums
+                  nums: this.nums,
+                  checked: true
                 })
               })
           } else { // 未登录 vuex
             this.ADD_CART({
-              prodcut_package_id: prodcut_package_id,
+              product_package_id: product_package_id,
               product_id: item.product_id,
               price: item.price,
               product_name: this.product.name,
               description: item.description,
               image_url: item.image_url,
-              nums: this.nums
+              nums: this.nums,
+              checked: true
             })
           }
           this.popupOpen = false
@@ -253,7 +257,7 @@
       YShelf, BuyNum, YButton, YPopup
     },
     created () {
-      let id = this.$route.query.product_id
+      let id = this.$route.query.productId
       this._productDet(id)
       this.userId = getStore('userId')
     }
