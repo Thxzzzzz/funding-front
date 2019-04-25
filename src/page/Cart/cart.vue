@@ -261,9 +261,9 @@
         this.$router.push({path: 'checkout'})
       },
       delChecked () {
-        getCartList({userId: getStore('userId')}).then(res => {
+        getCartList().then(res => {
           if (res.code === 200) {
-            res.result.forEach(item => {
+            this.cartList.forEach(item => {
               if (item.checked) {
                 let product_package_id = item.product_package_id
                 this.EDIT_CART({product_package_id})
