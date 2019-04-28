@@ -247,6 +247,7 @@
         }
       },
       EditNum (num, id, checked) { // 数量
+        console.log(checked)
         this._cartEdit(id, num, checked)
       },
       // 删除整条购物车
