@@ -61,9 +61,9 @@
                         <div class="subtotal"
                              style="font-size: 14px">¥ {{item.price * item.nums}}</div>
                         <!--数量-->
-                        <buy-num  :num="item.nums"     
-                                  :id="item.product_package_id"
-                                  :check="item.checked"
+                        <buy-num :num="item.nums"
+                                 :id="item.product_package_id"
+                                 :checked="item.checked"
                                  style="height: 140px;
                                    display: flex;
                                    align-items: center;

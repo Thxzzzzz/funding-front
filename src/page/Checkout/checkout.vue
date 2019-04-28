@@ -3,7 +3,8 @@
     <y-header>
       <div slot="nav"></div>
     </y-header>
-    <div class="w" style="padding-top: 40px;">
+    <div class="w"
+         style="padding-top: 40px;">
       <!-- 收货地址 -->
       <y-shelf title="收货信息">
         <div slot="content">
@@ -11,27 +12,37 @@
             <li v-for="(item,i) in addList"
                 :key="i"
                 class="address pr"
-                :class="{checked:addressId === item.addressId}"
-                @click="chooseAddress(item.addressId, item.userName, item.tel, item.streetName)">
-           <span v-if="addressId === item.addressId" class="pa">
-             <svg viewBox="0 0 1473 1024" width="17.34375" height="12">
-             <path
-               d="M1388.020 57.589c-15.543-15.787-37.146-25.569-61.033-25.569s-45.491 9.782-61.023 25.558l-716.054 723.618-370.578-374.571c-15.551-15.769-37.151-25.537-61.033-25.537s-45.482 9.768-61.024 25.527c-15.661 15.865-25.327 37.661-25.327 61.715 0 24.053 9.667 45.849 25.327 61.715l431.659 436.343c15.523 15.814 37.124 25.615 61.014 25.615s45.491-9.802 61.001-25.602l777.069-785.403c15.624-15.868 25.271-37.66 25.271-61.705s-9.647-45.837-25.282-61.717M1388.020 57.589z"
-               fill="#6A8FE5" p-id="1025">
-               </path>
-             </svg>
-             </span>
-              <p>收货人: {{item.userName}} {{item.isDefault ? '(默认地址)' : ''}}</p>
-              <p class="street-name ellipsis">收货地址: {{item.streetName}}</p>
-              <p>手机号码: {{item.tel}}</p>
+                :class="{checked:addressId === item.id}"
+                @click="chooseAddress(item.id, item.name, item.phone, item.name)">
+              <span v-if="addressId === item.id"
+                    class="pa">
+                <svg viewBox="0 0 1473 1024"
+                     width="17.34375"
+                     height="12">
+                  <path d="M1388.020 57.589c-15.543-15.787-37.146-25.569-61.033-25.569s-45.491 9.782-61.023 25.558l-716.054 723.618-370.578-374.571c-15.551-15.769-37.151-25.537-61.033-25.537s-45.482 9.768-61.024 25.527c-15.661 15.865-25.327 37.661-25.327 61.715 0 24.053 9.667 45.849 25.327 61.715l431.659 436.343c15.523 15.814 37.124 25.615 61.014 25.615s45.491-9.802 61.001-25.602l777.069-785.403c15.624-15.868 25.271-37.66 25.271-61.705s-9.647-45.837-25.282-61.717M1388.020 57.589z"
+                        fill="#6A8FE5"
+                        p-id="1025">
+                  </path>
+                </svg>
+              </span>
+              <p>收货人: {{item.name}} {{isDefaultAddress(item.id) ? '(默认地址)' : ''}}</p>
+              <p class="street-name">收货地址: {{item.address}}</p>
+              <p>手机号码: {{item.phone}}</p>
               <div class="operation-section">
-                <span class="update-btn" style="font-size:12px" @click="update(item)">修改</span>
-                <span class="delete-btn" style="font-size:12px" :data-id="item.addressId" @click="del(item.addressId)">删除</span>
+                <span class="update-btn"
+                      style="font-size:12px"
+                      @click="update(item)">修改</span>
+                <span class="delete-btn"
+                      style="font-size:12px"
+                      :data-id="item.id"
+                      @click="del(item.id)">删除</span>
               </div>
             </li>
 
-            <li class="add-address-item" @click="update()">
-              <img src="../../../static/svg/jia.svg" alt="">
+            <li class="add-address-item"
+                @click="update()">
+              <img src="../../../static/svg/jia.svg"
+                   alt="">
               <p>使用新地址</p>
             </li>
           </ul>
@@ -50,36 +61,45 @@
                 <span class="price">单价</span>
               </div>
               <!--列表-->
-              <div class="cart-table" v-for="(item,i) in cartList" :key="i" v-if="item.checked === '1'">
-                <div class="cart-group divide pr" :data-productid="item.productId">
+              <div class="cart-table"
+                   v-for="(item,i) in cartList"
+                   :key="i"
+                   v-if="item.checked">
+                <div class="cart-group divide pr"
+                     :data-productid="item.product_id">
                   <div class="cart-top-items">
                     <div class="cart-items clearfix">
                       <!--图片-->
                       <div class="items-thumb fl">
-                        <img :alt="item.productName"
-                             :src="item.productImg">
-                        <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"></a>
+                        <img :alt="item.product_name"
+                             :src="item.image_url">
+                        <a @click="goodsDetails(item.productId)"
+                           :title="item.product_name"
+                           target="_blank"></a>
                       </div>
                       <!--信息-->
                       <div class="name hide-row fl">
                         <div class="name-table">
-                          <a @click="goodsDetails(item.productId)" :title="item.productName" target="_blank"
-                             v-text="item.productName"></a>
-                          <!-- <ul class="attribute">
-                            <li>白色</li>
-                          </ul> -->
+                          <a @click="goodsDetails(item.productId)"
+                             :title="item.product_name"
+                             target="_blank"
+                             v-text="item.product_name"></a>
+                          <ul class="attribute">
+                            <li>{{item.description}}</li>
+                          </ul>
                         </div>
                       </div>
                       <!--商品数量-->
                       <div>
                         <!--总价格-->
-                        <div class="subtotal" style="font-size: 14px">¥ {{item.salePrice * item.productNum}}</div>
+                        <div class="subtotal"
+                             style="font-size: 14px">¥ {{item.price * item.nums}}</div>
                         <!--数量-->
                         <div class="item-cols-num">
-                          <span v-text="item.productNum"></span>
+                          <span v-text="item.nums"></span>
                         </div>
                         <!--价格-->
-                        <div class="price">¥ {{item.salePrice}}</div>
+                        <div class="price">¥ {{item.price}}</div>
                       </div>
                     </div>
                   </div>
@@ -90,10 +110,11 @@
             <div class="cart-bottom-bg fix-bottom">
               <div class="fix-bottom-inner">
                 <div class="shipping">
-                  <div class="shipping-box" style="padding: 0 40px;">
-                    <div class="shipping-total shipping-price"><h4
-                      class="highlight">应付总额：<em>￥{{checkPrice}}</em>
-                    </h4>
+                  <div class="shipping-box"
+                       style="padding: 0 40px;">
+                    <div class="shipping-total shipping-price">
+                      <h4 class="highlight">应付总额：<em>￥{{checkPrice}}</em>
+                      </h4>
                     </div>
                   </div>
                   <y-button class="big-main-btn"
@@ -109,24 +130,35 @@
         </div>
       </y-shelf>
 
-      <y-popup :open="popupOpen" @close='popupOpen=false' :title="popupTitle">
-        <div slot="content" class="md" :data-id="msg.addressId">
+      <y-popup :open="popupOpen"
+               @close='popupOpen=false'
+               :title="popupTitle">
+        <div slot="content"
+             class="md"
+             :data-id="msg.id">
           <div>
-            <input type="text" placeholder="收货人姓名" v-model="msg.userName">
+            <input type="text"
+                   placeholder="收货人姓名"
+                   v-model="msg.name">
           </div>
           <div>
-            <input type="number" placeholder="手机号码" v-model="msg.tel">
+            <input type="number"
+                   placeholder="手机号码"
+                   v-model="msg.phone">
           </div>
           <div>
-            <input type="text" placeholder="收货地址" v-model="msg.streetName">
+            <input type="text"
+                   placeholder="收货地址"
+                   v-model="msg.address">
           </div>
           <div>
-            <el-checkbox class="auto-login" v-model="msg.isDefault">设为默认</el-checkbox>
+            <el-checkbox class="auto-login"
+                         v-model="msg.default">设为默认</el-checkbox>
           </div>
           <y-button text='保存'
                     class="btn"
                     :classStyle="btnHighlight?'main-btn':'disabled-btn'"
-                    @btnClick="save({userId:userId,addressId:msg.addressId,userName:msg.userName,tel:msg.tel,streetName:msg.streetName,isDefault:msg.isDefault})">
+                    @btnClick="save({userId:userId,id:msg.id,name:msg.name,phone:msg.phone,address:msg.address,default:msg.default})">
           </y-button>
         </div>
       </y-popup>
@@ -142,26 +174,27 @@
   import YHeader from '/common/header'
   import YFooter from '/common/footer'
   import { getStore } from '/utils/storage'
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
         cartList: [],
         addList: [],
-        addressId: '0',
+        addressId: 0,
         popupOpen: false,
         popupTitle: '管理收货地址',
         num: '', // 立刻购买
         productId: '',
         msg: {
-          addressId: '',
-          userName: '',
-          tel: '',
-          streetName: '',
-          isDefault: false
+          id: '',
+          name: '',
+          phone: '',
+          address: '',
+          default: false
         },
-        userName: '',
-        tel: '',
-        streetName: '',
+        name: '',
+        phone: '',
+        address: '',
         userId: '',
         orderTotal: 0,
         submit: false,
@@ -169,16 +202,17 @@
       }
     },
     computed: {
+      ...mapState(['userInfo']),
       btnHighlight () {
         let msg = this.msg
-        return msg.userName && msg.tel && msg.streetName
+        return msg.name && msg.phone && msg.address
       },
       // 选中的总价格
       checkPrice () {
         let totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
-          if (item.checked === '1') {
-            totalPrice += (item.productNum * item.salePrice)
+          if (item.checked) {
+            totalPrice += (item.nums * item.price)
           }
         })
         this.orderTotal = totalPrice
@@ -186,6 +220,9 @@
       }
     },
     methods: {
+      isDefaultAddress: function (addressId) {
+        return this.userInfo.info.default_address_id === addressId
+      },
       message (m) {
         this.$message.error({
           message: m
@@ -195,19 +232,19 @@
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
       _getCartList () {
-        getCartList({userId: this.userId}).then(res => {
-          this.cartList = res.result
+        getCartList().then(res => {
+          this.cartList = res.data
         })
       },
       _addressList () {
-        addressList({userId: this.userId}).then(res => {
-          let data = res.result
+        addressList().then(res => {
+          let data = res.data
           if (data.length) {
             this.addList = data
-            this.addressId = data[0].addressId || '1'
-            this.userName = data[0].userName
-            this.tel = data[0].tel
-            this.streetName = data[0].streetName
+            this.addressId = data[0].id || 1
+            this.name = data[0].name
+            this.phone = data[0].phone
+            this.address = data[0].address
           } else {
             this.addList = []
           }
@@ -220,7 +257,7 @@
       },
       _addressAdd (params) {
         addressAdd(params).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             this._addressList()
           } else {
             this.message(res.message)
@@ -237,7 +274,7 @@
         this.submitOrder = '提交订单中...'
         this.submit = true
         var array = []
-        if (this.addressId === '0') {
+        if (this.id === 0) {
           this.message('请选择收货地址')
           this.submitOrder = '提交订单'
           this.submit = false
@@ -250,21 +287,20 @@
           return
         }
         for (var i = 0; i < this.cartList.length; i++) {
-          if (this.cartList[i].checked === '1') {
+          if (this.cartList[i].checked) {
             array.push(this.cartList[i])
           }
         }
         let params = {
-          userId: this.userId,
-          tel: this.tel,
-          userName: this.userName,
-          streetName: this.streetName,
+          phone: this.phone,
+          name: this.name,
+          address: this.address,
           goodsList: array,
           orderTotal: this.orderTotal
         }
         submitOrder(params).then(res => {
-          if (res.success === true) {
-            this.payment(res.result)
+          if (res.code === 200) {
+            this.payment(res.data)
           } else {
             this.message(res.message)
             this.submitOrder = '提交订单'
@@ -283,38 +319,38 @@
         })
       },
       // 选择地址
-      chooseAddress (addressId, userName, tel, streetName) {
-        this.addressId = addressId
-        this.userName = userName
-        this.tel = tel
-        this.streetName = streetName
+      chooseAddress (id, name, phone, address) {
+        this.addressId = id
+        this.userName = name
+        this.phone = phone
+        this.address = address
       },
       // 修改
       update (item) {
         this.popupOpen = true
         if (item) {
           this.popupTitle = '管理收货地址'
-          this.msg.userName = item.userName
-          this.msg.tel = item.tel
-          this.msg.streetName = item.streetName
-          this.msg.isDefault = item.isDefault
-          this.msg.addressId = item.addressId
+          this.msg.name = item.name
+          this.msg.phone = item.phone
+          this.msg.address = item.address
+          this.msg.default = item.default
+          this.msg.id = item.id
         } else {
           this.popupTitle = '新增收货地址'
-          this.msg.userName = ''
-          this.msg.tel = ''
-          this.msg.streetName = ''
-          this.msg.isDefault = false
-          this.msg.addressId = ''
+          this.msg.name = ''
+          this.msg.phone = ''
+          this.msg.address = ''
+          this.msg.default = false
+          this.msg.id = ''
         }
       },
       // 保存
       save (p) {
         this.popupOpen = false
-        if (p.addressId) {
+        if (p.id) {
           this._addressUpdate(p)
         } else {
-          delete p.addressId
+          delete p.id
           this._addressAdd(p)
         }
       },
@@ -324,11 +360,11 @@
       },
       _productDet (productId) {
         productDet({params: {productId}}).then(res => {
-          let item = res.result
-          item.checked = '1'
-          item.productImg = item.productImageBig
-          item.productNum = this.num
-          item.productPrice = item.salePrice
+          let item = res.data
+          item.checked = true
+          item.iamge_url = item.iamge_url
+          item.nums = this.nums
+          item.price = item.price
           this.cartList.push(item)
         })
       }
@@ -451,6 +487,7 @@
 
   .s-content {
     .md {
+      width: 400px;
       > div {
         text-align: left;
         margin-bottom: 15px;
