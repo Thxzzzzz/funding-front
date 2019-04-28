@@ -34,7 +34,7 @@
         type: [Number, String]
       },
       checked: {
-        type: [String, Boolean]
+        type: Boolean
       },
       limit: {
         type: Number,

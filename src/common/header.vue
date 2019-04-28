@@ -210,7 +210,7 @@
         this.cartList && this.cartList.forEach(item => {
           totalNum += (item.nums)
         })
-        return totalNum
+        return Number.isNaN(totalNum) ? 0 : totalNum
       }
     },
     methods: {
