@@ -266,7 +266,11 @@
       },
       _addressDel (params) {
         addressDel(params).then(res => {
-          this._addressList()
+          if (res.code === 200) {
+            this._addressList()
+          } else {
+            this.message(res.message)
+          }
         })
       },
       // 提交订单后跳转付款页面
@@ -356,7 +360,7 @@
       },
       // 删除
       del (addressId) {
-        this._addressDel({addressId})
+        this._addressDel({id: addressId})
       },
       _productDet (productId) {
         productDet({params: {productId}}).then(res => {
