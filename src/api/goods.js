@@ -4,7 +4,7 @@ import http from './public'
 
 // TODO 商品列表
 export const getAllGoods = (params) => {
-  return http.fetchGet('/goods/allGoods', params)
+  return http.fetchGet('/product/productList', params)
 }
 // 商品详情
 export const productDet = (params) => {

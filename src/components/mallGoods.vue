@@ -148,7 +148,7 @@ export default {
   computed: {
     ...mapState(['login', 'showMoveImg', 'showCart']),
     dayLeft: function () {
-      let date1 = new Date(this.msg.current_time)
+      let date1 = new Date()
       let date2 = new Date(this.msg.end_time)
       return calcDayBetween(date1, date2)
     },

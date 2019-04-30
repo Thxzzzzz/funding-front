@@ -16,22 +16,30 @@
       <div class="banner">
         <div class="card horizontal-left text-left"
              :style="{'height':'100%'}">
-          <div style="color:black;font-size:24px;margin:3px">{{product.name}}</div>
-          <div style="color:black;font-size:16px;text-align:left;left:0;;margin:3px 5px 5px 5px">已筹到</div>
-          <div>
+          <p style="color:black;font-size:24px;margin:3px">{{product.name}}</p>
+          <p style="color:black;font-size:16px;text-align:left;left:0;margin:15px 3px">已筹到</p>
+          <p style="color:black;">
             <span style="font-size:24px;">￥</span>
             <span style="font-size:48px;">{{product.current_price}}</span>
-          </div>
+          </p>
           <div>
             <el-progress :show-text="false"
                          :stroke-width="10"
                          :percentage="percentage"></el-progress>
           </div>
-          <div style="font-size:14px; font-weight:700;margin-top:5px">
+          <p style="font-size:14px; font-weight:700;margin-top:20px">
             <span style="float:left; color: rgb(161, 6, 224);">当前进度{{progressPercent}}%</span>
             <span style="float:right">{{product.backers}}名支持者</span>
-          </div>
-
+          </p>
+          <p style="margin-top:50px;">
+            <span>此项目必须在</span>
+            <span style="color:red">{{formatDate(product.end_time)}}</span>
+            <span>前得到</span>
+            <span>￥{{product.target_price}}</span>
+            <span> 的支持才可成功！ 剩余</span>
+            <span style="color:red"> {{dayLeft}} </span>
+            <span> 天!</span>
+          </p>
         </div>
       </div>
     </div>
@@ -160,6 +168,8 @@
   import BuyNum from '/components/buynum'
   import YButton from '/components/YButton'
   import { getStore } from '/utils/storage'
+  import { calcDayBetween } from '/utils/dateUtil'
+  import dayjs from 'dayjs'
 
   export default {
     data () {
@@ -186,10 +196,18 @@
         let percent = this.progressPercent
         if (percent > 100) percent = 100
         return Number(percent)
+      },
+      dayLeft: function () {
+        let date1 = new Date()
+        let date2 = new Date(this.product.end_time)
+        return calcDayBetween(date1, date2)
       }
     },
     methods: {
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
+      formatDate (date) {
+        return dayjs(date).format('YYYY年MM月DD日') // 展示
+      },
       buy (item) {
         this.popupOpen = true
         this.selectedItem = item

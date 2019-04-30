@@ -2,58 +2,84 @@
   <div class="goods">
     <div class="nav">
       <div class="w">
-        <a href="javascript:;" :class="{active:sortType===1}" @click="reset()">综合排序</a>
-        <a href="javascript:;" @click="sortByPrice(1)" :class="{active:sortType===2}">价格从低到高</a>
-        <a href="javascript:;" @click="sortByPrice(-1)" :class="{active:sortType===3}">价格从高到低</a>
+        <a href="javascript:;"
+           :class="{active:sortType===1}"
+           @click="reset()">综合排序</a>
+        <a href="javascript:;"
+           @click="sortByPrice(1)"
+           :class="{active:sortType===2}">价格从低到高</a>
+        <a href="javascript:;"
+           @click="sortByPrice(-1)"
+           :class="{active:sortType===3}">价格从高到低</a>
         <div class="price-interval">
-          <input type="number" class="input" placeholder="价格" v-model="min">
+          <input type="number"
+                 class="input"
+                 placeholder="价格"
+                 v-model="min">
           <span style="margin: 0 5px"> - </span>
-          <input type="number" placeholder="价格" v-model="max">
-          <y-button text="确定" classStyle="main-btn" @btnClick="reset" style="margin-left: 10px;"></y-button>
+          <input type="number"
+                 placeholder="价格"
+                 v-model="max">
+          <y-button text="确定"
+                    classStyle="main-btn"
+                    @btnClick="reset"
+                    style="margin-left: 10px;"></y-button>
         </div>
       </div>
     </div>
 
-    <div v-loading="loading" element-loading-text="加载中..." style="min-height: 35vw;">
-      <div class="img-item" v-if="!noResult">
+    <div v-loading="loading"
+         element-loading-text="加载中..."
+         style="min-height: 35vw;">
+      <div class="img-item"
+           v-if="!noResult">
         <!--商品-->
         <div class="goods-box w">
-          <mall-goods v-for="(item,i) in goods" :key="i" :msg="item"></mall-goods>
+          <mall-goods v-for="(item,i) in goods"
+                      :key="i"
+                      :msg="item"></mall-goods>
         </div>
 
-        <el-pagination
-          v-if="!noResult&&!error"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[8, 20, 40, 80]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
+        <el-pagination v-if="!noResult&&!error"
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="[8, 20, 40, 80]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
         </el-pagination>
       </div>
-      <div class="no-info" v-if="noResult">
+      <div class="no-info"
+           v-if="noResult">
         <div class="no-data">
           <img src="/static/images/no-search.png">
           <br> 抱歉！暂时还没有商品
         </div>
         <section class="section">
           <y-shelf :title="recommendPanel.name">
-            <div slot="content" class="recommend">
-              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
+            <div slot="content"
+                 class="recommend">
+              <mall-goods :msg="item"
+                          v-for="(item,i) in recommendPanel.panelContents"
+                          :key="i"></mall-goods>
             </div>
           </y-shelf>
         </section>
       </div>
-      <div class="no-info" v-if="error">
+      <div class="no-info"
+           v-if="error">
         <div class="no-data">
           <img src="/static/images/error.png">
           <br> 抱歉！出错了...
         </div>
         <section class="section">
           <y-shelf :title="recommendPanel.name">
-            <div slot="content" class="recommend">
-              <mall-goods :msg="item" v-for="(item,i) in recommendPanel.panelContents" :key="i"></mall-goods>
+            <div slot="content"
+                 class="recommend">
+              <mall-goods :msg="item"
+                          v-for="(item,i) in recommendPanel.panelContents"
+                          :key="i"></mall-goods>
             </div>
           </y-shelf>
         </section>
@@ -109,17 +135,18 @@
         let params = {
           params: {
             page: this.currentPage,
-            size: this.pageSize,
+            page_size: this.pageSize,
+            type: 0,
             sort: this.sort,
-            priceGt: this.min,
-            priceLte: this.max,
+            price_gt: this.min,
+            price_lt: this.max,
             cid: cid
           }
         }
         getAllGoods(params).then(res => {
-          if (res.success === true) {
-            this.total = res.result.total
-            this.goods = res.result.data
+          if (res.code === 200) {
+            this.total = res.data.total
+            this.goods = res.data.product_contents
             this.noResult = false
             if (this.total === 0) {
               this.noResult = true
@@ -163,8 +190,8 @@
       this.windowWidth = window.innerWidth
       this._getAllGoods()
       recommend().then(res => {
-        let data = res.result
-        this.recommendPanel = data[0]
+        let data = res.data
+        this.recommendPanel = data.product_contents[0]
       })
     },
     components: {
