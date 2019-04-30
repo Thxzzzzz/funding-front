@@ -36,9 +36,17 @@
             <span style="color:red">{{formatDate(product.end_time)}}</span>
             <span>前得到</span>
             <span>￥{{product.target_price}}</span>
-            <span> 的支持才可成功！ 剩余</span>
-            <span style="color:red"> {{dayLeft}} </span>
-            <span> 天!</span>
+            <span> 的支持才可成功！</span>
+            <span v-if="dayLeft > 0">
+              <span> 剩余</span>
+              <span style="color:red"> {{dayLeft}} </span>
+              <span> 天!</span>
+            </span>
+
+          </p>
+          <p v-if="dayLeft <= 0"
+             style="font-size:20px;margin-top:20px;">
+            已结束！
           </p>
         </div>
       </div>
