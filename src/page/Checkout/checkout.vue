@@ -290,17 +290,26 @@
           this.submit = false
           return
         }
+
         for (var i = 0; i < this.cartList.length; i++) {
           if (this.cartList[i].checked) {
-            array.push(this.cartList[i])
+            let OrderPkgItem = {
+              user_id: this.cartList[i].user_id,
+              seller_id: this.cartList[i].seller_id,
+              product_package_id: this.cartList[i].product_package_id,
+              price: this.cartList[i].price,
+              nums: this.cartList[i].nums,
+              product_id: this.cartList[i].product_id
+            }
+            array.push(OrderPkgItem)
           }
         }
         let params = {
-          phone: this.phone,
           name: this.name,
           address: this.address,
-          goodsList: array,
-          orderTotal: this.orderTotal
+          phone: this.phone,
+          order_pkg_list: array,
+          order_total: this.orderTotal
         }
         submitOrder(params).then(res => {
           if (res.code === 200) {

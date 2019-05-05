@@ -14,7 +14,6 @@
              @mouseout="bgOut($refs.bg)">
           <transition-group name="fade">
             <div v-for="(item, i) in banner"
-                 :key="i"
                  style="position:absolute"
                  @click="linkTo(item)"
                  @mouseover="stopTimer"

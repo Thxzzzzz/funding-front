@@ -161,7 +161,8 @@
                   text='加入购物车'>
         </y-button>
         <y-button v-if="selectedItem.stock !== 0"
-                  text='去结算'>
+                  @btnClick="checkout(selectedItem.product_package_id)"
+                  text='立即支持'>
         </y-button>
       </div>
     </y-popup>
@@ -272,8 +273,8 @@
           }
         }
       },
-      checkout (product_id) {
-        this.$router.push({path: '/checkout', query: {product_id, num: this.nums}})
+      checkout (product_package_id) {
+        this.$router.push({path: '/checkout', query: {product_package_id, num: this.nums}})
       },
       editNum (num) {
         this.nums = num
