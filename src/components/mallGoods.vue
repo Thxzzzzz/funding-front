@@ -1,3 +1,4 @@
+// TODO 众筹结束或过期提示等
 <template>
   <div class="good-item">
     <div style="">

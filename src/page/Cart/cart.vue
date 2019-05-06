@@ -53,7 +53,7 @@
                       <!--删除按钮-->
                       <div class="operation">
                         <a class="items-delete-btn"
-                           @click="cartdel(item.product_id)"></a>
+                           @click="cartdel(item.product_package_id)"></a>
                       </div>
                       <!--商品数量-->
                       <div>
@@ -203,7 +203,7 @@
         })
       },
       goodsDetails (id) {
-        window.open(window.location.origin + '#/goodsDetails?product_id=' + id)
+        window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
       // 全选
       editCheckAll () {

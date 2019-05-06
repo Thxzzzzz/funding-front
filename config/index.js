@@ -28,14 +28,6 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/member/*': {
-        target: 'https://easy-mock.com/mock/5cab39ebfd0ae959461376ba/v1', // 请求本地 需要后台项目 默认127.0.0.1:8080 
-        changeOrigin: true,
-      },
-      '/goods/*': {
-        target: 'https://easy-mock.com/mock/5cab39ebfd0ae959461376ba/v1', // 请求本地后台项目 默认127.0.0.1:8080
-        changeOrigin: true,
-      },
       '/product': {
         target: 'http://127.0.0.1:8080/v1', // 请求本地后台项目 默认127.0.0.1:8080
         changeOrigin: true,
@@ -50,10 +42,13 @@ module.exports = {
           '^/user': '/user'
         } //这里重写路径
       },
-      // '/user/address/*': {
-      //   target: 'http://127.0.0.1:8080/v1',  // 请求本地后台项目 默认127.0.0.1:8080
-      //   changeOrigin: true,
-      // }
+      '/order': {
+        target: 'http://127.0.0.1:8080/v1', // 请求本地后台项目 默认127.0.0.1:8080
+        changeOrigin: true,
+        pathRewrite: {
+          '^/order': '/order'
+        } //这里重写路径
+      }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

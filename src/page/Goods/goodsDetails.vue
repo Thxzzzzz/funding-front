@@ -1,4 +1,5 @@
 <!--商品详情-->
+//TODO 待完善，商家信息，众筹结束或过期提示等
 <template>
   <div class="w store-content">
     <div class="gray-box">

@@ -19,7 +19,7 @@ export const getQuickSearch = (params) => {
   return http.fetchGet('/goods/quickSearch', params)
 }
 
-//         TODO 购物车相关          //
+//           购物车相关          //
 
 // 获取购物车列表
 export const getCartList = (params) => {
@@ -56,7 +56,7 @@ export const cartDel = (params) => {
 export const addressList = (params) => {
   return http.fetchGet('/user/address/all', params)
 }
-// TODO 通过id获取地址
+// 通过id获取地址
 export const getAddress = (params) => {
   return http.fetchGet('/user/address', params)
 }
@@ -77,7 +77,7 @@ export const addressDel = (params) => {
 
 // 生成订单
 export const submitOrder = (params) => {
-  return http.fetchPost('/member/addOrder', params)
+  return http.fetchPost('/order/addOrder', params)
 }
 // 支付
 export const payMent = (params) => {
