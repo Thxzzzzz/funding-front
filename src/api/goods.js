@@ -73,7 +73,7 @@ export const addressDel = (params) => {
   return http.fetchPost('/user/address/delete', params)
 }
 
-//            订单相关            //
+//            TODO 订单相关            //
 
 // 生成订单
 export const submitOrder = (params) => {
@@ -85,7 +85,7 @@ export const payMent = (params) => {
 }
 // 获取用户订单
 export const orderList = (params) => {
-  return http.fetchGet('/member/orderList', params)
+  return http.fetchGet('/order/orderList', params)
 }
 // 获取单个订单详情
 export const getOrderDet = (params) => {

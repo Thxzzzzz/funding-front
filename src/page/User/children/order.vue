@@ -2,13 +2,18 @@
   <div>
     <y-shelf title="我的订单">
       <div slot="content">
-        <div v-loading="loading" element-loading-text="加载中..." v-if="orderList.length" style="min-height: 10vw;">
-          <div v-for="(item,i) in orderList" :key="i">
+        <div v-loading="loading"
+             element-loading-text="加载中..."
+             v-if="orderList.length"
+             style="min-height: 10vw;">
+          <div v-for="(item,i) in orderList"
+               :key="i">
             <div class="gray-sub-title cart-title">
               <div class="first">
                 <div>
-                  <span class="date" v-text="item.createDate"></span>
-                  <span class="order-id"> 订单号： <a @click="orderDetail(item.orderId)">{{item.orderId}}</a> </span>
+                  <span class="date"
+                        v-text="formatDate(item.created_at)"></span>
+                  <span class="order-id"> 订单号： <a @click="orderDetail(item.order_id)">{{item.order_id}}</a></span>
                 </div>
                 <div class="f-bc">
                   <span class="price">单价</span>
@@ -18,21 +23,34 @@
               </div>
               <div class="last">
                 <span class="sub-total">实付金额</span>
-                <span class="order-detail"> <a @click="orderDetail(item.orderId)">查看详情 ><em class="icon-font"></em></a> </span>
+                <span class="order-detail"> <a @click="orderDetail(item.order_id)">查看详情 ><em class="icon-font"></em></a> </span>
               </div>
             </div>
             <div class="pr">
-              <div class="cart" v-for="(good,j) in item.goodsList" :key="j">
-                <div class="cart-l" :class="{bt:j>0}">
+              <!-- v-for="(good,j) in item.goodsList" :key="j" -->
+              <div class="cart">
+                <div class="cart-l"
+                     :class="{bt:j>0}">
                   <div class="car-l-l">
-                    <div class="img-box"><a @click="goodsDetails(good.productId)"><img :src="good.productImg" alt=""></a></div>
-                    <div class="ellipsis"><a style="color: #626262;" @click="goodsDetails(good.productId)">{{good.productName}}</a></div>
+                    <div class="img-box"><a @click="goodsDetails(item.product_id)"><img :src="item.image_url"
+                             alt=""></a></div>
+                    <div class="info">
+                      <p> <a style="color: #626262;"
+                           @click="goodsDetails(item.product_id)">{{item.product_name}}</a> </p>
+                      <p class="attribute">{{item.description}}</p>
+                    </div>
+
                   </div>
                   <div class="cart-l-r">
-                    <div>¥ {{Number(good.salePrice).toFixed(2)}}</div>
-                    <div class="num">{{good.productNum}}</div>
+                    <div>¥ {{Number(item.unit_price).toFixed(2)}}</div>
+                    <div class="num">{{item.nums}}</div>
                     <div class="type">
-                      <el-button style="margin-left:20px" @click="_delOrder(item.orderId,i)" type="danger" size="small" v-if="j<1" class="del-order">删除此订单</el-button>
+                      <el-button style="margin-left:20px"
+                                 @click="_delOrder(item.order_id,i)"
+                                 type="danger"
+                                 size="small"
+                                 v-if="j<1"
+                                 class="del-order">删除此订单</el-button>
                       <!-- <a @click="_delOrder(item.orderId,i)" href="javascript:;" v-if="j<1" class="del-order">删除此订单</a> -->
                     </div>
                   </div>
@@ -42,17 +60,24 @@
                   <span></span>
                 </div>
               </div>
-              <div class="prod-operation pa" style="right: 0;top: 0;">
-                <div class="total">¥ {{item.orderTotal}}</div>
-                <div v-if="item.orderStatus === '0'">
-                  <el-button @click="orderPayment(item.orderId)" type="primary" size="small">现在付款</el-button>
+              <div class="prod-operation pa"
+                   style="right: 0;top: 0;">
+                <div class="total">¥ {{item.total_price}}</div>
+                <div v-if="item.order_status === 0">
+                  <el-button @click="orderPayment(item.order_id)"
+                             type="primary"
+                             size="small">现在付款</el-button>
                 </div>
-                <div class="status" v-if="item.orderStatus !== '0'"> {{getOrderStatus(item.orderStatus)}}  </div>
+                <div class="status"
+                     v-if="item.order_status !== 0"> {{getOrderStatus(item.order_status)}} </div>
               </div>
             </div>
           </div>
         </div>
-        <div v-loading="loading" element-loading-text="加载中..." class="no-info" v-else>
+        <div v-loading="loading"
+             element-loading-text="加载中..."
+             class="no-info"
+             v-else>
           <div style="padding: 100px 0;text-align: center">
             你还未创建过订单
           </div>
@@ -60,14 +85,13 @@
       </div>
     </y-shelf>
     <div style="float:right">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next"
-        :total="total">
+      <el-pagination @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="[5, 10, 20, 50]"
+                     :page-size="pageSize"
+                     layout="total, sizes, prev, pager, next"
+                     :total="total">
       </el-pagination>
     </div>
   </div>
@@ -76,6 +100,7 @@
   import { orderList, delOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
+  import dayjs from 'dayjs'
   export default {
     data () {
       return {
@@ -93,6 +118,9 @@
         this.$message.error({
           message: m
         })
+      },
+      formatDate (date) {
+        return dayjs(date).format('YYYY年MM月DD日 HH:mm:ss') // 展示
       },
       handleSizeChange (val) {
         this.pageSize = val
@@ -117,42 +145,43 @@
         })
       },
       getOrderStatus (status) {
-        if (status === '1') {
+        if (status === 1) {
           return '支付审核中'
-        } else if (status === '2') {
+        } else if (status === 2) {
           return '待发货'
-        } else if (status === '3') {
+        } else if (status === 3) {
           return '待收货'
-        } else if (status === '4') {
+        } else if (status === 4) {
           return '交易成功'
-        } else if (status === '5') {
+        } else if (status === 5) {
           return '交易关闭'
-        } else if (status === '6') {
+        } else if (status === 6) {
           return '支付失败'
         }
       },
       _orderList () {
         let params = {
           params: {
-            userId: this.userId,
-            size: this.pageSize,
+            page_size: this.pageSize,
             page: this.currentPage
           }
         }
         orderList(params).then(res => {
-          this.orderList = res.result.data
-          this.total = res.result.total
+          if (res.code === 200) {
+            this.orderList = res.data.order_list
+            this.total = res.data.total
+          }
           this.loading = false
         })
       },
       _delOrder (orderId, i) {
         let params = {
           params: {
-            orderId: orderId
+            id: orderId
           }
         }
         delOrder(params).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             this.orderList.splice(i, 1)
           } else {
             this.message('删除失败')
@@ -281,7 +310,19 @@
       }
     }
   }
-
+  .info{
+     height: 70px;
+     margin: 0 0 0 15px;
+     text-align: left;
+     width: 270px;
+     overflow: hidden;
+  }
+    .attribute, .name p {
+    color: #999;
+    font-size: 12px;
+    padding-top: 4px;
+    line-height: 17px;
+  }
   .prod-operation {
     height: 110px;
     display: flex;
