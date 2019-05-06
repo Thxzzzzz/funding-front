@@ -12,20 +12,20 @@
              @mouseover="bgOver($refs.bg)"
              @mousemove="bgMove($refs.bg,$event)"
              @mouseout="bgOut($refs.bg)">
-          <transition-group name="fade">
+          <transition name="fade">
             <div v-for="(item, i) in banner"
+                 v-if="i === mark"
                  :key="item.product_id"
                  style="position:absolute"
                  @click="linkTo(item)"
                  @mouseover="stopTimer"
                  @mouseout="startTimer">
-              <img v-if="item.big_img"
-                   class="img1"
+              <img class="img1"
                    :src="item.big_img" />
               <!-- <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
             <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/> -->
             </div>
-          </transition-group>
+          </transition>
         </div>
         <div class="page">
           <ul class="dots">
