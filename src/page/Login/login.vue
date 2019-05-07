@@ -157,9 +157,9 @@ export default {
       if (locaCart && locaCart.length) {
         locaCart.forEach(item => {
           cartArr.push({
-            userId: getStore('userId'),
-            productId: item.productId,
-            productNum: item.productNum
+            product_package_id: item.product_package_id,
+            nums: item.nums,
+            checked: item.checked
           })
         })
       }

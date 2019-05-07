@@ -8,7 +8,10 @@ import {
   REDUCE_CART,
   EDIT_CART
 } from './mutation-types'
-import { setStore, getStore } from '../utils/storage'
+import {
+  setStore,
+  getStore
+} from '../utils/storage'
 export default {
   // 网页初始化时从本地缓存获取购物车数据
   [INIT_BUYCART] (state) {
@@ -18,7 +21,15 @@ export default {
     }
   },
   // 加入购物车
-  [ADD_CART] (state, {product_package_id, product_id, price, product_name, description, image_url, nums = 1}) {
+  [ADD_CART] (state, {
+    product_package_id,
+    product_id,
+    price,
+    product_name,
+    description,
+    image_url,
+    nums = 1
+  }) {
     let cart = state.cartList // 购物车
     let falg = true
     // 购物车定义
@@ -31,7 +42,7 @@ export default {
       image_url
     }
 
-    if (cart.length) {        // 有内容
+    if (cart.length) { // 有内容
       cart.forEach(item => {
         if (item.product_package_id === product_package_id) {
           if (item.nums >= 0) {
@@ -43,7 +54,7 @@ export default {
     }
     if (!cart.length || falg) {
       goods.nums = nums
-      goods.checked = '1'
+      goods.checked = true
       cart.push(goods)
     }
     state.cartList = cart
@@ -51,7 +62,15 @@ export default {
     setStore('buyCart', cart)
   },
   // 加入购物车动画
-  [ADD_ANIMATION] (state, {moveShow, elLeft, elTop, img, cartPositionT, cartPositionL, receiveInCart}) {
+  [ADD_ANIMATION] (state, {
+    moveShow,
+    elLeft,
+    elTop,
+    img,
+    cartPositionT,
+    cartPositionL,
+    receiveInCart
+  }) {
     state.showMoveImg = moveShow
     if (elLeft) {
       state.elLeft = elLeft
@@ -65,7 +84,9 @@ export default {
     }
   },
   // 是否显示购物车
-  [SHOW_CART] (state, {showCart}) {
+  [SHOW_CART] (state, {
+    showCart
+  }) {
     // let timer = null
     state.showCart = showCart
     // clearTimeout(timer)
@@ -76,7 +97,9 @@ export default {
     // }
   },
   // 移除商品
-  [REDUCE_CART] (state, {product_package_id}) {
+  [REDUCE_CART] (state, {
+    product_package_id
+  }) {
     let cart = state.cartList
     cart.forEach((item, i) => {
       if (item.product_package_id === product_package_id) {
@@ -92,7 +115,11 @@ export default {
     setStore('buyCart', state.cartList)
   },
   // 修改购物车
-  [EDIT_CART] (state, {product_package_id, nums, checked}) {
+  [EDIT_CART] (state, {
+    product_package_id,
+    nums,
+    checked
+  }) {
     let cart = state.cartList
     if (nums) {
       cart.forEach((item, i) => {
@@ -131,7 +158,9 @@ export default {
       return
     }
     if (!info.message) {
-      state.userInfo = {...info}
+      state.userInfo = {
+        ...info
+      }
     } else {
       state.userInfo = null
     }
