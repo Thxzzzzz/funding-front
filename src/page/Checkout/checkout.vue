@@ -323,11 +323,12 @@
       },
       // 付款
       payment (orderId) {
+        let olJson = JSON.stringify(orderId)
         // 需要拿到地址id
         this.$router.push({
           path: '/order/payment',
           query: {
-            'orderId': orderId
+            'orderId': olJson
           }
         })
       },

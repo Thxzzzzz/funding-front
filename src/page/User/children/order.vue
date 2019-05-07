@@ -131,7 +131,10 @@
         this._orderList()
       },
       orderPayment (orderId) {
-        window.open(window.location.origin + '#/order/payment?orderId=' + orderId)
+        let orderIdList = []
+        orderIdList.push(orderId)
+        let olJson = JSON.stringify(orderIdList)
+        window.open(window.location.origin + '#/order/payment?orderId=' + olJson)
       },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
@@ -145,7 +148,9 @@
         })
       },
       getOrderStatus (status) {
-        if (status === 1) {
+        if (status === 0) {
+          return '待支付'
+        } else if (status === 1) {
           return '支付审核中'
         } else if (status === 2) {
           return '待发货'

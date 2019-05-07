@@ -1,33 +1,29 @@
 <template>
-  <div class="w" style="padding-bottom: 100px;">
+  <div class="w"
+       style="padding-bottom: 100px;">
     <y-shelf title="支付订单">
       <div slot="content">
         <div class="box-inner order-info">
-          <h3>提交订单成功，请填写捐赠信息</h3>
+          <h3>请您完成支付</h3>
           <p class="payment-detail">请在 <span>24 小时内</span>完成支付，超时订单将自动取消。</p>
-          <p class="payment-detail">我们不会在您完成支付后的 72 小时内发货，您的支付将用作捐赠</p>
-          <p class="payment-detail" style="color:red">请仔细填写捐赠信息，避免系统审核失败无法在捐赠名单中显示您的数据</p>
+          <p class="payment-detail">商品将在众筹成功后一定时间内发出，详情可查看商品介绍页</p>
         </div>
         <div class="pay-info">
-          <span style="color:red">*</span> 昵称：<el-input v-model="nickName" placeholder="请输入您的昵称" @change="checkValid" :maxlength="maxLength" class="input"></el-input><br>
-          <span style="color:red">*</span> 捐赠金额：<el-select class="money-select" v-model="moneySelect" placeholder="请选择支付金额" @change="changeSelect">
-            <el-option label="￥0.10 我是穷逼" value="0.10"></el-option>
-            <el-option label="￥1.00 支付测试" value="1.00"></el-option>
-            <el-option label="￥5.00 感谢捐赠" value="5.00"></el-option>
-            <el-option label="￥10.00 感谢大佬" value="10.00"></el-option>
-            <el-option label="自定义 随意撒币" value="custom"></el-option>
-          </el-select><br>
-          <div v-if="moneySelect === 'custom'"><span style="color:red">*</span> 输入金额：<el-input v-model="money" placeholder="请输入捐赠金额(最多2位小数，不得低于0.1元)" @change="checkValid" :maxlength="maxLength" class="input" style="margin-left:10px"></el-input><br></div>
-          <span style="color:red">*</span> 通知邮箱：<el-input v-model="email" placeholder="支付审核结果将以邮件方式发送至您的邮箱" @change="checkValid" :maxlength="maxLength" class="input" style="margin-left:10px"></el-input><br>
-          &nbsp;&nbsp; 留言：<el-input v-model="info" placeholder="请输入您的留言内容" :maxlength="maxLength" class="input"></el-input>
+
         </div>
         <!--支付方式-->
         <div class="pay-type">
           <div class="p-title">支付方式</div>
           <div class="pay-item">
-            <div :class="{active:payType==1}" @click="payType=1"><img src="/static/images/alipay@2x.png" alt=""></div>
-            <div :class="{active:payType==2}" @click="payType=2"><img src="/static/images/weixinpay@2x.png" alt=""></div>
-            <div :class="{active:payType==3}" @click="payType=3"><img src="/static/images/qqpay.png" alt=""></div>
+            <div :class="{active:payType==1}"
+                 @click="payType=1"><img src="/static/images/alipay@2x.png"
+                   alt=""></div>
+            <div :class="{active:payType==2}"
+                 @click="payType=2"><img src="/static/images/weixinpay@2x.png"
+                   alt=""></div>
+            <div :class="{active:payType==3}"
+                 @click="payType=3"><img src="/static/images/qqpay.png"
+                   alt=""></div>
           </div>
         </div>
 
@@ -45,8 +41,7 @@
               <y-button :text="payNow"
                         :classStyle="submit?'main-btn':'disabled-btn'"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
-                        @btnClick="paySuc()"
-              ></y-button>
+                        @btnClick="paySuc()"></y-button>
             </div>
           </div>
         </div>
@@ -59,7 +54,8 @@
         <div class="info-title">收货信息</div>
         <p class="info-detail">姓名：{{userName}}</p>
         <p class="info-detail">联系电话：{{tel}}</p>
-        <p class="info-detail">详细地址：{{streetName}}</p></div>
+        <p class="info-detail">详细地址：{{streetName}}</p>
+      </div>
     </div>
     <div class="confirm-table-title">
       <span class="name">商品信息</span>
@@ -71,10 +67,14 @@
     </div>
     <!--商品-->
     <div class="confirm-goods-table">
-      <div class="cart-items" v-for="(item,i) in cartList" :key="i">
+      <div class="cart-items"
+           v-for="(item,i) in cartList"
+           :key="i">
         <div class="name">
           <div class="name-cell ellipsis">
-            <a @click="goodsDetails(item.productId)" title="" target="_blank">{{item.productName}}</a>
+            <a @click="goodsDetails(item.productId)"
+               title=""
+               target="_blank">{{item.productName}}</a>
           </div>
         </div>
         <div class="n-b">
@@ -99,7 +99,8 @@
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
   import { getOrderDet, payMent } from '/api/goods'
-  import { getStore, setStore } from '/utils/storage'
+  import { getStore } from '/utils/storage'
+  // , setStore
   export default {
     data () {
       return {
@@ -120,7 +121,7 @@
         money: '1.00',
         info: '',
         email: '',
-        orderId: '',
+        orderId: [],
         type: '',
         moneySelect: '1.00',
         isCustom: false,
@@ -132,8 +133,8 @@
       checkPrice () {
         let totalPrice = 0
         this.cartList && this.cartList.forEach(item => {
-          if (item.checked === '1') {
-            totalPrice += (item.productNum * item.salePrice)
+          if (item.checked === true) {
+            totalPrice += (item.nums * item.unit_price)
           }
         })
         return totalPrice
@@ -170,6 +171,7 @@
             orderId: this.orderId
           }
         }
+        console.log(this.orderId)
         getOrderDet(params).then(res => {
           this.cartList = res.result.goodsList
           this.userName = res.result.addressInfo.userName
@@ -199,19 +201,8 @@
           userId: this.userId,
           payType: this.type
         }).then(res => {
-          if (res.success === true) {
-            setStore('setTime', 90)
-            setStore('price', this.money)
-            setStore('isCustom', this.isCustom)
-            if (this.payType === 1) {
-              this.$router.push({path: '/order/alipay'})
-            } else if (this.payType === 2) {
-              this.$router.push({path: '/order/wechat'})
-            } else if (this.payType === 3) {
-              this.$router.push({path: '/order/qqpay'})
-            } else {
-              this.$router.push({path: '/order/alipay'})
-            }
+          if (res.code === 200) {
+
           } else {
             this.payNow = '立刻支付'
             this.submit = true
@@ -243,7 +234,8 @@
     },
     created () {
       this.userId = getStore('userId')
-      this.orderId = this.$route.query.orderId
+      let olJson = JSON.parse(this.$route.query.orderId)
+      this.orderId = olJson
       if (this.orderId) {
         this._getOrderDet(this.orderId)
       } else {
