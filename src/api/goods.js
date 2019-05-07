@@ -89,7 +89,7 @@ export const orderList = (params) => {
 }
 // 获取单个订单详情
 export const getOrderDet = (params) => {
-  return http.fetchGet('/member/orderDetail', params)
+  return http.fetchGet('/order/orderInIds', params)
 }
 // 取消订单
 export const cancelOrder = (params) => {

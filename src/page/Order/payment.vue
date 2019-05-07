@@ -37,9 +37,10 @@
               <span>
                 实际应付金额：
               </span>
-              <em><span>¥</span>{{money}}</em>
+              <em><span>¥</span>{{Number(totalPay).toFixed(2)}}</em>
+              <!-- :classStyle="submit?'main-btn':'disabled-btn'" -->
               <y-button :text="payNow"
-                        :classStyle="submit?'main-btn':'disabled-btn'"
+                        :classStyle="'main-btn'"
                         style="width: 120px;height: 40px;font-size: 16px;line-height: 38px"
                         @btnClick="paySuc()"></y-button>
             </div>
@@ -52,9 +53,9 @@
     <div class="p-msg w">
       <div class="confirm-detail">
         <div class="info-title">收货信息</div>
-        <p class="info-detail">姓名：{{userName}}</p>
-        <p class="info-detail">联系电话：{{tel}}</p>
-        <p class="info-detail">详细地址：{{streetName}}</p>
+        <p class="info-detail">姓名：{{name}}</p>
+        <p class="info-detail">联系电话：{{phone}}</p>
+        <p class="info-detail">详细地址：{{address}}</p>
       </div>
     </div>
     <div class="confirm-table-title">
@@ -72,16 +73,16 @@
            :key="i">
         <div class="name">
           <div class="name-cell ellipsis">
-            <a @click="goodsDetails(item.productId)"
+            <a @click="goodsDetails(item.product_id)"
                title=""
-               target="_blank">{{item.productName}}</a>
+               target="_blank">{{item.product_name}}</a>
           </div>
         </div>
         <div class="n-b">
-          <div class="price">¥ {{item.salePrice}}</div>
-          <div class="goods-num">{{item.productNum}}</div>
+          <div class="price">¥ {{item.unit_price}}</div>
+          <div class="goods-num">{{item.nums}}</div>
           <div class="subtotal">
-            <div class="subtotal-cell"> ¥ {{item.salePrice * item.productNum}}<br></div>
+            <div class="subtotal-cell"> ¥ {{item.unit_price * item.nums}}<br></div>
           </div>
         </div>
       </div>
@@ -91,7 +92,7 @@
       <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
         <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal}}</span>
       </p>
-      <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥ 0.00</span></p>
+      <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥{{freight}} </span></p>
     </div>
   </div>
 </template>
@@ -118,12 +119,13 @@
         payNow: '立刻支付',
         submit: false,
         nickName: '',
-        money: '1.00',
+        money: 0.00,
+
         info: '',
         email: '',
         orderId: [],
+        freight: 0,
         type: '',
-        moneySelect: '1.00',
         isCustom: false,
         maxLength: 30
       }
@@ -138,29 +140,16 @@
           }
         })
         return totalPrice
+      },
+      totalPay () {
+        return this.orderTotal + this.freight
       }
     },
     methods: {
-      checkValid () {
-        if (this.nickName !== '' && this.money !== '' && this.isMoney(this.money) && this.email !== '' && this.isEmail(this.email)) {
-          this.submit = true
-        } else {
-          this.submit = false
-        }
-      },
       messageFail (m) {
         this.$message.error({
           message: m
         })
-      },
-      changeSelect (v) {
-        if (v !== 'custom') {
-          this.money = v
-        } else {
-          this.isCustom = true
-          this.money = ''
-        }
-        this.checkValid()
       },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
@@ -168,16 +157,22 @@
       _getOrderDet (orderId) {
         let params = {
           params: {
-            orderId: this.orderId
+            // 转成 JSON 字符串再传
+            orderId: JSON.stringify(this.orderId)
           }
         }
-        console.log(this.orderId)
         getOrderDet(params).then(res => {
-          this.cartList = res.result.goodsList
-          this.userName = res.result.addressInfo.userName
-          this.tel = res.result.addressInfo.tel
-          this.streetName = res.result.addressInfo.streetName
-          this.orderTotal = res.result.orderTotal
+          if (res.code === 200) {
+            this.cartList = res.data
+            this.name = res.data[0].name
+            this.phone = res.data[0].phone
+            this.address = res.data[0].address
+
+            for (let item of res.data) {
+              this.orderTotal += item.total_price
+              this.freight += item.freight
+            }
+          }
         })
       },
       paySuc () {
