@@ -6,11 +6,12 @@
           <h3 class="c1">订单服务</h3>
           <ul>
             <li class="c2"><a class="c3">购买指南</a></li>
-            <li class="c2"><a class="c3" @click="open4">支付方式</a></li>
-            <li class="c2"><a class="c3" @click="open5">送货政策</a></li>
+            <li class="c2"><a class="c3"
+                 @click="open4">支付方式</a></li>
+            <li class="c2"><a class="c3"
+                 @click="open5">送货政策</a></li>
           </ul>
         </ul>
-
 
         <!-- <ul class="c0">
           <h3 class="c1">服务支持</h3>
@@ -57,20 +58,24 @@
           <!-- <li class="tel"><a class="c5" href="http://wpa.qq.com/msgrd?v=3&uin=1012139570&site=qq&menu=yes" target="_blank">1012139570</a></li> -->
           <li class="time">周一至周日 10:00-23:00</li>
           <li class="online">
-            <y-button text="在线帮助" class="button" @btnClick="open3"></y-button>
+            <y-button text="在线帮助"
+                      class="button"
+                      @btnClick="open3"></y-button>
           </li>
         </ul>
 
       </div>
 
       <div class="copyright">
-        <h4 class="content-c2">Copyright ©2019, Funding Co., Ltd. All Rights Reserved.</h4>
+        <h4 class="content-c2">Copyright ©2019 1500310307 韦谷叶, Funding Co., Ltd. All Rights Reserved.</h4>
         <ul class="privacy">
-          <li class="content-c1"><a class="content-c0" @click="open1">法律声明</a></li>
-          <li class="content-c1"><a class="content-c0" @click="open2">隐私条款</a></li>
+          <li class="content-c1"><a class="content-c0"
+               @click="open1">法律声明</a></li>
+          <li class="content-c1"><a class="content-c0"
+               @click="open2">隐私条款</a></li>
         </ul>
       </div>
-  
+
     </div>
   </div>
 </template>
@@ -85,7 +90,7 @@
       open1 () {
         this.$notify.info({
           title: '法律声明',
-          message: '此仅为个人项目，仅供学习，承担不起任何法律问题'
+          message: '此仅为个人项目，仅供学习'
         })
       },
       open2 () {
@@ -97,20 +102,20 @@
       open3 () {
         this.$notify({
           title: '离线帮助',
-          message: '没人会帮助你，请自己靠自己',
+          message: '暂不支持在线客服,请将您的困惑发送至852004392@qq.com',
           type: 'warning'
         })
       },
       open4 () {
         this.$notify.info({
           title: '支付方式',
-          message: '意念支付'
+          message: '点击支付就知道啦'
         })
       },
       open5 () {
         this.$notify({
           title: '送货政策',
-          message: '意念发货',
+          message: '支付之后将在众筹完成后指定时间内通过各大物流平台发货',
           type: 'warning'
         })
       }

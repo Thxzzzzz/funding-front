@@ -93,7 +93,7 @@
                       <div>
                         <!--总价格-->
                         <div class="subtotal"
-                             style="font-size: 14px">¥ {{item.price * item.nums}}</div>
+                             style="font-size: 14px">¥ {{Number(item.price * item.nums).toFixed(2)}}</div>
                         <!--数量-->
                         <div class="item-cols-num">
                           <span v-text="item.nums"></span>
@@ -167,7 +167,7 @@
   </div>
 </template>
 <script>
-  import { getCartList, addressList, addressUpdate, addressAdd, addressDel, productDet, submitOrder } from '/api/goods'
+  import { getCartList, addressList, addressUpdate, addressAdd, addressDel, checkoutPkgInfo, submitOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
   import YPopup from '/components/popup'
@@ -183,7 +183,7 @@
         addressId: 0,
         popupOpen: false,
         popupTitle: '管理收货地址',
-        num: '', // 立刻购买
+        nums: 0, // 立刻购买
         productId: '',
         msg: {
           id: '',
@@ -373,12 +373,13 @@
         this._addressDel({id: addressId})
       },
       _productDet (product_package_id) {
-        productDet({params: {product_package_id}}).then(res => {
+        checkoutPkgInfo({params: {product_package_id: product_package_id}}).then(res => {
           let item = res.data
           item.checked = true
-          item.iamge_url = item.iamge_url
           item.nums = this.nums
-          item.price = item.price
+          // item.image_url = item.image_url
+          // item.nums = this.nums
+          // item.price = item.price
           this.cartList.push(item)
         })
       }
@@ -386,11 +387,11 @@
     created () {
       this.userId = getStore('userId')
       let query = this.$route.query
-      if (query.product_package_id && query.num) {
-        this.product_id = query.product_id
-        this.product_package_id = query.product_package_id
-        this.nums = query.nums
-        this._productDet(this.product_id)
+      if (query.product_package_id && query.nums) {
+        // this.product_id = query.product_id
+        this.product_package_id = Number(query.product_package_id)
+        this.nums = Number(query.nums)
+        this._productDet(this.product_package_id)
       } else {
         this._getCartList()
       }

@@ -162,7 +162,7 @@
                   text='加入购物车'>
         </y-button>
         <y-button v-if="selectedItem.stock !== 0"
-                  @btnClick="checkout(selectedItem.product_package_id)"
+                  @btnClick="checkout(selectedItem.product_id,selectedItem.id)"
                   text='立即支持'>
         </y-button>
       </div>
@@ -275,7 +275,7 @@
         }
       },
       checkout (product_id, product_package_id) {
-        // TODO 这里没有做好，购物车没有勾选的时候订单没能正确导入
+        console.log(product_id + ' ' + product_package_id)
         let nums = this.nums
         this.$router.push(
           {

@@ -2,9 +2,13 @@ import http from './public'
 
 //          商品信息相关        //
 
-// TODO 商品列表
+// 商品列表
 export const getAllGoods = (params) => {
   return http.fetchGet('/product/productList', params)
+}
+// 获取用户订单
+export const checkoutPkgInfo = (params) => {
+  return http.fetchGet('/product/checkoutPkgInfo', params)
 }
 // 商品详情
 export const productDet = (params) => {
@@ -12,11 +16,11 @@ export const productDet = (params) => {
 }
 // TODO 商品列表
 export const getSearch = (params) => {
-  return http.fetchGet('/goods/search', params)
+  return http.fetchGet('/product/search', params)
 }
 // TODO 快速搜索
 export const getQuickSearch = (params) => {
-  return http.fetchGet('/goods/quickSearch', params)
+  return http.fetchGet('/product/quickSearch', params)
 }
 
 //           购物车相关          //
@@ -81,7 +85,7 @@ export const submitOrder = (params) => {
 }
 // 支付
 export const payMent = (params) => {
-  return http.fetchPost('/member/payOrder', params)
+  return http.fetchPost('/order/payOrder', params)
 }
 // 获取用户订单
 export const orderList = (params) => {
