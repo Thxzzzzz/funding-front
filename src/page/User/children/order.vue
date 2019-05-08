@@ -30,7 +30,7 @@
               <!-- v-for="(good,j) in item.goodsList" :key="j" -->
               <div class="cart">
                 <div class="cart-l"
-                     :class="{bt:j>0}">
+                     :class="{bt:true}">
                   <div class="car-l-l">
                     <div class="img-box"><a @click="goodsDetails(item.product_id)"><img :src="item.image_url"
                              alt=""></a></div>
@@ -49,9 +49,10 @@
                                  @click="_delOrder(item.order_id,i)"
                                  type="danger"
                                  size="small"
-                                 v-if="j<1"
                                  class="del-order">删除此订单</el-button>
-                      <!-- <a @click="_delOrder(item.orderId,i)" href="javascript:;" v-if="j<1" class="del-order">删除此订单</a> -->
+                      <!-- <a @click="_delOrder(item.orderId,i)"
+                         href="javascript:;"
+                         class="del-order">删除此订单</a> -->
                     </div>
                   </div>
                 </div>
@@ -140,10 +141,13 @@
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
       orderDetail (orderId) {
+        let orderIdList = []
+        orderIdList.push(orderId)
+        let olJson = JSON.stringify(orderIdList)
         this.$router.push({
           path: 'orderDetail',
           query: {
-            orderId: orderId
+            orderId: olJson
           }
         })
       },
@@ -151,17 +155,17 @@
         if (status === 0) {
           return '待支付'
         } else if (status === 1) {
-          return '支付审核中'
+          return '已支付'
         } else if (status === 2) {
-          return '待发货'
+          return '正在配货'
         } else if (status === 3) {
-          return '待收货'
+          return '已发出'
         } else if (status === 4) {
           return '交易成功'
         } else if (status === 5) {
-          return '交易关闭'
+          return '正在退款'
         } else if (status === 6) {
-          return '支付失败'
+          return '交易关闭'
         }
       },
       _orderList () {

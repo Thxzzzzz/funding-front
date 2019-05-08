@@ -5,7 +5,8 @@
         <ul class="c0">
           <h3 class="c1">订单服务</h3>
           <ul>
-            <li class="c2"><a class="c3">购买指南</a></li>
+            <li class="c2"><a class="c3"
+                 @click="open6">购买指南</a></li>
             <li class="c2"><a class="c3"
                  @click="open4">支付方式</a></li>
             <li class="c2"><a class="c3"
@@ -117,6 +118,12 @@
           title: '送货政策',
           message: '支付之后将在众筹完成后指定时间内通过各大物流平台发货',
           type: 'warning'
+        })
+      },
+      open6 () {
+        this.$notify.info({
+          title: '购买指南',
+          message: '选择你喜欢的项目支持吧！'
         })
       }
     },

@@ -377,9 +377,6 @@
           let item = res.data
           item.checked = true
           item.nums = this.nums
-          // item.image_url = item.image_url
-          // item.nums = this.nums
-          // item.price = item.price
           this.cartList.push(item)
         })
       }

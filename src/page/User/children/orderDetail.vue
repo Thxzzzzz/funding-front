@@ -1,65 +1,103 @@
+// TODO 取消订单还没做，打开后没有检测订单是否还有效
 <template>
   <div>
     <y-shelf v-bind:title="orderTitle">
       <div slot="content">
-        <div v-loading="loading" element-loading-text="加载中..." style="min-height: 10vw;" v-if="orderList.length">
-          <div class="orderStatus" v-if="orderStatus !== -1 && orderStatus !== 6">
-            <el-steps :space="200" :active="orderStatus">
-              <el-step title="下单" v-bind:description="createTime"></el-step>
-              <el-step title="付款" v-bind:description="payTime"></el-step>
-              <el-step title="配货" description=""></el-step>
-              <el-step title="出库" description=""></el-step>
-              <el-step title="交易成功" v-bind:description="finishTime"></el-step>
+        <div v-loading="loading"
+             element-loading-text="加载中..."
+             style="min-height: 10vw;"
+             v-if="orderItem">
+          <div class="orderStatus"
+               v-if="orderItem.order_status !== -1 && orderItem.order_status !== 6">
+            <el-steps :space="200"
+                      :active="order_status">
+              <el-step title="下单"
+                       v-bind:description="created_at"></el-step>
+              <el-step title="付款"
+                       v-bind:description="paid_at"></el-step>
+              <el-step title="配货"
+                       description=""></el-step>
+              <el-step title="出库"
+                       description=""></el-step>
+              <el-step title="交易成功"
+                       v-bind:description="finished_at"></el-step>
             </el-steps>
           </div>
-          <div class="orderStatus-close" v-if="orderStatus === -1">
-            <el-steps :space="780" :active="2">
-              <el-step title="下单" v-bind:description="createTime"></el-step>
-              <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
+          <div class="orderStatus-close"
+               v-if="order_status === -1">
+            <el-steps :space="780"
+                      :active="2">
+              <el-step title="下单"
+                       v-bind:description="created_at"></el-step>
+              <el-step title="交易关闭"
+                       v-bind:description="close_at"></el-step>
             </el-steps>
           </div>
-          <div class="orderStatus-close" v-if="orderStatus === 6">
-            <el-steps :space="780" :active="2">
-              <el-step title="下单" v-bind:description="createTime"></el-step>
-              <el-step title="交易关闭" v-bind:description="closeTime"></el-step>
+          <div class="orderStatus-close"
+               v-if="order_status === 6">
+            <el-steps :space="780"
+                      :active="2">
+              <el-step title="下单"
+                       v-bind:description="created_at"></el-step>
+              <el-step title="交易关闭"
+                       v-bind:description="close_at"></el-step>
             </el-steps>
           </div>
-          <div class="status-now" v-if="orderStatus === 1">
+          <div class="status-now"
+               v-if="order_status === 1">
             <ul>
-              <li class="status-title"><h3>订单状态：待付款</h3></li>
+              <li class="status-title">
+                <h3>订单状态：待付款</h3>
+              </li>
               <li class="button">
-                <el-button @click="orderPayment(orderId)" type="primary" size="small">现在付款</el-button>
-                <el-button @click="_cancelOrder()" size="small">取消订单</el-button>
+                <el-button @click="orderPayment(orderId)"
+                           type="primary"
+                           size="small">现在付款</el-button>
+                <el-button @click="_cancelOrder()"
+                           size="small">取消订单</el-button>
               </li>
             </ul>
             <p class="realtime">
-              <span>您的付款时间还有 </span>
-              <span class="red"><countDown v-bind:endTime="countTime" endText="已结束"></countDown></span>
-              <span>，超时后订单将自动取消。</span>
+              <span>在众筹结束前您都可以付款 还有:</span>
+              <span class="red">
+                <countDown v-bind:endTime="getTimestamp(orderItem.end_time)"
+                           endText="已结束"></countDown>
+              </span>
+              <span> 该订单对应产品库存还有：</span> <span class="red">{{orderItem.stock}}</span> <span> 件</span>
+
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === 2">
+          <div class="status-now"
+               v-if="order_status === 2">
             <ul>
-              <li class="status-title"><h3>订单状态：已支付，待系统审核确认</h3></li>
+              <li class="status-title">
+                <h3>订单状态：已支付</h3>
+              </li>
             </ul>
             <p class="realtime">
-              <span>请耐心等待审核，审核结果将发送到您的邮箱，并且您所填写的捐赠数据将显示在捐赠表中。</span>
+              <span>请耐心等待，产品将在众筹成功后一段时间内发出</span>
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === -1 || orderStatus === 6">
+          <div class="status-now"
+               v-if="order_status === -1 || order_status === 6">
             <ul>
-              <li class="status-title"><h3>订单状态：已关闭</h3></li>
+              <li class="status-title">
+                <h3>订单状态：已关闭</h3>
+              </li>
             </ul>
             <p class="realtime">
               <span>您的订单已关闭。</span>
             </p>
           </div>
-          <div class="status-now" v-if="orderStatus === 5">
+          <div class="status-now"
+               v-if="order_status === 5">
             <ul>
-              <li class="status-title"><h3>订单状态：已完成</h3></li>
+              <li class="status-title">
+                <h3>订单状态：已完成</h3>
+              </li>
             </ul>
             <p class="realtime">
-              <span>您的订单已交易成功，感谢您的惠顾！</span>
+              <span>您的订单已交易成功，感谢您的支持！</span>
             </p>
           </div>
           <div class="gray-sub-title cart-title">
@@ -77,25 +115,31 @@
 
           <!--商品-->
           <div class="goods-table">
-            <div class="cart-items" v-for="(item,i) in orderList" :key="i">
-              <a @click="goodsDetails(item.productId)" class="img-box"><img :src="item.productImg" alt=""></a>
+            <div class="cart-items">
+              <a @click="goodsDetails(orderItem.product_id)"
+                 class="img-box"><img :src="orderItem.image_url"
+                     alt=""></a>
               <div class="name-cell ellipsis">
-                <a @click="goodsDetails(item.productId)" title="" target="_blank">{{item.productName}}</a>
+                <a @click="goodsDetails(orderItem.product_id)"
+                   title=""
+                   target="_blank">{{orderItem.product_name}}</a>
               </div>
               <div class="n-b">
-                <div class="price">¥ {{Number(item.salePrice).toFixed(2)}}</div>
-                <div class="goods-num">{{item.productNum}}</div>
-                <div class="subtotal"> ¥ {{Number(item.salePrice * item.productNum).toFixed(2)}}</div>
+                <div class="price">¥ {{Number(orderItem.unit_price).toFixed(2)}}</div>
+                <div class="goods-num">{{orderItem.nums}}</div>
+                <div class="subtotal"> ¥ {{Number(orderItem.unit_price * orderItem.nums).toFixed(2)}}</div>
               </div>
             </div>
           </div>
           <!--合计-->
           <div class="order-discount-line">
             <p style="font-size: 14px;font-weight: bolder;"> <span style="padding-right:47px">商品总计：</span>
-              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{orderTotal}}</span>
+              <span style="font-size: 16px;font-weight: 500;line-height: 32px;">¥ {{Number(orderItem.total_price).toFixed(2)}}</span>
             </p>
-            <p><span style="padding-right:30px">运费：</span><span style="font-weight: 700;">+ ¥ 0.00</span></p>
-            <p class="price-total"><span>应付金额：</span><span class="price-red">¥ {{orderTotal}}</span></p>
+            <p><span style="padding-right:30px">运费：</span>
+              <span style="font-weight: 700;">+ ¥ {{Number(orderItem.freight).toFixed(2)}}</span></p>
+            <p class="price-total"><span>应付金额：</span>
+              <span class="price-red">¥ {{Number(orderItem.total_price + orderItem.freight).toFixed(2)}}</span></p>
           </div>
 
           <div class="gray-sub-title cart-title">
@@ -106,12 +150,14 @@
             </div>
           </div>
           <div style="height: 155px;padding: 20px 30px;">
-            <p class="address">姓名：{{ userName }}</p>
-            <p class="address">联系电话：{{ tel }}</p>
-            <p class="address">详细地址：{{ streetName }}</p>
+            <p class="address">姓名：{{ orderItem.name }}</p>
+            <p class="address">联系电话：{{ orderItem.phone }}</p>
+            <p class="address">详细地址：{{ orderItem.address }}</p>
           </div>
         </div>
-        <div v-loading="loading" element-loading-text="加载中..." v-else>
+        <div v-loading="loading"
+             element-loading-text="加载中..."
+             v-else>
           <div style="padding: 100px 0;text-align: center">
             获取该订单信息失败
           </div>
@@ -126,13 +172,14 @@
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
   import countDown from '/components/countDown'
+  import dayjs from 'dayjs'
   export default {
     data () {
       return {
-        orderList: [0],
+        orderItem: {},
         userId: '',
         orderStatus: 0,
-        orderId: '',
+        orderId: [],
         userName: '',
         tel: '',
         streetName: '',
@@ -147,13 +194,18 @@
       }
     },
     methods: {
+      getTimestamp (dateStr) {
+        let value = dayjs(dateStr).valueOf()
+        return value
+      },
       message (m) {
         this.$message.error({
           message: m
         })
       },
       orderPayment (orderId) {
-        window.open(window.location.origin + '#/order/payment?orderId=' + orderId)
+        let jsonStr = JSON.stringify(orderId)
+        window.open(window.location.origin + '#/order/payment?orderId=' + jsonStr)
       },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
@@ -161,33 +213,34 @@
       _getOrderDet () {
         let params = {
           params: {
-            orderId: this.orderId
+            // 转成 JSON 字符串再传
+            orderId: JSON.stringify(this.orderId)
           }
         }
         getOrderDet(params).then(res => {
-          if (res.result.orderStatus === '0') {
-            this.orderStatus = 1
-          } else if (res.result.orderStatus === '1') {
-            this.orderStatus = 2
-          } else if (res.result.orderStatus === '4') {
-            this.orderStatus = 5
-          } else if (res.result.orderStatus === '5') {
-            this.orderStatus = -1
-          } else if (res.result.orderStatus === '6') {
-            this.orderStatus = 6
+          if (res.code !== 200) {
+            this.loading = false
+            return
           }
-          this.orderList = res.result.goodsList
-          this.orderTotal = res.result.orderTotal
-          this.userName = res.result.addressInfo.userName
-          this.tel = res.result.addressInfo.tel
-          this.streetName = res.result.addressInfo.streetName
-          this.createTime = res.result.createDate
-          this.closeTime = res.result.closeDate
-          this.payTime = res.result.payDate
-          if (this.orderStatus === 5) {
-            this.finishTime = res.result.finishDate
+          let item = res.data[0]
+          this.orderList = res.data
+          this.orderItem = item
+          if (item.order_status === 0) {
+            this.order_status = 1
+          } else if (item.order_status === 1) {
+            this.order_status = 2
+          } else if (item.order_status === 4) {
+            this.order_status = 5
+          } else if (item.order_status === 5) {
+            this.order_status = -1
+          } else if (item.order_status === 6) {
+            this.order_status = 6
+          }
+
+          if (this.order_status === 5) {
+            this.finished_at = item.finished_at
           } else {
-            this.countTime = res.result.finishDate
+            this.end_time = item.end_time
           }
           this.loading = false
         })
@@ -204,8 +257,10 @@
     },
     created () {
       this.userId = getStore('userId')
-      this.orderId = this.$route.query.orderId
-      this.orderTitle = '订单号：' + this.orderId
+      this.userId = getStore('userId')
+      let olJson = JSON.parse(this.$route.query.orderId)
+      this.orderId = olJson
+      this.orderTitle = '订单号：' + olJson
       this._getOrderDet()
     },
     components: {

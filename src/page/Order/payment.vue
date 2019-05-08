@@ -5,7 +5,7 @@
       <div slot="content">
         <div class="box-inner order-info">
           <h3>请您完成支付</h3>
-          <p class="payment-detail">请在 <span>24 小时内</span>完成支付，超时订单将自动取消。</p>
+          <!-- <p class="payment-detail">请在 <span>24 小时内</span>完成支付，超时订单将自动取消。</p> -->
           <p class="payment-detail">商品将在众筹成功后一定时间内发出，详情可查看商品介绍页</p>
         </div>
         <div class="pay-info">
@@ -99,7 +99,7 @@
 <script>
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
-  import { getOrderDet, payMent } from '/api/goods'
+  import { getOrderDet, orderPay } from '/api/goods'
   import { getStore } from '/utils/storage'
   // , setStore
   export default {
@@ -178,26 +178,9 @@
       paySuc () {
         this.payNow = '支付中...'
         this.submit = false
-        if (this.payType === 1) {
-          this.type = 'Alipay'
-        } else if (this.payType === 2) {
-          this.type = 'Wechat'
-        } else if (this.payType === 3) {
-          this.type = 'QQ'
-        } else {
-          this.type = '其它'
-        }
-        payMent({
-          nickName: this.nickName,
-          money: this.money,
-          info: this.info,
-          email: this.email,
-          orderId: this.orderId,
-          userId: this.userId,
-          payType: this.type
-        }).then(res => {
+        orderPay(this.orderId).then(res => {
           if (res.code === 200) {
-
+            this.$router.push({path: '/order/paysuccess', query: {price: this.orderTotal}})
           } else {
             this.payNow = '立刻支付'
             this.submit = true
