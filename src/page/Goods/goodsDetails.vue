@@ -274,8 +274,17 @@
           }
         }
       },
-      checkout (product_package_id) {
-        this.$router.push({path: '/checkout', query: {product_package_id, num: this.nums}})
+      checkout (product_id, product_package_id) {
+        // TODO 这里没有做好，购物车没有勾选的时候订单没能正确导入
+        let nums = this.nums
+        this.$router.push(
+          {
+            path: '/checkout',
+            query: {
+              product_id: product_id,
+              product_package_id: product_package_id,
+              nums: nums}
+          })
       },
       editNum (num) {
         this.nums = num

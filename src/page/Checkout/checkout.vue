@@ -73,14 +73,14 @@
                       <div class="items-thumb fl">
                         <img :alt="item.product_name"
                              :src="item.image_url">
-                        <a @click="goodsDetails(item.productId)"
+                        <a @click="goodsDetails(item.product_id)"
                            :title="item.product_name"
                            target="_blank"></a>
                       </div>
                       <!--信息-->
                       <div class="name hide-row fl">
                         <div class="name-table">
-                          <a @click="goodsDetails(item.productId)"
+                          <a @click="goodsDetails(item.product_id)"
                              :title="item.product_name"
                              target="_blank"
                              v-text="item.product_name"></a>
@@ -372,8 +372,8 @@
       del (addressId) {
         this._addressDel({id: addressId})
       },
-      _productDet (productId) {
-        productDet({params: {productId}}).then(res => {
+      _productDet (product_package_id) {
+        productDet({params: {product_package_id}}).then(res => {
           let item = res.data
           item.checked = true
           item.iamge_url = item.iamge_url
@@ -386,10 +386,11 @@
     created () {
       this.userId = getStore('userId')
       let query = this.$route.query
-      if (query.productId && query.num) {
-        this.productId = query.productId
-        this.num = query.num
-        this._productDet(this.productId)
+      if (query.product_package_id && query.num) {
+        this.product_id = query.product_id
+        this.product_package_id = query.product_package_id
+        this.nums = query.nums
+        this._productDet(this.product_id)
       } else {
         this._getCartList()
       }
