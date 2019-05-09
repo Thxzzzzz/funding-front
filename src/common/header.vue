@@ -43,19 +43,28 @@
                         </div>
                         <p class="name">{{userInfo.info.nickname}}</p>
                       </li>
-                      <li>
+                      <li v-if="showTab(0)">
                         <router-link to="/user/orderList">我的订单</router-link>
+                      </li>
+                      <li v-if="showTab(2)">
+                        <router-link to="/user/orderManager">订单管理</router-link>
+                      </li>
+                      <li v-if="showTab(2)">
+                        <router-link to="/user/fundingManager">我的众筹</router-link>
+                      </li>
+                      <li v-if="showTab(2)">
+                        <router-link to="/user/licenseManager">资质认证</router-link>
                       </li>
                       <li>
                         <router-link to="/user/information">账号资料</router-link>
                       </li>
-                      <li>
+                      <li v-if="showTab(0)">
                         <router-link to="/user/addressList">收货地址</router-link>
                       </li>
-                      <li>
+                      <li v-if="showTab(0)">
                         <router-link to="/user/support">售后服务</router-link>
                       </li>
-                      <li>
+                      <li v-if="showTab(0)">
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li>
                       <li>
@@ -67,6 +76,7 @@
                 </div>
               </div>
               <div class="shop pr"
+                   v-if="showTab(0)"
                    @mouseover="cartShowState(true)"
                    @mouseout="cartShowState(false)"
                    ref="positionMsg">
@@ -173,6 +183,7 @@
   import { getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
+
   export default{
     data () {
       return {
@@ -215,6 +226,19 @@
     },
     methods: {
       ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
+      showTab (role) {
+        // let allrole = -1
+        // let buyer = 0
+        // let seller = 2
+        let show = true
+        if (!this.userInfo) {
+          return show
+        }
+        if (role !== -1) {
+          show = this.userInfo.info.role_id === role
+        }
+        return show
+      },
       handleIconClick (ev) {
         if (this.$route.path === '/search') {
           this.$router.push({

@@ -38,6 +38,8 @@
   import YFooter from '/common/footer'
   import YHeader from '/common/header'
   import { mapState } from 'vuex'
+
+  // 或许应该转成常量，但是还不会，之后有空再做
   let allrole = -1
   let buyer = 0
   let seller = 2
@@ -64,7 +66,6 @@
       ...mapState(['userInfo'])
     },
     methods: {
-  
       showTab (item) {
         let show = true
         if (item.role !== allrole) {

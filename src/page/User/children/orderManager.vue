@@ -69,8 +69,7 @@
                              type="primary"
                              size="small">现在付款</el-button>
                 </div> -->
-                <div class="status"
-                     v-if="item.order_status !== 0"> {{getOrderStatus(item.order_status)}} </div>
+                <div class="status"> {{getOrderStatus(item.order_status)}} </div>
               </div>
             </div>
           </div>
@@ -98,10 +97,11 @@
   </div>
 </template>
 <script>
-  import { orderList, delOrder } from '/api/goods'
+  import { orderListToSeller, delOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
   import dayjs from 'dayjs'
+  
   export default {
     data () {
       return {
@@ -175,7 +175,8 @@
             page: this.currentPage
           }
         }
-        orderList(params).then(res => {
+        console.log(params)
+        orderListToSeller(params).then(res => {
           if (res.code === 200) {
             this.orderList = res.data.order_list
             this.total = res.data.total

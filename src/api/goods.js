@@ -91,15 +91,20 @@ export const orderPay = (params) => {
 export const orderList = (params) => {
   return http.fetchGet('/order/orderList', params)
 }
-// 获取单个订单详情
+// 获取多个订单详情
 export const getOrderDet = (params) => {
   return http.fetchGet('/order/orderInIds', params)
 }
-// 取消订单
+// TODO 取消订单
 export const cancelOrder = (params) => {
   return http.fetchPost('/member/cancelOrder', params)
 }
-// 删除订单
+// TODO 删除订单
 export const delOrder = (params) => {
   return http.fetchGet('/member/delOrder', params)
+}
+//          TODO 订单 商家相关            //
+// 商家获取订单列表
+export const orderListToSeller = (params) => {
+  return http.fetchGet('/order/orderListToSeller', params)
 }
