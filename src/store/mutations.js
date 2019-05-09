@@ -13,7 +13,9 @@ import {
 } from '../utils/storage'
 export default {
   // 网页初始化时从本地缓存获取购物车数据
-  [INIT_BUYCART] (state, {cartList}) {
+  [INIT_BUYCART] (state, {
+    cartList
+  }) {
     console.log(cartList)
     state.cartList = cartList
   },
@@ -28,7 +30,9 @@ export default {
     nums = 1
   }) {
     let cart = state.cartList // 购物车
+    console.log(cart)
     if (!cart) {
+      console.log('null')
       cart = []
     }
     let falg = true
@@ -54,8 +58,10 @@ export default {
           }
         }
       })
-      cart.splice(index, 1)
-      cart.unshift(changeItem)
+      if (index !== -1) {
+        cart.splice(index, 1)
+        cart.unshift(changeItem)
+      }
     }
     if (!cart.length || falg) {
       goods.nums = nums
