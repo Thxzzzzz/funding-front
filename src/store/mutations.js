@@ -9,16 +9,13 @@ import {
   EDIT_CART
 } from './mutation-types'
 import {
-  setStore,
-  getStore
+  setStore
 } from '../utils/storage'
 export default {
   // 网页初始化时从本地缓存获取购物车数据
-  [INIT_BUYCART] (state) {
-    let initCart = getStore('buyCart')
-    if (initCart) {
-      state.cartList = JSON.parse(initCart)
-    }
+  [INIT_BUYCART] (state, {cartList}) {
+    console.log(cartList)
+    state.cartList = cartList
   },
   // 加入购物车
   [ADD_CART] (state, {
@@ -31,6 +28,9 @@ export default {
     nums = 1
   }) {
     let cart = state.cartList // 购物车
+    if (!cart) {
+      cart = []
+    }
     let falg = true
     // 购物车定义
     let goods = {
@@ -41,7 +41,6 @@ export default {
       description,
       image_url
     }
-
     if (cart.length) { // 有内容
       cart.forEach(item => {
         if (item.product_package_id === product_package_id) {
@@ -59,7 +58,7 @@ export default {
     }
     state.cartList = cart
     // 存入localStorage
-    if (!this.state.login) {
+    if (!state.login) {
       setStore('buyCart', cart)
     }
   },

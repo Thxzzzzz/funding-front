@@ -321,9 +321,11 @@
         getCartList().then(res => {
           if (res.code === 200) {
             // setStore('buyCart', res.data)
+            let cartList = res.data
+            this.INIT_BUYCART({cartList: cartList})
           }
           // 重新初始化一次本地数据
-        }).then(this.INIT_BUYCART)
+        }).then()
       },
       // 删除商品
       delGoods (product_package_id) {
@@ -389,9 +391,11 @@
       this._getNavList()
       this.token = getStore('token')
       if (this.login) {
-        // this._getCartList()
+        this._getCartList()
       } else {
-        this.INIT_BUYCART()
+        let initCart = getStore('buyCart')
+        let cartList = JSON.parse(initCart)
+        this.INIT_BUYCART({cartList: cartList})
       }
       this.navFixed()
       this.getPage()
