@@ -325,7 +325,7 @@
             this.INIT_BUYCART({cartList: cartList})
           }
           // 重新初始化一次本地数据
-        }).then()
+        })
       },
       // 删除商品
       delGoods (product_package_id) {

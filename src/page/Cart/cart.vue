@@ -145,12 +145,13 @@
       return {
         userId: 0,
         checkoutNow: '现在结算',
-        submit: true
+        submit: true,
+        cartList: []
       }
     },
     computed: {
       ...mapState(
-        ['cartList']
+        ['login']
       ),
       // 是否全选
       checkAllFlag () {
@@ -197,6 +198,21 @@
       ...mapMutations([
         'INIT_BUYCART', 'EDIT_CART'
       ]),
+
+      _getCartList () {
+        getCartList().then(res => {
+          let cartList = []
+          if (res.code === 200) {
+            // setStore('buyCart', res.data)
+            cartList = res.data
+  
+            this.INIT_BUYCART({cartList: cartList})
+          }
+          console.log('carlist :' + cartList)
+          this.cartList = cartList
+          // 重新初始化一次本地数据
+        })
+      },
       message (m) {
         this.$message.error({
           message: m
@@ -282,6 +298,9 @@
     mounted () {
       this.userId = getStore('userId')
       // this.INIT_BUYCART()
+      if (this.login) {
+        this._getCartList()
+      }
     },
     components: {
       YButton,
