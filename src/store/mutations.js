@@ -16,7 +16,6 @@ export default {
   [INIT_BUYCART] (state, {
     cartList
   }) {
-    console.log(cartList)
     state.cartList = cartList
   },
   // 加入购物车
@@ -30,7 +29,6 @@ export default {
     nums = 1
   }) {
     let cart = state.cartList // 购物车
-    console.log(cart)
     if (!cart) {
       console.log('null')
       cart = []

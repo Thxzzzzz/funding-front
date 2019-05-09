@@ -5,8 +5,28 @@ import store from './store/'
 import VueLazyload from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
 import VueCookie from 'vue-cookie'
-import { userInfo } from './api'
-import { Progress, Button, Pagination, Checkbox, Icon, Autocomplete, Loading, Message, Notification, Steps, Step, Table, TableColumn, Input, Dialog, Select, Option } from 'element-ui'
+import {
+  userInfo
+} from './api'
+import {
+  Progress,
+  Button,
+  Pagination,
+  Checkbox,
+  Icon,
+  Autocomplete,
+  Loading,
+  Message,
+  Notification,
+  Steps,
+  Step,
+  Table,
+  TableColumn,
+  Input,
+  Dialog,
+  Select,
+  Option
+} from 'element-ui'
 import VueContentPlaceholders from 'vue-content-placeholders'
 Vue.use(Progress)
 Vue.use(VueContentPlaceholders)
@@ -49,10 +69,18 @@ router.beforeEach(function (to, from, next) {
       next('/login')
     } else {
       // 将 userinfo 存入 vuex strore 中
-      store.commit('RECORD_USERINFO', {info: res.data})
+      let info = res.data
+      if (!info.icon_url) {
+        info.icon_url = 'static/images/defaultIcon.png'
+      }
+      store.commit('RECORD_USERINFO', {
+        info: info
+      })
       if (to.path === '/login') {
         // 跳转到首页
-        next({path: '/'})
+        next({
+          path: '/'
+        })
       }
       next()
     }

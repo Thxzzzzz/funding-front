@@ -8,7 +8,7 @@
         <div class="account-sidebar">
           <div class="avatar gray-box ">
             <div>
-              <img :src="userInfo.info.icon_img">
+              <img :src="userInfo.info.icon_url">
               <h5>
                 {{userInfo.info.nickname}}</h5>
             </div>
@@ -16,6 +16,7 @@
               <ul class="account-nav">
                 <li v-for="(item,i) in nav"
                     :key='i'
+                    v-if="showTab(item)"
                     :class="{current:item.name===title}"
                     @click="tab(item)">
                   <a href="javascript:;">{{item.name}}</a></li>
@@ -37,17 +38,24 @@
   import YFooter from '/common/footer'
   import YHeader from '/common/header'
   import { mapState } from 'vuex'
+  let allrole = -1
+  let buyer = 0
+  let seller = 2
+
   export default {
     data () {
       return {
         title: '我的订单',
         nav: [
-          {name: '我的订单', path: 'orderList'},
-          {name: '账户资料', path: 'information'},
-          {name: '收货地址', path: 'addressList'},
-          {name: '我的优惠', path: 'coupon'},
-          {name: '售后服务', path: 'support'},
-          {name: '以旧换新', path: 'aihuishou'}
+          {name: '我的订单', path: 'orderList', role: buyer},
+          {name: '订单管理', path: 'orderManager', role: seller},
+          {name: '我的众筹', path: 'fundingManager', role: seller},
+          {name: '资质认证', path: 'licenseManager', role: allrole},
+          {name: '账户资料', path: 'information', role: allrole},
+          {name: '收货地址', path: 'addressList', role: buyer},
+          {name: '我的优惠', path: 'coupon', role: buyer},
+          {name: '售后服务', path: 'support', role: buyer},
+          {name: '以旧换新', path: 'aihuishou', role: buyer}
         ],
         editAvatar: true
       }
@@ -56,12 +64,28 @@
       ...mapState(['userInfo'])
     },
     methods: {
+  
+      showTab (item) {
+        let show = true
+        if (item.role !== allrole) {
+          show = this.userInfo.info.role_id === item.role
+        }
+        return show
+      },
       tab (e) {
         this.$router.push({path: '/user/' + e.path})
       }
     },
     created () {
       let path = this.$route.path.split('/')[2]
+      console.log(path)
+      if (!path) {
+        if (this.userInfo.info.role_id === buyer) {
+          this.$router.push({path: '/user/' + 'orderList'})
+        } else if (this.userInfo.info.role_id === seller) {
+          this.$router.push({path: '/user/' + 'orderManager'})
+        }
+      }
       this.nav.forEach(item => {
         if (item.path === path) {
           this.title = item.name
