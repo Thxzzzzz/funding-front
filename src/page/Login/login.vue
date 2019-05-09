@@ -173,19 +173,9 @@ export default {
         this.message('账号或者密码不能为空!')
         return false
       }
-      // var result = captcha.getValidate()
-      // if (!result) {
-      //   this.message('请完成验证')
-      //   this.logintxt = '登录'
-      //   return false
-      // }
       var params = {
         username: this.ruleForm.username,
         password: this.ruleForm.password
-        // challenge: result.geetest_challenge,
-        // validate: result.geetest_validate,
-        // seccode: result.geetest_seccode,
-        // statusKey: this.statusKey
       }
       userLogin(params).then(res => {
         if (res.code === 200) {
@@ -198,19 +188,14 @@ export default {
                 }
               })
             }
-            removeStore('buyCart')
-            this.$router.push({
-              path: '/'
-            })
-          } else {
-            this.$router.push({
-              path: '/'
-            })
           }
+          removeStore('buyCart')
+          this.$router.push({
+            path: '/'
+          })
         } else {
           this.logintxt = '登录'
           this.message(res.message)
-          // captcha.reset()
           return false
         }
       })

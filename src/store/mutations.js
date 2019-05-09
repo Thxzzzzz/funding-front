@@ -59,7 +59,9 @@ export default {
     }
     state.cartList = cart
     // 存入localStorage
-    setStore('buyCart', cart)
+    if (!this.state.login) {
+      setStore('buyCart', cart)
+    }
   },
   // 加入购物车动画
   [ADD_ANIMATION] (state, {

@@ -170,7 +170,7 @@
   import { mapMutations, mapState } from 'vuex'
   import { getCartList, cartDel, getQuickSearch } from '/api/goods'
   import { loginOut, navList } from '/api/index'
-  import { setStore, getStore, removeStore } from '/utils/storage'
+  import { getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
   import 'element-ui/lib/theme-default/index.css'
   export default{
@@ -320,7 +320,7 @@
       _getCartList () {
         getCartList().then(res => {
           if (res.code === 200) {
-            setStore('buyCart', res.data)
+            // setStore('buyCart', res.data)
           }
           // 重新初始化一次本地数据
         }).then(this.INIT_BUYCART)
@@ -389,7 +389,7 @@
       this._getNavList()
       this.token = getStore('token')
       if (this.login) {
-        this._getCartList()
+        // this._getCartList()
       } else {
         this.INIT_BUYCART()
       }

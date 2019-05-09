@@ -158,7 +158,7 @@
         </div>
         <y-button v-if="selectedItem.stock !== 0"
                   style="margin-right:80px"
-                  @btnClick="addCart(selectedItem)"
+                  @btnClick="_addCart(selectedItem)"
                   text='加入购物车'>
         </y-button>
         <y-button v-if="selectedItem.stock !== 0"
@@ -228,9 +228,8 @@
           this.product = result
         })
       },
-      addCart (item) {
+      _addCart (item) {
         let product_package_id = item.id
-        console.log(product_package_id)
         if (!this.showMoveImg) {     // 动画是否在运动
           if (this.login) { // 登录了 直接存在用户名下
             addCart({userId: this.userInfo.info.userId,
