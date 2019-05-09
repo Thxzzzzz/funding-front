@@ -42,19 +42,25 @@ export default {
       image_url
     }
     if (cart.length) { // 有内容
+      let index = -1
+      let changeItem = {}
       cart.forEach(item => {
         if (item.product_package_id === product_package_id) {
           if (item.nums >= 0) {
             falg = false
             item.nums += nums
+            changeItem = item
+            index = cart.indexOf(item)
           }
         }
       })
+      cart.splice(index, 1)
+      cart.unshift(changeItem)
     }
     if (!cart.length || falg) {
       goods.nums = nums
       goods.checked = true
-      cart.push(goods)
+      cart.unshift(goods)
     }
     state.cartList = cart
     // 存入localStorage
