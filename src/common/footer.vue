@@ -97,13 +97,13 @@
       open2 () {
         this.$notify.info({
           title: '隐私条款',
-          message: '本网站将不会严格遵守有关法律法规和本隐私政策所载明的内容收集、使用您的信息'
+          message: '本网站将严格遵守有关法律法规和本隐私政策所载明的内容，不会收集、使用您的信息'
         })
       },
       open3 () {
         this.$notify({
           title: '离线帮助',
-          message: '暂不支持在线客服,请将您的困惑发送至852004392@qq.com',
+          message: '暂不支持在线客服,请将您的困惑发送至 852004392@qq.com',
           type: 'warning'
         })
       },
