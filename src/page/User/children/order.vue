@@ -2,6 +2,31 @@
   <div>
     <y-shelf title="我的订单">
       <div slot="content">
+        <div class="flitter">
+          <!-- 筛选订单状态 -->
+          <el-select v-model="order_status"
+                     clearable
+                     @change="_orderList()"
+                     placeholder="订单状态">
+            <el-option v-for="item in order_status_op"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+
+          <!-- 筛选众筹状态 -->
+          <el-select v-model="funding_status"
+                     clearable
+                     @change="_orderList()"
+                     placeholder="众筹状态">
+            <el-option v-for="item in funding_status_op"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
         <div v-loading="loading"
              element-loading-text="加载中..."
              v-if="orderList.length"
@@ -105,6 +130,54 @@
   export default {
     data () {
       return {
+                // 订单状态选项
+        order_status_op: [
+
+          {
+            value: 1,
+            label: '未支付'
+          },
+          {
+            value: 2,
+            label: '已支付'
+          },
+          // {
+          //   value: 3,
+          //   label: '正在配货'
+          // },
+          {
+            value: 4,
+            label: '已发货'
+          },
+          {
+            value: 5,
+            label: '交易成功'
+          },
+          {
+            value: 6,
+            label: '正在退款'
+          },
+          {
+            value: 7,
+            label: '交易取消'
+          }
+        ],
+        order_status: null,
+        // 众筹状态选项
+        funding_status_op: [
+          {
+            value: 1,
+            label: '众筹成功'
+          },
+          {
+            value: 2,
+            label: '众筹失败'
+          },
+          {
+            value: 3,
+            label: '正在众筹'
+          }
+        ],
         orderList: [0],
         userId: '',
         orderStatus: '',
@@ -152,19 +225,19 @@
         })
       },
       getOrderStatus (status) {
-        if (status === 0) {
+        if (status === 1) {
           return '待支付'
-        } else if (status === 1) {
-          return '已支付'
         } else if (status === 2) {
-          return '正在配货'
+          return '已支付'
         } else if (status === 3) {
-          return '已发出'
+          return '正在配货'
         } else if (status === 4) {
-          return '交易成功'
+          return '已发出'
         } else if (status === 5) {
-          return '正在退款'
+          return '交易成功'
         } else if (status === 6) {
+          return '正在退款'
+        } else if (status === 7) {
           return '交易关闭'
         }
       },

@@ -8,7 +8,7 @@
              style="min-height: 10vw;"
              v-if="orderItem">
           <div class="orderStatus"
-               v-if="orderItem.order_status !== -1 && orderItem.order_status !== 6">
+               v-if="orderItem.order_status !== -1 && orderItem.order_status !== 7">
             <el-steps :space="200"
                       :active="order_status">
               <el-step title="下单"
@@ -34,7 +34,7 @@
             </el-steps>
           </div>
           <div class="orderStatus-close"
-               v-if="order_status === 6">
+               v-if="order_status === 7">
             <el-steps :space="780"
                       :active="2">
               <el-step title="下单"
@@ -44,7 +44,7 @@
             </el-steps>
           </div>
           <div class="status-now"
-               v-if="order_status === 1">
+               v-if="order_status === 2">
             <ul>
               <li class="status-title">
                 <h3>订单状态：待付款</h3>
@@ -225,19 +225,19 @@
           let item = res.data[0]
           this.orderList = res.data
           this.orderItem = item
-          if (item.order_status === 0) {
+          if (item.order_status === 1) {
             this.order_status = 1
-          } else if (item.order_status === 1) {
+          } else if (item.order_status === 2) {
             this.order_status = 2
-          } else if (item.order_status === 4) {
-            this.order_status = 5
           } else if (item.order_status === 5) {
-            this.order_status = -1
+            this.order_status = 5
           } else if (item.order_status === 6) {
+            this.order_status = -1
+          } else if (item.order_status === 7) {
             this.order_status = 6
           }
 
-          if (this.order_status === 5) {
+          if (this.order_status === 6) {
             this.finished_at = item.finished_at
           } else {
             this.end_time = item.end_time
