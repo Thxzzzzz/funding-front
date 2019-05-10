@@ -105,7 +105,7 @@
              class="no-info"
              v-else>
           <div style="padding: 100px 0;text-align: center">
-            你还未创建过订单
+            未查询到相关订单
           </div>
         </div>
       </div>
@@ -178,6 +178,7 @@
             label: '正在众筹'
           }
         ],
+        funding_status: null,
         orderList: [0],
         userId: '',
         orderStatus: '',
@@ -245,7 +246,9 @@
         let params = {
           params: {
             page_size: this.pageSize,
-            page: this.currentPage
+            page: this.currentPage,
+            order_status: this.order_status,
+            funding_status: this.funding_status
           }
         }
         orderList(params).then(res => {

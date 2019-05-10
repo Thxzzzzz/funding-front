@@ -412,7 +412,7 @@
       }
     },
     mounted () {
-      this._getNavList()
+      // this._getNavList()
       this.token = getStore('token')
       if (this.login) {
         this._getCartList()
