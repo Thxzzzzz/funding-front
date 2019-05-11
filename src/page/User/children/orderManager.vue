@@ -2,6 +2,7 @@
   <div>
     <y-shelf title="订单管理">
       <div slot="content">
+        <!-- 订单列表筛选 -->
         <div class="flitter">
           <!-- 筛选订单状态 -->
           <el-select v-model="order_status"
@@ -27,6 +28,10 @@
             </el-option>
           </el-select>
         </div>
+
+        <div class="flitter">
+          <el-checkbox v-model="showNeedSendOrders">显示需要发货的订单</el-checkbox>
+        </div>
         <div v-loading="loading"
              element-loading-text="加载中..."
              v-if="orderList.length"
@@ -43,7 +48,8 @@
                 <div class="f-bc">
                   <span class="price">单价</span>
                   <span class="num">数量</span>
-                  <span class="operation">商品操作</span>
+                  <!-- 商品操作 -->
+                  <span class="operation">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </div>
               </div>
               <div class="last">
@@ -89,12 +95,15 @@
               <div class="prod-operation pa"
                    style="right: 0;top: 0;">
                 <div class="total">¥ {{item.total_price}}</div>
-                <!-- <div v-if="item.order_status === 0">
-                  <el-button @click="orderPayment(item.order_id)"
-                             type="primary"
-                             size="small">现在付款</el-button>
-                </div> -->
-                <div class="status"> {{getOrderStatus(item.order_status)}} </div>
+                <div class="status">
+                  {{getOrderStatus(item.order_status)}}
+                  <div v-if="item.order_status === 3">
+                    <el-button style="margin:5px 0px 0px 25px"
+                               type="primary"
+                               size="small">立即发货</el-button>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -119,7 +128,19 @@
                      :total="total">
       </el-pagination>
     </div>
+    <el-dialog title="填写物流单号发货"
+               :visible.sync="sendOutFormVisible"
+               width="3%"
+               top="500px"
+               center>
+      <el-input v-model="checking_number"
+                style="width:230px"></el-input>
+
+      <el-button type="primary"
+                 @click="dialogFormVisible = false">发 货</el-button>
+    </el-dialog>
   </div>
+
 </template>
 <script>
   import { orderListToSeller, delOrder } from '/api/goods'
@@ -128,8 +149,11 @@
   import dayjs from 'dayjs'
   
   export default {
+    // 数据
     data () {
       return {
+        checking_number: '',
+        sendOutFormVisible: true,
         // 订单状态选项
         order_status_op: [
           {
@@ -142,7 +166,7 @@
           },
           // {
           //   value: 3,
-          //   label: '正在配货'
+          //   label: '待发货'
           // },
           {
             value: 4,
@@ -161,7 +185,7 @@
             label: '交易取消'
           }
         ],
-        order_status: null,
+        order_status: '',
         // 众筹状态选项
         funding_status_op: [
           {
@@ -177,7 +201,7 @@
             label: '正在众筹'
           }
         ],
-        funding_status: null,
+        funding_status: '',
 
         orderList: [0],
         userId: '',
@@ -188,13 +212,33 @@
         total: 0
       }
     },
+    computed: {
+      showNeedSendOrders: {
+    // getter
+        get: function () {
+          return this.order_status === 2 && this.funding_status === 1
+        },
+    // setter
+        set: function (newValue) {
+          if (newValue) {
+            this.order_status = 2
+            this.funding_status = 1
+          } else {
+            this.order_status = null
+            this.funding_status = null
+          }
+        }
+      }
+    },
+    // 方法
     methods: {
-  
+      // 显示提示文字
       message (m) {
         this.$message.error({
           message: m
         })
       },
+      // 格式化日期
       formatDate (date) {
         return dayjs(date).format('YYYY年MM月DD日 HH:mm:ss') // 展示
       },
@@ -206,12 +250,6 @@
         this.currentPage = val
         this._orderList()
       },
-      orderPayment (orderId) {
-        let orderIdList = []
-        orderIdList.push(orderId)
-        let olJson = JSON.stringify(orderIdList)
-        window.open(window.location.origin + '#/order/payment?orderId=' + olJson)
-      },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
@@ -220,7 +258,7 @@
         orderIdList.push(orderId)
         let olJson = JSON.stringify(orderIdList)
         this.$router.push({
-          path: 'orderDetail',
+          path: 'orderDetailManager',
           query: {
             orderId: olJson
           }
@@ -232,7 +270,7 @@
         } else if (status === 2) {
           return '已支付'
         } else if (status === 3) {
-          return '正在配货'
+          return '请及时发货'
         } else if (status === 4) {
           return '已发出'
         } else if (status === 5) {
@@ -275,10 +313,12 @@
         })
       }
     },
+    // 初始化
     created () {
       this.userId = getStore('userId')
       this._orderList()
     },
+    // 组件
     components: {
       YShelf
     }
@@ -332,6 +372,9 @@
 
   .order-id {
     margin-left: 25px;
+  }
+  .flitter{
+    margin:10px
   }
 
   .cart {

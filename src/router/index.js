@@ -10,9 +10,8 @@ const Cart = () => import('/page/Cart/cart.vue')
 const order = () => import('/page/Order/order.vue')
 const user = () => import('/page/User/user.vue')
 const orderList = () => import('/page/User/children/order.vue')
-const orderManager = () => import('/page/User/children/orderManager.vue')
-const fundingManager = () => import('/page/User/children/fundingManager.vue')
-const licenseManager = () => import('/page/User/children/licenseManager.vue')
+
+
 const information = () => import('/page/User/children/information.vue')
 const addressList = () => import('/page/User/children/addressList.vue')
 const coupon = () => import('/page/User/children/coupon.vue')
@@ -26,6 +25,13 @@ const Search = () => import('/page/Search/search.vue')
 const RefreshSearch = () => import('/page/Refresh/refreshsearch.vue')
 const RefreshGoods = () => import('/page/Refresh/refreshgoods.vue')
 const orderDetail = () => import('/page/User/children/orderDetail.vue')
+
+// 商家相关
+const orderManager = () => import('/page/User/children/orderManager.vue')
+const fundingManager = () => import('/page/User/children/fundingManager.vue')
+const licenseManager = () => import('/page/User/children/licenseManager.vue')
+const orderDetailManager = () => import('/page/User/children/orderDetailManager.vue')
+
 // const Alipay = () => import('/page/Order/alipay.vue')
 // const Wechat = () => import('/page/Order/wechat.vue')
 // const QQpay = () => import('/page/Order/qqpay.vue')
@@ -112,21 +118,6 @@ export default new Router({
           component: orderList
         },
         {
-          path: 'orderManager',
-          name: '订单管理',
-          component: orderManager
-        },
-        {
-          path: 'fundingManager',
-          name: '我的众筹',
-          component: fundingManager
-        },
-        {
-          path: 'licenseManager',
-          name: '资质认证',
-          component: licenseManager
-        },
-        {
           path: 'orderDetail',
           name: '订单详情',
           component: orderDetail
@@ -155,7 +146,28 @@ export default new Router({
           path: 'aihuishou',
           name: '以旧换新',
           component: aihuishou
-        }
+        },
+        // 商家相关
+        {
+          path: 'orderManager',
+          name: '订单管理',
+          component: orderManager
+        },
+        {
+          path: 'fundingManager',
+          name: '我的众筹',
+          component: fundingManager
+        },
+        {
+          path: 'licenseManager',
+          name: '资质认证',
+          component: licenseManager
+        },
+        {
+          path: 'orderDetailManager',
+          name: '订单管理详情',
+          component: orderDetailManager
+        },
       ]
     },
     {

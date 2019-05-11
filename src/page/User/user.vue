@@ -79,7 +79,6 @@
     },
     created () {
       let path = this.$route.path.split('/')[2]
-      console.log(path)
       if (!path) {
         if (this.userInfo.info.role_id === buyer) {
           this.$router.push({path: '/user/' + 'orderList'})

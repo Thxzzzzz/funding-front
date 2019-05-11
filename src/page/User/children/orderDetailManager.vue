@@ -34,7 +34,7 @@
             </el-steps>
           </div>
           <div class="orderStatus-close"
-               v-if="order_status === 7">
+               v-if="orderItem.order_status === 7">
             <el-steps :space="780"
                       :active="2">
               <el-step title="下单"
@@ -49,14 +49,14 @@
               <li class="status-title">
                 <h3>订单状态：待付款</h3>
               </li>
-              <li class="button"
+              <!-- <li class="button"
                   v-if="orderItem.funding_status === 3">
                 <el-button @click="orderPayment(orderId)"
                            type="primary"
                            size="small">现在付款</el-button>
                 <el-button @click="_cancelOrder()"
                            size="small">取消订单</el-button>
-              </li>
+              </li> -->
             </ul>
             <p class="realtime">
               <span>在众筹结束前您都可以付款 还有:</span>
@@ -76,9 +76,24 @@
               </li>
             </ul>
             <p class="realtime">
-              <span>请耐心等待，产品将在众筹成功后一段时间内发出</span>
+              请在众筹结成功后规定时间内将产品发出
             </p>
           </div>
+          <div class="status-now"
+               v-if="orderItem.order_status === 3">
+            <ul>
+              <li class="status-title">
+                <h3>订单状态：配货</h3>
+              </li>
+            </ul>
+            <p class="realtime">
+              <!-- 发货 -->
+              <el-input style="width:240px;"
+                        v-model="checking_number"
+                        placeholder="物流单号"></el-input>
+            </p>
+          </div>
+
           <div class="status-now"
                v-if="orderItem.order_status === 6">
             <ul>
@@ -192,6 +207,7 @@
         closeTime: '',
         finishTime: '',
         orderTotal: '',
+        checking_number: '',
         loading: true,
         countTime: 0
       }
@@ -209,10 +225,10 @@
           message: m
         })
       },
-      orderPayment (orderId) {
-        let jsonStr = JSON.stringify(orderId)
-        window.open(window.location.origin + '#/order/payment?orderId=' + jsonStr)
-      },
+      // orderPayment (orderId) {
+      //   let jsonStr = JSON.stringify(orderId)
+      //   window.open(window.location.origin + '#/order/payment?orderId=' + jsonStr)
+      // },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
@@ -231,7 +247,6 @@
           let item = res.data[0]
           this.orderList = res.data
           this.orderItem = item
-  
           if (item.order_status === 6) {
             this.finished_at = item.finished_at
           }

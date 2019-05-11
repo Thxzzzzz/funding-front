@@ -89,13 +89,21 @@
               <div class="prod-operation pa"
                    style="right: 0;top: 0;">
                 <div class="total">¥ {{item.total_price}}</div>
-                <div v-if="item.order_status === 0">
+                <!-- 未付款才会显示 -->
+                <div v-if="item.order_status === 1">
+                  <!-- 进行中的众筹才能付款 funding_status === 3 -->
                   <el-button @click="orderPayment(item.order_id)"
+                             v-if="item.funding_status === 3"
                              type="primary"
                              size="small">现在付款</el-button>
+                  <div style="margin-left:15px"
+                       v-if="item.order_status === 1 && item.funding_status !== 3">
+                    <p>未支付</p>
+                    <p>众筹已结束</p>
+                  </div>
                 </div>
                 <div class="status"
-                     v-if="item.order_status !== 0"> {{getOrderStatus(item.order_status)}} </div>
+                     v-if="item.order_status !== 1"> {{getOrderStatus(item.order_status)}} </div>
               </div>
             </div>
           </div>
@@ -162,7 +170,7 @@
             label: '交易取消'
           }
         ],
-        order_status: null,
+        order_status: '',
         // 众筹状态选项
         funding_status_op: [
           {
@@ -178,7 +186,7 @@
             label: '正在众筹'
           }
         ],
-        funding_status: null,
+        funding_status: '',
         orderList: [0],
         userId: '',
         orderStatus: '',
@@ -334,6 +342,10 @@
     margin-left: 25px;
   }
 
+  .flitter{
+      margin:10px
+  }
+
   .cart {
     display: flex;
     justify-content: space-between;
@@ -347,6 +359,7 @@
     .del-order {
       display: none;
     }
+
     .cart-l {
       display: flex;
       align-items: center;

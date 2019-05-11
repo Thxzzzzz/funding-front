@@ -371,8 +371,10 @@
           st >= 100 ? this.st = true : this.st = false
           // 计算小圆当前位置
           let num = document.querySelector('.num')
-          this.positionL = num.getBoundingClientRect().left
-          this.positionT = num.getBoundingClientRect().top
+          if (num) {
+            this.positionL = num.getBoundingClientRect().left
+            this.positionT = num.getBoundingClientRect().top
+          }
           this.ADD_ANIMATION({cartPositionL: this.positionL, cartPositionT: this.positionT})
         } else {
           return

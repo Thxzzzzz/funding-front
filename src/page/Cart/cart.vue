@@ -26,7 +26,7 @@
                     <div class="cart-items clearfix">
                       <!--勾选-->
                       <div class="items-choose">
-                        <span class="blue-checkbox-new "
+                        <span class="blue-checkbox-new"
                               :class="{'checkbox-on':item.checked}"
                               @click="editCart('check', item)"></span>
                       </div>

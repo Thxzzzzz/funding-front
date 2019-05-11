@@ -25,9 +25,13 @@ import {
   Input,
   Dialog,
   Select,
+  // Form,
+  // FormItem,
   Option
 } from 'element-ui'
 import VueContentPlaceholders from 'vue-content-placeholders'
+// Vue.use(Form)
+// Vue.use(FormItem)
 Vue.use(Progress)
 Vue.use(VueContentPlaceholders)
 Vue.use(Button)
