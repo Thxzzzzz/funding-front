@@ -7,7 +7,7 @@
           <!-- 筛选订单状态 -->
           <el-select v-model="order_status"
                      clearable
-                     @change="_orderList()"
+                     @change="flitterChange()"
                      placeholder="订单状态">
             <el-option v-for="item in order_status_op"
                        :key="item.value"
@@ -19,7 +19,7 @@
           <!-- 筛选众筹状态 -->
           <el-select v-model="funding_status"
                      clearable
-                     @change="_orderList()"
+                     @change="flitterChange()"
                      placeholder="众筹状态">
             <el-option v-for="item in funding_status_op"
                        :key="item.value"
@@ -76,14 +76,6 @@
                     <div>¥ {{Number(item.unit_price).toFixed(2)}}</div>
                     <div class="num">{{item.nums}}</div>
                     <div class="type">
-                      <!-- <el-button style="margin-left:20px"
-                                 @click="_delOrder(item.order_id,i)"
-                                 type="danger"
-                                 size="small"
-                                 class="del-order">删除此订单</el-button> -->
-                      <!-- <a @click="_delOrder(item.orderId,i)"
-                         href="javascript:;"
-                         class="del-order">删除此订单</a> -->
                     </div>
                   </div>
                 </div>
@@ -98,13 +90,12 @@
                 <div class="status">
                   {{getOrderStatus(item.order_status)}}
                   <div v-if="item.order_status === 3">
-                    <el-button @click="sendOutFormVisible = true"
+                    <el-button @click="showSendOutDialog(item)"
                                style="margin:5px 0px 0px 25px"
                                type="primary"
                                size="small">立即发货</el-button>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -134,18 +125,24 @@
                width="400px"
                top="25%"
                center>
+      <div class="connectInfo">
+        <p>收件人: {{seletedOrderItem.name}}</p>
+        <p>联系电话: {{seletedOrderItem.phone}}</p>
+        <p>收件地址: {{seletedOrderItem.address}}</p>
+      </div>
       <el-input v-model="checking_number"
-                placeholder="物流单号"
+                placeholder="物流单号(至少四位)"
                 style="margin-left:20px;width:230px"></el-input>
 
       <el-button type="primary"
-                 @click="dialogFormVisible = false">发 货</el-button>
+                 :disabled="vaildCheckingNumber(checking_number)"
+                 @click="_sendOutOrder(seletedOrderItem.order_id,checking_number)">发 货</el-button>
     </el-dialog>
   </div>
 
 </template>
 <script>
-  import { orderListToSeller, delOrder } from '/api/goods'
+  import { orderListToSeller, delOrder, sendOutOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
   import dayjs from 'dayjs'
@@ -211,10 +208,12 @@
         loading: true,
         currentPage: 1,
         pageSize: 5,
-        total: 0
+        total: 0,
+        seletedOrderItem: {}
       }
     },
     computed: {
+      // 显示需要发货的订单
       showNeedSendOrders: {
     // getter
         get: function () {
@@ -226,23 +225,59 @@
             this.order_status = 2
             this.funding_status = 1
           } else {
-            this.order_status = null
-            this.funding_status = null
+            this.order_status = ''
+            this.funding_status = ''
           }
+          // 更新订单列表
+          this.flitterChange()
         }
       }
     },
     // 方法
     methods: {
       // 显示提示文字
-      message (m) {
+      messageError (m) {
         this.$message.error({
           message: m
         })
       },
+      messageSuccess (m) {
+        this.$message({
+          type: 'success',
+          message: m
+        })
+      },
+       // 过滤条件更改
+      flitterChange () {
+        this.currentPage = 1
+        this._orderList()
+      },
       // 格式化日期
       formatDate (date) {
         return dayjs(date).format('YYYY年MM月DD日 HH:mm:ss') // 展示
+      },
+      // 物流单号至少4位
+      vaildCheckingNumber (checking_number) {
+        return checking_number.length < 4
+      },
+      // 显示发货窗口
+      showSendOutDialog (orderItem) {
+        this.seletedOrderItem = orderItem
+        this.sendOutFormVisible = true
+      },
+      // 发货
+      _sendOutOrder (order_id, checking_number) {
+        let params = {order_id: order_id, checking_number: checking_number}
+        sendOutOrder(params).then(res => {
+          if (res.code === 200) {
+            this.messageSuccess('发货成功！')
+            // 更新订单信息
+            this._orderList()
+          } else {
+            this.messageError(res.message)
+          }
+        })
+        this.sendOutFormVisible = false
       },
       handleSizeChange (val) {
         this.pageSize = val
@@ -310,7 +345,7 @@
           if (res.code === 200) {
             this.orderList.splice(i, 1)
           } else {
-            this.message('删除失败')
+            this.messageError('删除失败')
           }
         })
       }
@@ -377,6 +412,13 @@
   }
   .flitter{
     margin:10px
+  }
+  .connectInfo{
+    margin: 0px 10px 10px 20px;
+    p {
+       font-size: 15px;
+      margin: 8px 0px;
+    }
   }
 
   .cart {

@@ -20,17 +20,23 @@ const support = () => import('/page/User/children/support.vue')
 const checkout = () => import('/page/Checkout/checkout.vue')
 const payment = () => import('/page/Order/payment.vue')
 const paysuccess = () => import('/page/Order/paysuccess.vue')
-// const Thanks = () => import('/page/Thanks/thanks.vue')
 const Search = () => import('/page/Search/search.vue')
 const RefreshSearch = () => import('/page/Refresh/refreshsearch.vue')
 const RefreshGoods = () => import('/page/Refresh/refreshgoods.vue')
 const orderDetail = () => import('/page/User/children/orderDetail.vue')
 
-// 商家相关
+/////////////////      商家相关       ///////////////
+// 订单管理
 const orderManager = () => import('/page/User/children/orderManager.vue')
+// 我的众筹
 const fundingManager = () => import('/page/User/children/fundingManager.vue')
+// 资质认证
 const licenseManager = () => import('/page/User/children/licenseManager.vue')
+// 订单详情（商家）
 const orderDetailManager = () => import('/page/User/children/orderDetailManager.vue')
+// 发起众筹
+const newFunding = () => import('/page/User/children/newFunding.vue')
+
 
 // const Alipay = () => import('/page/Order/alipay.vue')
 // const Wechat = () => import('/page/Order/wechat.vue')
@@ -168,6 +174,12 @@ export default new Router({
           name: '订单管理详情',
           component: orderDetailManager
         },
+        {
+          path: 'newFunding',
+          name: '发起众筹',
+          component: newFunding
+        },
+
       ]
     },
     {

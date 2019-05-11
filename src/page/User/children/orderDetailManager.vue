@@ -91,9 +91,26 @@
               <el-input style="width:240px;"
                         v-model="checking_number"
                         placeholder="物流单号"></el-input>
+              <el-button type="primary"
+                         :disabled="vaildCheckingNumber(checking_number)"
+                         @click="_sendOutOrder(orderItem.order_id,checking_number)">发 货</el-button>
             </p>
           </div>
-
+          <div class="status-now"
+               v-if="orderItem.order_status === 4">
+            <ul>
+              <li class="status-title">
+                <h3>订单状态：已发货</h3>
+              </li>
+            </ul>
+            <p class="realtime">
+              物流单号为 : {{orderItem.checking_number}}
+              <el-button @click="queryShipping()"
+                         type="primary"
+                         size="mini"
+                         round> 点击查询</el-button>
+            </p>
+          </div>
           <div class="status-now"
                v-if="orderItem.order_status === 6">
             <ul>
@@ -213,6 +230,27 @@
       }
     },
     methods: {
+      // 打开快递 100 页面查询物流信息
+      queryShipping () {
+        window.open('https://m.kuaidi100.com/result.jsp?nu=' + this.orderItem.checking_number)
+      },
+      // 物流单号至少4位
+      vaildCheckingNumber (checking_number) {
+        return checking_number.length < 4
+      },
+      // 发货
+      _sendOutOrder (order_id, checking_number) {
+        let params = {order_id: order_id, checking_number: checking_number}
+        sendOutOrder(params).then(res => {
+          if (res.code === 200) {
+            this.messageSuccess('发货成功！')
+            // 更新订单信息
+            this._getOrderDet()
+          } else {
+            this.message(res.message)
+          }
+        })
+      },
       _formatDate (date) {
         return formatDate(date)
       },
@@ -220,20 +258,15 @@
         let value = dayjs(dateStr).valueOf()
         return value
       },
-      message (m) {
-        this.$message.error({
+      messageSuccess (m) {
+        this.$message({
+          type: 'success',
           message: m
         })
       },
-      // orderPayment (orderId) {
-      //   let jsonStr = JSON.stringify(orderId)
-      //   window.open(window.location.origin + '#/order/payment?orderId=' + jsonStr)
-      // },
-      _sendOutOrder (checking_number) {
-        let params = {}
-        sendOutOrder(params).then(res => {
-          if (res.code === 200) {
-          }
+      message (m) {
+        this.$message.error({
+          message: m
         })
       },
       goodsDetails (id) {

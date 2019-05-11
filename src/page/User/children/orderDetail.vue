@@ -80,6 +80,33 @@
             </p>
           </div>
           <div class="status-now"
+               v-if="orderItem.order_status === 3">
+            <ul>
+              <li class="status-title">
+                <h3>订单状态：配货</h3>
+              </li>
+            </ul>
+            <p class="realtime">
+              您的订单已经开始配货
+            </p>
+          </div>
+          <div class="status-now"
+               v-if="orderItem.order_status === 4">
+            <ul>
+              <li class="status-title">
+                <h3>订单状态：已发货</h3>
+              </li>
+            </ul>
+            <p class="realtime">
+              物流单号为 : {{orderItem.checking_number}}
+              <el-button @click="queryShipping()"
+                         type="primary"
+                         size="mini"
+                         round> 点击查询</el-button>
+            </p>
+          </div>
+
+          <div class="status-now"
                v-if="orderItem.order_status === 6">
             <ul>
               <li class="status-title">
@@ -197,6 +224,10 @@
       }
     },
     methods: {
+      // 打开快递 100 页面查询物流信息
+      queryShipping () {
+        window.open('https://m.kuaidi100.com/result.jsp?nu=' + this.orderItem.checking_number)
+      },
       _formatDate (date) {
         return formatDate(date)
       },

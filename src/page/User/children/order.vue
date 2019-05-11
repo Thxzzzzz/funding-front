@@ -6,7 +6,7 @@
           <!-- 筛选订单状态 -->
           <el-select v-model="order_status"
                      clearable
-                     @change="_orderList()"
+                     @change="flitterChange()"
                      placeholder="订单状态">
             <el-option v-for="item in order_status_op"
                        :key="item.value"
@@ -18,7 +18,7 @@
           <!-- 筛选众筹状态 -->
           <el-select v-model="funding_status"
                      clearable
-                     @change="_orderList()"
+                     @change="flitterChange()"
                      placeholder="众筹状态">
             <el-option v-for="item in funding_status_op"
                        :key="item.value"
@@ -138,9 +138,8 @@
   export default {
     data () {
       return {
-                // 订单状态选项
+        // 订单状态选项
         order_status_op: [
-
           {
             value: 1,
             label: '未支付'
@@ -201,6 +200,11 @@
         this.$message.error({
           message: m
         })
+      },
+      // 过滤条件更改
+      flitterChange () {
+        this.currentPage = 1
+        this._orderList()
       },
       formatDate (date) {
         return dayjs(date).format('YYYY年MM月DD日 HH:mm:ss') // 展示
