@@ -98,7 +98,8 @@
                 <div class="status">
                   {{getOrderStatus(item.order_status)}}
                   <div v-if="item.order_status === 3">
-                    <el-button style="margin:5px 0px 0px 25px"
+                    <el-button @click="sendOutFormVisible = true"
+                               style="margin:5px 0px 0px 25px"
                                type="primary"
                                size="small">立即发货</el-button>
                   </div>
@@ -130,11 +131,12 @@
     </div>
     <el-dialog title="填写物流单号发货"
                :visible.sync="sendOutFormVisible"
-               width="3%"
-               top="500px"
+               width="400px"
+               top="25%"
                center>
       <el-input v-model="checking_number"
-                style="width:230px"></el-input>
+                placeholder="物流单号"
+                style="margin-left:20px;width:230px"></el-input>
 
       <el-button type="primary"
                  @click="dialogFormVisible = false">发 货</el-button>
@@ -153,7 +155,7 @@
     data () {
       return {
         checking_number: '',
-        sendOutFormVisible: true,
+        sendOutFormVisible: false,
         // 订单状态选项
         order_status_op: [
           {
@@ -272,7 +274,7 @@
         } else if (status === 3) {
           return '请及时发货'
         } else if (status === 4) {
-          return '已发出'
+          return '已发货'
         } else if (status === 5) {
           return '交易成功'
         } else if (status === 6) {

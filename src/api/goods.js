@@ -97,14 +97,23 @@ export const getOrderDet = (params) => {
 }
 // TODO 取消订单
 export const cancelOrder = (params) => {
-  return http.fetchPost('/member/cancelOrder', params)
+  return http.fetchPost('/order/cancelOrder', params)
 }
 // TODO 删除订单
 export const delOrder = (params) => {
-  return http.fetchGet('/member/delOrder', params)
+  return http.fetchGet('/order/delOrder', params)
 }
+// TODO 确认收货
+export const receivedOrder = (params) => {
+  return http.fetchGet('/order/receivedOrder', params)
+}
+
 //          TODO 订单 商家相关            //
 // 商家获取订单列表
 export const orderListToSeller = (params) => {
   return http.fetchGet('/order/orderListToSeller', params)
+}
+// 发货
+export const sendOutOrder = (params) => {
+  return http.fetchPost('/order/sendOutOrder', params)
 }

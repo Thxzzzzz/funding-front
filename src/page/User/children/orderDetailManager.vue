@@ -184,7 +184,7 @@
   </div>
 </template>
 <script>
-  import { getOrderDet, cancelOrder } from '/api/goods'
+  import { getOrderDet, cancelOrder, sendOutOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
   import { formatDate } from '/utils/dateUtil'
@@ -229,6 +229,13 @@
       //   let jsonStr = JSON.stringify(orderId)
       //   window.open(window.location.origin + '#/order/payment?orderId=' + jsonStr)
       // },
+      _sendOutOrder (checking_number) {
+        let params = {}
+        sendOutOrder(params).then(res => {
+          if (res.code === 200) {
+          }
+        })
+      },
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
@@ -282,14 +289,12 @@
   @import "../../../assets/style/mixin";
 
   .orderStatus {
-    display: flex;
     align-items: center;
     flex-direction: row;
     margin: 50px -150px 20px 60px;
   }
 
   .orderStatus-close {
-    display: flex;
     align-items: center;
     flex-direction: row;
     margin: 50px -800px 20px 60px;

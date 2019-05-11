@@ -12,14 +12,16 @@
           <div class="right-box">
             <div class="nav-list">
               <el-autocomplete placeholder="请输入商品信息"
-                               icon="search"
                                v-model="input"
-                               minlength=1
-                               maxlength=100
+                               :minlength=1
+                               :maxlength=100
                                :fetch-suggestions="querySearchAsync"
                                @select="handleSelect"
-                               :on-icon-click="handleIconClick"
                                @keydown.enter.native="handleIconClick">
+                <i class="el-icon-search el-input__icon"
+                   slot="suffix"
+                   @click="handleIconClick">
+                </i>
               </el-autocomplete>
               <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
 
@@ -182,7 +184,7 @@
   import { loginOut, navList } from '/api/index'
   import { getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
-  import 'element-ui/lib/theme-default/index.css'
+  // import 'element-ui/lib/theme-default/index.css'
 
   export default{
     data () {

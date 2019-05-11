@@ -70,7 +70,7 @@
                     <div>¥ {{Number(item.unit_price).toFixed(2)}}</div>
                     <div class="num">{{item.nums}}</div>
                     <div class="type">
-                      <el-button style="margin-left:20px"
+                      <el-button style="margin-left:10px"
                                  @click="_delOrder(item.order_id,i)"
                                  type="danger"
                                  size="small"
@@ -241,7 +241,7 @@
         } else if (status === 3) {
           return '正在配货'
         } else if (status === 4) {
-          return '已发出'
+          return '已发货'
         } else if (status === 5) {
           return '交易成功'
         } else if (status === 6) {

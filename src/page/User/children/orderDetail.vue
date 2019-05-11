@@ -267,14 +267,12 @@
   @import "../../../assets/style/mixin";
 
   .orderStatus {
-    display: flex;
     align-items: center;
     flex-direction: row;
     margin: 50px -150px 20px 60px;
   }
 
   .orderStatus-close {
-    display: flex;
     align-items: center;
     flex-direction: row;
     margin: 50px -800px 20px 60px;

@@ -26,11 +26,11 @@
             </div>
             <div class="operation">
               <el-button type="primary"
-                         icon="edit"
+                         icon="el-icon-edit"
                          size="small"
                          @click="update(item)"></el-button>
               <el-button type="danger"
-                         icon="delete"
+                         icon="el-icon-delete"
                          size="small"
                          :data-id="item.id"
                          @click="del(item.id,i)"></el-button>
