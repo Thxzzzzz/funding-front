@@ -14,6 +14,11 @@ export const checkoutPkgInfo = (params) => {
 export const productDet = (params) => {
   return http.fetchGet('/product/detail', params)
 }
+// 获取产品类型列表
+export const productTypeList = (params) => {
+  return http.fetchGet('/product/typeList', params)
+}
+
 // TODO 商品列表
 export const getSearch = (params) => {
   return http.fetchGet('/product/search', params)
@@ -21,6 +26,11 @@ export const getSearch = (params) => {
 // TODO 快速搜索
 export const getQuickSearch = (params) => {
   return http.fetchGet('/product/quickSearch', params)
+}
+// ////////      商品 商家相关        ///////
+// 保存产品
+export const saveProduct = (params) => {
+  return http.fetchPost('/pm/save', params)
 }
 
 //           购物车相关          //

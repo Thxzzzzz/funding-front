@@ -1,7 +1,8 @@
 <template>
   <div class="goods">
     <div class="nav">
-      <div class="w">
+      <!-- 排序先暂时注释掉，做好了再另外写 -->
+      <!-- <div class="w">
         <a href="javascript:;"
            :class="{active:sortType===1}"
            @click="reset()">综合排序</a>
@@ -25,7 +26,7 @@
                     @btnClick="reset"
                     style="margin-left: 10px;"></y-button>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div v-loading="loading"

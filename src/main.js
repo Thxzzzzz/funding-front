@@ -26,12 +26,16 @@ import {
   Dialog,
   Select,
   Form,
-  // FormItem,
+  FormItem,
+  DatePicker,
+  Upload,
   Option
 } from 'element-ui'
 import VueContentPlaceholders from 'vue-content-placeholders'
 Vue.use(Form)
-// Vue.use(FormItem)
+Vue.use(FormItem)
+Vue.use(DatePicker)
+Vue.use(Upload)
 Vue.use(Progress)
 Vue.use(VueContentPlaceholders)
 Vue.use(Button)
