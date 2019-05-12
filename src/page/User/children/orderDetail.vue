@@ -34,7 +34,7 @@
             </el-steps>
           </div>
           <div class="orderStatus-close"
-               v-if="order_status === 7">
+               v-if="orderItem.order_status === 7">
             <el-steps :space="780"
                       :active="2">
               <el-step title="下单"

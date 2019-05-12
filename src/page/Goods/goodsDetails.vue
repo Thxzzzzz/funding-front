@@ -126,8 +126,17 @@
             <div align="left"
                  style="clear:both;">
               <el-button style="width:160px; margin-top:10px;margin-bottom:10px;"
+                         type="normal"
+                         :disabled="true"
+                         v-if="dayLeft<=0">众筹已结束</el-button>
+              <el-button style="width:160px; margin-top:10px;margin-bottom:10px;"
+                         type="normal"
+                         :disabled="true"
+                         v-else-if="!isBuyerOrNotLogin">商家账户不能购买</el-button>
+              <el-button style="width:160px; margin-top:10px;margin-bottom:10px;"
                          type="success"
                          @click="buy(item)"
+                         v-else
                          :disabled="item.stock === 0"
                          size="large">{{item.stock === 0 ? '已售罄' : '支持￥' + item.price }}</el-button>
             </div>
@@ -199,6 +208,11 @@
     },
     computed: {
       ...mapState(['login', 'showMoveImg', 'showCart', 'userInfo']),
+      // 是否显示购买按钮 是买家或者未登录则显示购买按钮
+      isBuyerOrNotLogin () {
+        if (!this.userInfo) return true
+        return this.userInfo.info.role_id === 0
+      },
       progressPercent: function () {
         return Number(this.product.current_price / this.product.target_price * 100).toFixed(0)
       },
