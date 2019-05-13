@@ -1,22 +1,19 @@
 // TODO 发起众筹
 <template>
   <div>
-    <y-shelf title="发起众筹">
+    <y-shelf :title="title">
       <div slot="content">
         <div class="content">
           <div class="steps">
             <el-steps :active="step"
                       align-center>
-              <el-step title="产品信息"
-                       description=""></el-step>
-              <el-step title="产品详情"
-                       description=""></el-step>
-              <el-step title="套餐信息"
-                       description=""></el-step>
-              <el-step title="提交审核"
-                       description=""></el-step>
+              <el-step title="产品信息"></el-step>
+              <el-step title="产品详情"></el-step>
+              <el-step title="套餐信息"></el-step>
+              <el-step title="提交审核"></el-step>
             </el-steps>
           </div>
+
           <!-- 产品信息 -->
           <div class="editZone"
                v-if="step === 1">
@@ -88,30 +85,154 @@
 
               </el-form-item>
               <el-form-item label="">
-                <el-button type="primary"
-                           @click="_saveProduct(productForm)">保存</el-button>
+                <el-button type="success"
+                           @click="_saveProductInfo(productForm)">保存</el-button>
+                <span style="margin:0 10px;">新发起的众筹保存后才能进入下一步</span>
               </el-form-item>
             </el-form>
           </div>
+
           <!-- 产品详情 -->
           <div class="editZone"
-               v-else-if="step === 2">
-            <editor :catchData="catchDetailHtml"></editor>
-            <el-button v-on:click="showDetail_html">预览</el-button>
-
+               v-if="step === 2">
+            <editor class="editor"
+                    :initContent="detail_html"
+                    v-model="detail_html"></editor>
+            <!-- <el-button v-on:click="showDetail_html">预览</el-button> -->
+            <p style="margin:50px 0px 0px 40px;font-size:18px;">效果预览：</p>
             <div class="detail_htmlPreview">
               <div v-html="detail_html">{{ detail_html }}</div>
             </div>
+            <el-button style="margin:10px 0px 0px 40px;"
+                       type="success"
+                       @click="_saveProductDetailHtml()">保存</el-button>
           </div>
+
           <!-- 套餐信息 -->
           <div class="editZone"
-               v-else-if="step === 3">
-            套餐信息
+               v-if="step === 3">
+            <!-- 套餐信息-->
+            <div style="width:100%;margin:0px auto">
+              <div v-for="(item,key) in product_packages"
+                   :key="key"
+                   class="info-card">
+                <y-shelf :title="'￥'+item.price">
+                  <div slot="right">
+                    <span style="font-size:16px; color:gray;">{{item.backers}} 位支持者</span>
+                  </div>
+                  <div slot="content"
+                       class="info-des"
+                       style="padding:25px">
+                    <div class="left-label"
+                         style="font-size:15px; 
+                 font-weight:bold;">
+                      <span>限额{{item.total}}份</span>
+                      <span>&nbsp;|&nbsp;剩余{{item.stock}}份</span>
+                    </div>
+                    <div style="clear:both;text-align:left">{{item.description}}</div>
+                    <div>
+                      <img :src="item.image_url"
+                           alt="图片"
+                           style="width:70px;height:70px;margin:15px 0px;float:left;">
+                    </div>
+                    <div style="clear:both;text-align:left">
+                      <span>配送费用：</span>
+                      <span v-if="item.freight != 0">{{item.freight}}</span>
+                      <span v-else
+                            style="font-weight:bold;">免运费</span>
+                    </div>
+                    <div style="clear:both;text-align:left">
+                      <span>预计回报发送时间：</span>
+                      <span style="font-weight:bold;">
+                        <span>项目众筹成功后</span>
+                        <span style="color:red;">{{item.delivery_day}}</span>
+                        <span>天内</span>
+                      </span>
+                    </div>
+                    <div align="left"
+                         style="clear:both;">
+                    </div>
+                    <el-button style="margin-top:10px"
+                               type="normal"
+                               @click="editOldPkg(item)">编辑</el-button>
+                  </div>
+                </y-shelf>
+              </div>
+            </div>
+            <el-button @click="editPkgDialogShow = true"
+                       type="primary"
+                       class="submitButto"> 新增套餐 </el-button>
+
+            <!-- 新增套餐对话框 -->
+            <el-dialog title="新增套餐"
+                       :visible.sync="editPkgDialogShow">
+              <el-form :model="editPkgForm"
+                       :rules="editPkgFormRule"
+                       ref="editPkgForm"
+                       label-width="80px">
+                <el-form-item label="套餐描述"
+                              prop="description">
+                  <el-input v-model="editPkgForm.description"
+                            placeholder="请输入套餐描述"></el-input>
+                </el-form-item>
+                <el-form-item label="套餐价格"
+                              prop="price">
+                  <el-input v-model.number="editPkgForm.price"
+                            placeholder="请输入套餐价格"
+                            type="number"></el-input>
+                </el-form-item>
+                <el-form-item label="套餐总数"
+                              prop="total">
+                  <el-input v-model.number="editPkgForm.total"
+                            placeholder="请输入套餐总数"
+                            type="number"></el-input>
+                </el-form-item>
+                <el-form-item label="套餐运费"
+                              prop="freight">
+                  <el-input v-model.number="editPkgForm.freight"
+                            placeholder="请输入套餐运费"
+                            type="number"></el-input>
+                </el-form-item>
+                <el-form-item label="发货时间"
+                              prop="freight">
+                  <el-input v-model.number="editPkgForm.delivery_day"
+                            placeholder="请输入发货时间（众筹成功后多少天内）"
+                            type="number"></el-input>
+                </el-form-item>
+                <el-form-item label="套餐图片"
+                              prop="image_rul">
+                  <img :src="editPkgForm.image_url"
+                       alt=""
+                       style="max-height:100px;">
+                  <el-upload :action="uploadImgUrl"
+                             :limit="1"
+                             style="width:300px;"
+                             :on-success="pkgImgUploadSuccess"
+                             :on-preview="pkgImgPreview"
+                             :on-remove="pkgImgRemove">
+                    <el-button size="small"
+                               type="primary">点击上传</el-button>
+                  </el-upload>
+                </el-form-item>
+                <el-form-item>
+                  <el-button @click="_saveProductPkg(editPkgForm)"
+                             type="success">保存</el-button>
+                </el-form-item>
+
+              </el-form>
+            </el-dialog>
+
           </div>
+
           <!-- 提交审核 -->
           <div class="editZone"
-               v-else-if="step === 4">
-            提交审核
+               v-if="step === 4">
+            <h1 style="font-size:20px;">当前审核状态:</h1>
+            <p style="font-size:40px; margin:10px auto;text-align:center;color:black">{{verifyStatusStr}}</p>
+            <el-button v-if="neetSubmitVerify"
+                       @click="_submitProductVerify()"
+                       style="margin:0 auto;text-align:center"
+                       type="success">提交审核</el-button>
           </div>
           <div class="stepControl">
             <el-button type="normal"
@@ -133,7 +254,7 @@
   </div>
 </template>
 <script>
-import { productTypeList, saveProduct, productById, pkgListByProductId } from '/api/goods'
+import { productTypeList, saveProduct, productById, pkgListByProductId, saveProductPackage } from '/api/goods'
 import { uploadImage } from '/api/index'
 import Editor from '/components/Editor'
 import YShelf from '/components/shelf'
@@ -143,6 +264,7 @@ export default {
   },
   data () {
     return {
+      title: '发起众筹',
         // 上传图片的 API 地址 本来是 http://127.0.0.1:8080/v1/user/uploadImage，但是这里做了转发
       uploadImgUrl: 'http://localhost:9999/user/uploadImage',
         // 步骤
@@ -157,7 +279,7 @@ export default {
       productTypeList: [],
         // 产品信息 对应数据库  products
       productForm: {
-        id: 0,
+        id: '',
         name: '', // 产品名称
         big_img: '', // 大图
         small_img: '', // 小图
@@ -167,6 +289,7 @@ export default {
         end_time: '' // 截止时间
       },
       detail_html: '', // 详情介绍的 html 字符串
+      verify_status: 3, // 验证状态 1：已通过 2：待审核 3: 待提交 4: 未通过
         // 产品信息表单校验
       productFormRule: {
         name: [
@@ -189,10 +312,71 @@ export default {
         small_img: [
             { required: true, message: '请上传列表小图', trigger: 'blur' }
         ]
-      }
+      },
+
+      // 套餐相关
+      product_packages: [],
+      // 新增/编辑 套餐对话框 表单
+      editPkgForm: {
+        id: 0,
+        product_id: 0,
+        description: '',
+        image_url: '',
+        price: '',
+        stock: 0,
+        total: 0,
+        freight: 0,
+        delivery_day: ''
+      },
+      editPkgFormRule: {
+        description: [
+            { required: true, message: '不能为空', trigger: 'blur' },
+            { min: 2, max: 128, message: '长度在 2 到 128个字符', trigger: 'blur' }
+        ],
+        price: [
+            { required: true, message: '不能为空', trigger: 'blur' },
+            { type: 'number', min: 1, max: 100000000, message: '目标金额需要在 1 ~ 100000000 元之间', trigger: 'blur' }
+        ],
+        total: [
+             { required: true, message: '不能为空', trigger: 'blur' },
+            { type: 'number', min: 1, message: '目标库存需要大于 1', trigger: 'blur' }
+        ],
+        image_url: [
+            { required: true, message: '请上传宣传套餐图片', trigger: 'blur' }
+        ]
+
+      },
+      // 是否显示编辑套餐对话框
+      editPkgDialogShow: false
     }
   },
   computed: {
+    verifyStatusStr () {
+      // 1：已通过 2：待审核 3: 待提交 4: 未通过
+      if (this.verify_status === 0 || this.verify_status === 3) {
+        return '待提交审核'
+      } else if (this.verify_status === 1) {
+        return '审核通过！'
+      } else if (this.verify_status === 2) {
+        return '待审核'
+      } else if (this.verify_status === 4) {
+        return '审核失败！'
+      }
+      return '待提交审核'
+    },
+    neetSubmitVerify () {
+      // 1：已通过 2：待审核 3: 待提交 4: 未通过
+      if (this.verify_status === 0 || this.verify_status === 3) {
+        return true
+      } else if (this.verify_status === 1) {
+        return false
+      } else if (this.verify_status === 2) {
+        return false
+      } else if (this.verify_status === 4) {
+        return true
+      }
+      return false
+    },
         // 禁用上一步的条件
     lastStepDisable () {
       return this.step < 2
@@ -223,7 +407,7 @@ export default {
       this.imgPreviewUrl = imgUrl
       this.imgPreviewDialogShow = true
     },
-      // 上传文件
+      // 上传文件 现在还用不到这个方法(文本编辑器里用到了)，现在是用的 element-ui 自带的上传控件上传的
     _uploadFile (urlReceiver, file) {
       let params = new FormData()
         // 通过append向form对象添加数据
@@ -262,6 +446,7 @@ export default {
     smallImgPreview (file) {
       this.previewImg(this.productForm.small_img)
     },
+
       // 获取产品类型列表
     _getProductTypeList () {
       productTypeList().then(res => {
@@ -286,20 +471,31 @@ export default {
     },
       // 保存产品信息
     _saveProduct (params) {
-      let valid = this.validForm('productForm')
-      if (!valid) return
       saveProduct(params).then(res => {
         if (res.code === 200) {
           this.productForm.id = res.data.id
+          this._getProductInfo(res.data.id)
           this.messageSuccess('产品信息保存成功')
         } else {
           this.messageError(res.message)
         }
       })
     },
+    // 保存产品基本信息（详情除外）
+    _saveProductInfo (params) {
+      let valid = this.validForm('productForm')
+      if (!valid) return
+      this._saveProduct(params)
+    },
     // 保存产品详情信息
     _saveProductDetailHtml () {
       let params = { id: this.productForm.id, detail_html: this.detail_html }
+      this._saveProduct(params)
+    },
+    // 提交审核
+    _submitProductVerify () {
+      // 1：已通过 2：待审核 3: 待提交 4: 未通过
+      let params = { id: this.productForm.id, verify_status: 2 }
       this._saveProduct(params)
     },
     // 从文本编辑器更新 detail_html
@@ -323,9 +519,44 @@ export default {
           this.productForm.target_price = data.target_price
           this.productForm.end_time = data.end_time
           this.detail_html = data.detail_html
+          this.verify_status = data.verify_status
           this.messageSuccess('产品信息获取成功')
         } else {
           this.messageError('产品信息获取失败' + res.message)
+        }
+      })
+    },
+    // 套餐相关
+     // 套餐图
+    pkgImgUploadSuccess (response, file, fileList) {
+      if (response.code === 200) {
+        this.editPkgForm.image_url = response.data
+      }
+    },
+      // 套餐图
+    pkgImgRemove (file, fileList) {
+      this.editPkgForm.image_url = ''
+    },
+      // 套餐图
+    pkgImgPreview (file) {
+      this.previewImg(this.editPkgForm.image_url)
+    },
+    editOldPkg (item) {
+      this.editPkgForm = item
+      this.editPkgDialogShow = true
+    },
+    // 保存套餐信息
+    _saveProductPkg (params) {
+      let valid = this.validForm('editPkgForm')
+      if (!valid) return
+      params.product_id = this.productForm.id
+      // if (!params.backers) {
+      //   params.backers = params.total
+      // }
+      saveProductPackage(params).then(res => {
+        if (res.code === 200) {
+          this._pkgListByProductId(this.productForm.id)
+          this.editPkgDialogShow = false
         }
       })
     },
@@ -343,8 +574,9 @@ export default {
     },
 
     switchStep (step) {
-      console.log(step)
+      // console.log(step)
       this.step = step
+      this.$router.push({path: '/user/newFunding', query: {productId: this.productForm.id, step: this.step}})
     }
   },
   created () {
@@ -354,22 +586,37 @@ export default {
     let productId = this.$route.query.productId
     console.log(productId)
     if (productId) {
+      this.title = '编辑众筹'
       this._getProductInfo(productId)
       this._pkgListByProductId(productId)
     }
     let step = this.$route.query.step
     if (step) {
-      this.step = step
+      this.step = Number(step)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+  .submitButto{
+    margin: 10px 0px 10px 20px
+  }
+  .editor{
+    margin-left: auto;
+    margin-right: auto;
+    width: 850px;
+  }
   .detail_htmlPreview{
-    width: 80%;
-    border: 1;
-    border-color: gray;
-    margin: 10px
+    margin-left: auto;
+    margin-right: auto;
+    width: 838.2px;
+    border-radius: 15px;
+    border-style: solid; 
+    border-width: 5px;
+    border-color:lightgray;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 30px;
   }
   .mediumInput {
     width:300px;
@@ -388,5 +635,30 @@ export default {
     line-height: 2em;
     font-size: 22px;
     color: #999;
+  }
+  .info-card{
+    width:100%;
+    .gray-box {
+      padding: 0;
+      display: block;
+    }
+    .left-label {
+      text-align: left;
+      float: left;
+      height: 30px;
+      font-size: 20px;
+      margin: 0 0 10px;
+    }
+
+    .right-label {
+      text-align: right;
+      float: right;
+      height: 30px;
+      font-size: 20px;
+      margin: 0 0 10px;
+    }
+    .info-des span{
+      margin: 10px 0px
+    }
   }
 </style>

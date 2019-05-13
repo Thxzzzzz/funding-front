@@ -40,6 +40,10 @@ export const productById = (params) => {
 export const pkgListByProductId = (params) => {
   return http.fetchGet('/pm/pkgListByProductId', params)
 }
+// 保存产品套餐信息
+export const saveProductPackage = (params) => {
+  return http.fetchPost('/pm/saveProductPackage', params)
+}
 
 //           购物车相关          //
 

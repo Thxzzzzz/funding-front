@@ -250,6 +250,9 @@
               product_package_id: product_package_id,
               nums: this.nums,
               checked: true}).then(res => {
+                // if(res.code===200){
+  
+                // }
               // 并不重新请求数据
                 this.ADD_CART({
                   product_package_id: product_package_id,
