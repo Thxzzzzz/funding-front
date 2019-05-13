@@ -17,7 +17,10 @@ export const userInfo = (params) => {
 export const register = (params) => {
   return http.fetchPost('/user/register', params)
 }
-
+// 上传图片
+export const uploadImage = (params, OnUploadProgress) => {
+  return http.Upload('/user/uploadImage', params, OnUploadProgress)
+}
 // 上传图片
 export const upload = (params) => {
   return http.fetchPost('/member/imgaeUpload', params)

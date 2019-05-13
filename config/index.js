@@ -28,6 +28,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      // 产品相关
       '/product': {
         target: 'http://127.0.0.1:8080/v1', // 请求本地后台项目 默认127.0.0.1:8080
         changeOrigin: true,
@@ -35,6 +36,7 @@ module.exports = {
           '^/product': '/product'
         } //这里重写路径
       },
+      // 用户相关
       '/user': {
         target: 'http://127.0.0.1:8080/v1', // 请求本地后台项目 默认127.0.0.1:8080
         changeOrigin: true,
@@ -42,11 +44,20 @@ module.exports = {
           '^/user': '/user'
         } //这里重写路径
       },
+      // 订单相关
       '/order': {
         target: 'http://127.0.0.1:8080/v1', // 请求本地后台项目 默认127.0.0.1:8080
         changeOrigin: true,
         pathRewrite: {
           '^/order': '/order'
+        } //这里重写路径
+      },
+      // 产品管理
+      '/pm': {
+        target: 'http://127.0.0.1:8080/v1', // 请求本地后台项目 默认127.0.0.1:8080
+        changeOrigin: true,
+        pathRewrite: {
+          '^/pm': '/pm'
         } //这里重写路径
       }
     },

@@ -32,6 +32,14 @@ export const getQuickSearch = (params) => {
 export const saveProduct = (params) => {
   return http.fetchPost('/pm/save', params)
 }
+// 获取产品信息
+export const productById = (params) => {
+  return http.fetchGet('/pm/productById', params)
+}
+// 获取产品套餐信息
+export const pkgListByProductId = (params) => {
+  return http.fetchGet('/pm/pkgListByProductId', params)
+}
 
 //           购物车相关          //
 

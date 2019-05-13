@@ -1,6 +1,7 @@
 import axios from 'axios'
 axios.defaults.timeout = 10000
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded'
+
 export default {
   fetchGet (url, params = {}) {
     return new Promise((resolve, reject) => {
@@ -19,6 +20,18 @@ export default {
       }).catch(error => {
         reject(error)
       })
+    })
+  },
+  Upload (url, params, OnUploadProgress) {
+    return new Promise((resolve, reject) => {
+      axios.post(url, params, {
+        headers: { 'Content-Type': 'multipart/form-data',
+          onUploadProgress: OnUploadProgress
+        }}).then(res => {
+          resolve(res.data)
+        }).catch(error => {
+          reject(error)
+        })
     })
   }
 }
