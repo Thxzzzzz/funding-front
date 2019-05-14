@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-
     <div v-loading="loading"
          element-loading-text="加载中..."
          style="min-height: 35vw;"
@@ -36,6 +35,46 @@
                 @click="change(i)"></li>
           </ul>
         </div>
+      </div>
+
+      <!-- 活动板块  -->
+      <div class="activity-panel">
+        <ul class="box"
+            style="height:100px">
+          <li class="content">
+            <div class="countInfo">
+              <p class="countInfoNum">{{productCountInfo.support_price_count}}</p>
+              <p class="countInfoText">累计支持金额</p>
+            </div>
+
+            <a class="cover-link">
+            </a>
+          </li>
+          <li class="content">
+            <div class="countInfo">
+              <p class="countInfoNum">{{productCountInfo.max_support_price}}</p>
+              <p class="countInfoText">单项最高筹集金额</p>
+            </div>
+            <a class="cover-link">
+            </a>
+          </li>
+          <li class="content">
+            <div class="countInfo">
+              <p class="countInfoNum">{{productCountInfo.backers_count}}</p>
+              <p class="countInfoText">累计支持人数</p>
+            </div>
+            <a class="cover-link">
+            </a>
+          </li>
+          <li class="content">
+            <div class="countInfo">
+              <p class="countInfoNum">{{productCountInfo.max_backers}}</p>
+              <p class="countInfoText">单项最高支持人数</p>
+            </div>
+            <a class="cover-link">
+            </a>
+          </li>
+        </ul>
       </div>
 
       <div v-for="(item,i) in home"
@@ -107,7 +146,7 @@
   </div>
 </template>
 <script>
-import { productHome } from '/api/index.js'
+import { productHome, getProductCountInfo } from '/api/index.js'
 import YShelf from '/components/shelf'
 import product from '/components/product'
 import mallGoods from '/components/mallGoods'
@@ -125,6 +164,8 @@ export default {
         h: 0
       },
       home: [],
+      // 统计信息
+      productCountInfo: {},
       loading: true,
       notify: '1',
       dialogVisible: false,
@@ -224,6 +265,11 @@ export default {
         }
       }
     })
+    getProductCountInfo().then(res => {
+      if (res.code === 200) {
+        this.productCountInfo = res.data
+      }
+    })
     this.showNotify()
   },
   created () {
@@ -286,6 +332,20 @@ export default {
     }
   }
 }
+.countInfo{
+  text-align: center;
+  vertical-align: middle;
+}
+.countInfoNum{
+  margin-top: 10px;
+  font-size: 38px;
+  font-weight: bold;
+  color: black;
+}
+.countInfoText{
+  font-size: 16px;
+  font-weight: bold;
+}
 
 .activity-panel {
   width: 1220px;
@@ -301,6 +361,7 @@ export default {
     background: #fff;
     box-shadow: 0 3px 8px -6px rgba(0, 0, 0, 0.1);
   }
+
   .content {
     float: left;
     position: relative;

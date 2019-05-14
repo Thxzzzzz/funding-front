@@ -38,6 +38,10 @@ export const thanksList = (params) => {
 export const productHome = (params) => {
   return http.fetchGet('/product/home', params)
 }
+// 首页统计
+export const getProductCountInfo = (params) => {
+  return http.fetchGet('/product/getProductCountInfo', params)
+}
 // 首页接口
 export const navList = (params) => {
   return http.fetchGet('/goods/navList', params)
@@ -54,4 +58,3 @@ export const thank = (params) => {
 export const geetest = (params) => {
   return http.fetchGet('/member/geetestInit?t=' + (new Date()).getTime(), params)
 }
-
