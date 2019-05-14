@@ -19,6 +19,11 @@ export const productTypeList = (params) => {
   return http.fetchGet('/product/typeList', params)
 }
 
+// 获取产品评论
+export const getCommentInfoByProductId = (params) => {
+  return http.fetchGet('/product/getCommentInfoByProductId', params)
+}
+
 // TODO 商品列表
 export const getSearch = (params) => {
   return http.fetchGet('/product/search', params)

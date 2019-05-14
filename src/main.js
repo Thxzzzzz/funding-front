@@ -30,9 +30,13 @@ import {
   FormItem,
   DatePicker,
   Upload,
-  Option
+  Option,
+  Tabs,
+  TabPane
 } from 'element-ui'
 import VueContentPlaceholders from 'vue-content-placeholders'
+Vue.use(TabPane)
+Vue.use(Tabs)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(DatePicker)

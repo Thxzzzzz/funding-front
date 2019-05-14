@@ -57,16 +57,41 @@
     <div class="item-info">
       <y-shelf title="产品信息">
         <div slot="content">
-          <div class="img-item"
-               v-if="product.detail_html">
-            <div v-html="product.detail_html">{{ product.detail_html }}</div>
-          </div>
-          <div class="no-info"
-               v-else>
-            <img src="/static/images/no-data.png">
-            <br>
-            该商品暂无内容数据
-          </div>
+          <el-tabs :value="tabsName"
+                   style="margin:0px 10px">
+            <el-tab-pane label="产品详情"
+                         name="productDetail">
+              <div class="img-item"
+                   v-if="product.detail_html">
+                <div v-html="product.detail_html">{{ product.detail_html }}</div>
+              </div>
+              <div class="no-info"
+                   v-else>
+                <img src="/static/images/no-data.png">
+                <br>
+                该商品暂无内容数据
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="产品讨论"
+                         name="comments">
+
+              <div class="comment">
+                <div class="title">评论</div>
+                <input-component :show="true"
+                                 type="end">
+                </input-component>
+                <!-- TODO -->
+                <!-- @cancel="cancelInput"
+                       @confirm="commitComment"> -->
+                <div class="comment-num">{{commentData.length}} 条评论</div>
+                <div class="comment-content">
+                  <comment :comments="commentData"></comment>
+                </div>
+              </div>
+
+            </el-tab-pane>
+          </el-tabs>
+
         </div>
       </y-shelf>
     </div>
@@ -210,12 +235,15 @@
   </div>
 </template>
 <script>
-  import { productDet, addCart } from '/api/goods'
+  import { productDet, addCart, getCommentInfoByProductId } from '/api/goods'
   import { mapMutations, mapState } from 'vuex'
   import YShelf from '/components/shelf'
   import YPopup from '/components/popup'
   import BuyNum from '/components/buynum'
   import YButton from '/components/YButton'
+  import comment from '/components/Comment'
+  import InputComponent from '/components/InputComponent'
+
   import { getStore } from '/utils/storage'
   import { calcDayBetween } from '/utils/dateUtil'
   import dayjs from 'dayjs'
@@ -233,7 +261,11 @@
           nums: 0,
           unit_price: 0
         },
-        userId: 0
+        userId: 0,
+        // 评论
+        commentData: [],
+        // 选项卡
+        tabsName: 'productDetail'
   
       }
     },
@@ -335,20 +367,29 @@
       },
       editNum (num) {
         this.nums = num
+      },
+      _getCommentInfoByProductId (productId) {
+        getCommentInfoByProductId({params: {product_id: productId}}).then(res => {
+          if (res.code === 200) {
+            this.commentData = res.data
+          }
+        })
       }
     },
     components: {
-      YShelf, BuyNum, YButton, YPopup
+      YShelf, BuyNum, YButton, YPopup, comment, InputComponent
     },
     created () {
       let id = this.$route.query.productId
       this._productDet(id)
+      this._getCommentInfoByProductId(id)
       this.userId = getStore('userId')
     }
   }
 </script>
 <style lang="scss" scoped>
   @import "../../assets/style/mixin";
+  @import "../../assets/style/comment.scss";
 
   .store-content {
     clear: both;
@@ -526,6 +567,27 @@
     i {
       padding-left: 2px;
       font-size: 24px;
+    }
+  }
+
+.comment {
+    width: 100%;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    .title {
+      font-size: 16px;
+      color: $text-main;
+      font-weight: 700;
+      padding: 10px;
+      border-bottom: 1px solid $border-third;
+    }
+    .comment-num {
+      font-size: 16px;
+      color: $text-main;
+      font-weight: 600;
+      margin: 0 20px;
+      padding: 10px 0;
     }
   }
 </style>

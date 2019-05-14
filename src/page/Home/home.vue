@@ -53,7 +53,7 @@
           <li class="content">
             <div class="countInfo">
               <p class="countInfoNum">{{productCountInfo.max_support_price}}</p>
-              <p class="countInfoText">单项最高筹集金额</p>
+              <p class="countInfoText"> 单项最高筹集金额</p>
             </div>
             <a class="cover-link">
             </a>
