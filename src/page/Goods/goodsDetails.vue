@@ -77,11 +77,11 @@
       <!-- 项目发起人 -->
       <div class="info-card">
         <y-shelf title="项目发起人">
-          <div slot="right">
-
-          </div>
-          <div slot="content">
-
+          <!-- <div slot="right">
+          </div> -->
+          <div slot="content"
+               style="padding:25px">
+            <!-- TODO 项目发起人 -->
           </div>
         </y-shelf>
       </div>
@@ -140,6 +140,36 @@
                          :disabled="item.stock === 0"
                          size="large">{{item.stock === 0 ? '已售罄' : '支持￥' + item.price }}</el-button>
             </div>
+          </div>
+        </y-shelf>
+
+      </div>
+      <div class="info-card">
+        <y-shelf title="联系我们">
+          <div slot="content"
+               style="padding:25px">
+            <!-- TODO 联系我们 -->
+          </div>
+        </y-shelf>
+      </div>
+
+      <div class="info-card">
+        <y-shelf title="风险说明">
+          <div slot="content"
+               style="padding:25px">
+            <p>1. 众筹不是商品交易。支持者根据自己的判断选择、支持众筹项目，与发起人共同实现梦想并获得发起人承诺的回报，众筹存在一定风险。</p>
+            <p>
+              2. 本众筹系统只提供平台网络空间、技术服务和支持等中介服务。本系统作为居间方，并不是发起人或支持者中的任何一方，众筹仅存在于发起人和支持者之间，使用本众筹系统产生的法律后果由发起人与支持者自行承担。
+            </p>
+            <p>
+              3. 众筹项目的回报发放、发票开具及其他后续服务事项均由发起人负责。如果发生发起人无法发放回报、延迟发放回报、不提供回报后续服务等情形，您需要直接和发起人协商解决，本众筹系统对此不承担任何责任。
+            </p>
+            <p>
+              4. 由于发起人能力和经验不足、市场风险、法律风险等各种因素，众筹可能失败。众筹期限届满前失败或募集失败的，您支持的款项会全部原路退还给您；其他情况下，您需要直接和发起人协商解决，本众筹系统对此不承担任何责任。
+            </p>
+            <p>
+              5. 支持纯抽奖档位、无私支持档位及公益众筹项目档位，一旦支付成功将不予退款，众筹失败的除外。
+            </p>
           </div>
         </y-shelf>
       </div>
@@ -204,6 +234,7 @@
           unit_price: 0
         },
         userId: 0
+  
       }
     },
     computed: {

@@ -229,10 +229,10 @@
                v-if="step === 4">
             <h1 style="font-size:20px;">当前审核状态:</h1>
             <p style="font-size:40px; margin:10px auto;text-align:center;color:black">{{verifyStatusStr}}</p>
-            <el-button v-if="neetSubmitVerify"
-                       @click="_submitProductVerify()"
-                       style="margin:0 auto;text-align:center"
-                       type="success">提交审核</el-button>
+            <!-- 失败原因： -->
+            <p v-if="verify_status===4"
+               style="font-size:24px; margin:10px auto;text-align:center;color:black;width:500px">{{verify_message}} 请修改后重新提交审核</p>
+
           </div>
           <div class="stepControl">
             <el-button type="normal"
@@ -240,7 +240,13 @@
                        :disabled="lastStepDisable">上一步</el-button>
             <el-button type="normal"
                        @click="switchStep(step + 1)"
+                       v-if="(step !== 4)"
                        :disabled="nextStepDisable">下一步</el-button>
+            <el-button v-if="(step === 4)"
+                       :disabled="!neetSubmitVerify"
+                       @click="_submitProductVerify()"
+                       style="margin:0 auto;text-align:center"
+                       type="success">提交审核</el-button>
           </div>
         </div>
       </div>
@@ -290,6 +296,7 @@ export default {
       },
       detail_html: '', // 详情介绍的 html 字符串
       verify_status: 3, // 验证状态 1：已通过 2：待审核 3: 待提交 4: 未通过
+      verify_message: '', // 审核信息
         // 产品信息表单校验
       productFormRule: {
         name: [
@@ -520,6 +527,7 @@ export default {
           this.productForm.end_time = data.end_time
           this.detail_html = data.detail_html
           this.verify_status = data.verify_status
+          this.verify_message = data.verify_message
           this.messageSuccess('产品信息获取成功')
         } else {
           this.messageError('产品信息获取失败' + res.message)

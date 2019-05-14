@@ -125,6 +125,7 @@
         // 将 id 转成 product_id mallgood 组件才能正确处理
         list = list.map(function (product) {
           product.product_id = product.id
+          product.verify_status = product.verify_status
           return product
         })
 

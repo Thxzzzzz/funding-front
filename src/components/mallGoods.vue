@@ -107,12 +107,16 @@ export default {
     },
     editProduct (productId) {
       console.log('edit:' + productId)
+      let query = {
+        productId: productId
+      }
+      if (this.msg.verify_status && this.msg.verify_status === 4) {
+        query.step = 4
+      }
       this.$router.push(
         {
           path: '/user/newFunding',
-          query: {
-            productId: productId
-          }
+          query
         })
     }
   },
