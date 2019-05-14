@@ -30,7 +30,6 @@
                 <mall-goods v-for="(item,i) in VerifyUnsubmitProducts"
                             :key="i"
                             :hideDetailBt="true"
-                            s
                             :canEdit="true"
                             :msg="item"></mall-goods>
               </div>
@@ -44,6 +43,7 @@
                 <mall-goods v-for="(item,i) in VerifyWaitProducts"
                             :key="i"
                             :hideDetailBt="true"
+                            :canEdit="true"
                             :msg="item"></mall-goods>
               </div>
             </div>
