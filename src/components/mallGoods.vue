@@ -23,13 +23,14 @@
              style="margin-top:35px;">
           <a @click="openProduct(msg.product_id)">
             <y-button text="查看详情"
+                      v-if="!hideDetailBt"
                       style="margin: 0 5px"></y-button>
           </a>
-          <!-- <y-button text="加入购物车"
+          <y-button text="编辑"
+                    v-if="canEdit"
                     style="margin: 0 5px"
-                    @btnClick="addCart(msg.product_id,msg.current_price,msg.name,msg.small_img)"
-                    classStyle="main-btn"
-          ></y-button> -->
+                    @btnClick="editProduct(msg.product_id)"
+                    classStyle="main-btn"></y-button>
         </div>
 
         <!-- 金额筹集信息 -->
@@ -65,9 +66,9 @@
 </template>
 <script>
 import YButton from '/components/YButton'
-import { addCart } from '/api/goods.js'
+// import { addCart } from '/api/goods.js'
 import { mapMutations, mapState } from 'vuex'
-import { getStore } from '/utils/storage'
+// import { getStore } from '/utils/storage'
 import { calcDayBetween } from '/utils/dateUtil'
 const template = {
   product_id: 11118,
@@ -86,7 +87,9 @@ const template = {
 
 export default {
   props: {
-    msg: template
+    msg: template,
+    canEdit: false,
+    hideDetailBt: false
   },
   data () {
     return {}
@@ -97,53 +100,20 @@ export default {
       this.$router.push({ path: 'goodsDetails/productId=' + id })
     },
     openProduct (id) {
+      if (this.hideDetailBt) return
       window.open(
         '//' + window.location.host + '/#/goodsDetails?productId=' + id
       )
     },
-    addCart (id, price, name, img) {
-      if (!this.showMoveImg) {
-        // 动画是否在运动
-        if (this.login) {
-          // 登录了 直接存在用户名下
-          addCart({
-            userId: getStore('userId'),
-            productId: id,
-            productNum: 1
-          }).then(res => {
-            // 并不重新请求数据
-            this.ADD_CART({
-              productId: id,
-              salePrice: price,
-              productName: name,
-              productImg: img
-            })
-          })
-        } else {
-          // 未登录 vuex
-          this.ADD_CART({
-            productId: id,
-            salePrice: price,
-            productName: name,
-            productImg: img
-          })
-        }
-        // 加入购物车动画
-        var dom = event.target
-        // 获取点击的坐标
-        let elLeft = dom.getBoundingClientRect().left + dom.offsetWidth / 2
-        let elTop = dom.getBoundingClientRect().top + dom.offsetHeight / 2
-        // 需要触发
-        this.ADD_ANIMATION({
-          moveShow: true,
-          elLeft: elLeft,
-          elTop: elTop,
-          img: img
+    editProduct (productId) {
+      console.log('edit:' + productId)
+      this.$router.push(
+        {
+          path: '/user/newFunding',
+          query: {
+            productId: productId
+          }
         })
-        if (!this.showCart) {
-          this.SHOW_CART({ showCart: true })
-        }
-      }
     }
   },
   computed: {

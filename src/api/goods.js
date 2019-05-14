@@ -44,6 +44,10 @@ export const pkgListByProductId = (params) => {
 export const saveProductPackage = (params) => {
   return http.fetchPost('/pm/saveProductPackage', params)
 }
+// 根据卖家 ID 来获取产品信息（我的众筹）
+export const allProductBySellerId = (params) => {
+  return http.fetchGet('/pm/allProductBySellerId', params)
+}
 
 //           购物车相关          //
 
