@@ -2,14 +2,15 @@
 <template>
   <div class="container">
     <div class="comment"
-         v-for="item in comments">
+         v-for="(item,i) in comments"
+         :key="i">
       <div class="info">
         <img class="avatar"
              :src="IconUrlConvert(item.icon_url)"
              width="36"
              height="36" />
         <div class="right">
-          <div class="name">{{item.username}}</div>
+          <div class="name">{{item.nickname}}</div>
           <div class="date">{{_formatDate(item.created_at)}}</div>
         </div>
       </div>
@@ -27,9 +28,10 @@
       </div>
       <div class="reply">
         <div class="item"
-             v-for="reply in item.replys">
+             v-for="(reply,i) in item.replys"
+             :key="i">
           <div class="reply-content">
-            <span class="from-name">{{reply.username}}</span><span>: </span>
+            <span class="from-name">{{reply.nickname}}</span><span>: </span>
             <!-- <span class="to-name">@{{reply.toName}}</span> -->
             <span>{{reply.content}}</span>
           </div>
@@ -104,22 +106,6 @@
       _formatDate (date) {
         return formatDate(date)
       },
-      // /**
-      //  * 点赞
-      //  */
-      // likeClick (item) {
-      //   if (item.isLike === null) {
-      //     Vue.$set(item, 'isLike', true)
-      //     item.likeNum++
-      //   } else {
-      //     if (item.isLike) {
-      //       item.likeNum--
-      //     } else {
-      //       item.likeNum++
-      //     }
-      //     item.isLike = !item.isLike
-      //   }
-      // },
 
       /**
        * 点击取消按钮
@@ -134,21 +120,8 @@
       commitComment (value) {
         // let value = this.params.value;
         console.log(value)
-      },
-
-      /**
-       * 点击评论按钮显示输入框
-       * item: 当前大评论
-       * reply: 当前回复的评论
-       */
-      showCommentInput (item, reply) {
-        if (reply) {
-          this.inputComment = '@' + reply.fromName + ' '
-        } else {
-          this.inputComment = ''
-        }
-        this.showItemId = item.id
       }
+
     },
     created () {
       console.log(this.comments)
