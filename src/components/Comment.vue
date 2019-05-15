@@ -37,15 +37,15 @@
           </div>
           <div class="reply-bottom">
             <span>{{_formatDate(reply.created_at)}}</span>
-            <span class="reply-text"
+            <!-- <span class="reply-text"
                   @click="showCommentInput(item, reply)">
               <i class="iconfont icon-comment"></i>
               <span>回复</span>
-            </span>
+            </span> -->
           </div>
         </div>
         <div class="write-reply"
-             v-if="item.replys.length > 0"
+             v-if="item.replys && item.replys.length > 0"
              @click="showCommentInput(item)">
           <i class="el-icon-edit"></i>
           <span class="add-comment">添加新评论</span>
@@ -120,8 +120,21 @@
       commitComment (value) {
         // let value = this.params.value;
         console.log(value)
+      },
+            /**
+       * 点击评论按钮显示输入框
+       * item: 当前大评论
+       * reply: 当前回复的评论
+       */
+      showCommentInput (item, reply) {
+        // if (reply) {
+        //   this.inputComment = "@" + reply.fromName + " "
+        // } else {
+        //   this.inputComment = ''
+        // }
+        this.inputComment = ''
+        this.showItemId = item.id
       }
-
     },
     created () {
       console.log(this.comments)

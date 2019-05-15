@@ -17,8 +17,14 @@
                 @click="cancel">取消</span>
           <el-button class="btn"
                      type="success"
+                     v-if="login"
                      round
                      @click="commitComment">确定</el-button>
+          <el-button class="btn"
+                     type="success"
+                     v-if="!login"
+                     @click="routerToLogin"
+                     round>登录后评论</el-button>
         </div>
       </transition>
     </div>
@@ -41,6 +47,10 @@
       type: {
         type: String
         // default: 'comment'
+      },
+      login: {
+        type: Boolean,
+        default: true
       }
     },
     components: {},
@@ -53,6 +63,11 @@
     },
     computed: {},
     methods: {
+      routerToLogin () {
+        this.$router.push({
+          path: '/login'
+        })
+      },
       /**
        * 点击取消按钮
        */
@@ -69,7 +84,7 @@
       commitComment () {
         this.$emit('confirm', this.inputComment)
       },
-
+  
       // input活得焦点时调用
       inputFocus () {
         console.log('focus')
@@ -83,6 +98,9 @@
       // 监听value更新，赋值给inputComment
       value: function (newValue, oldValue) {
         this.inputComment = newValue
+      },
+      inputComment (val) {
+        this.$emit('input', this.inputComment)
       }
     },
     mounted () {

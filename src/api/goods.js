@@ -19,11 +19,6 @@ export const productTypeList = (params) => {
   return http.fetchGet('/product/typeList', params)
 }
 
-// 获取产品评论
-export const getCommentInfoByProductId = (params) => {
-  return http.fetchGet('/product/getCommentInfoByProductId', params)
-}
-
 // TODO 商品列表
 export const getSearch = (params) => {
   return http.fetchGet('/product/search', params)
@@ -32,6 +27,22 @@ export const getSearch = (params) => {
 export const getQuickSearch = (params) => {
   return http.fetchGet('/product/quickSearch', params)
 }
+
+// / 产品评论相关   ///
+
+// 获取产品评论
+export const getCommentInfoByProductId = (params) => {
+  return http.fetchGet('/product/getCommentInfoByProductId', params)
+}
+// 提交产品评论
+export const saveCommentsInfo = (params) => {
+  return http.fetchPost('/comments/saveCommentsInfo', params)
+}
+// 提交产品评论回复
+export const saveCommentsReply = (params) => {
+  return http.fetchPost('/comments/saveCommentsReply', params)
+}
+
 // ////////      商品 商家相关        ///////
 // 保存产品
 export const saveProduct = (params) => {

@@ -59,7 +59,16 @@ module.exports = {
         pathRewrite: {
           '^/pm': '/pm'
         } //这里重写路径
+      },   
+       // 评论相关
+      '/comments': {
+        target: 'http://127.0.0.1:8080/v1', // 请求本地后台项目 默认127.0.0.1:8080
+        changeOrigin: true,
+        pathRewrite: {
+          '^/comments': '/comments'
+        } //这里重写路径
       }
+
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

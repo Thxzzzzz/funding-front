@@ -78,6 +78,10 @@
               <div class="comment">
                 <div class="title">评论</div>
                 <input-component :show="true"
+                                 v-model="commentContent"
+                                 :login="login"
+                                 @cancel="cancelInputComment"
+                                 @confirm="commitComment"
                                  type="end">
                 </input-component>
                 <!-- TODO -->
@@ -235,7 +239,7 @@
   </div>
 </template>
 <script>
-  import { productDet, addCart, getCommentInfoByProductId } from '/api/goods'
+  import { productDet, addCart, getCommentInfoByProductId, saveCommentsInfo } from '/api/goods'
   import { mapMutations, mapState } from 'vuex'
   import YShelf from '/components/shelf'
   import YPopup from '/components/popup'
@@ -264,6 +268,7 @@
         userId: 0,
         // 评论
         commentData: [],
+        commentContent: '',
         // 选项卡
         tabsName: 'productDetail'
   
@@ -294,6 +299,17 @@
       ...mapMutations(['ADD_CART', 'ADD_ANIMATION', 'SHOW_CART']),
       formatDate (date) {
         return dayjs(date).format('YYYY年MM月DD日') // 展示
+      },
+      messageSuccess (m) {
+        this.$message({
+          type: 'success',
+          message: m
+        })
+      },
+      messageError (m) {
+        this.$message.error({
+          message: m
+        })
       },
       buy (item) {
         this.popupOpen = true
@@ -368,12 +384,53 @@
       editNum (num) {
         this.nums = num
       },
+      // 获取产品评论信息
       _getCommentInfoByProductId (productId) {
         getCommentInfoByProductId({params: {product_id: productId}}).then(res => {
           if (res.code === 200) {
             this.commentData = res.data
           }
         })
+      },
+      // 取消评论操作
+      cancelInputComment () {
+        this.commentContent = ''
+      },
+      // 提交评论操作
+      commitComment (content) {
+        this.commentContent = content
+        if (this.commentContent.length < 4) {
+          console.log(this.commentContent)
+          console.log(this.commentContent.length)
+          this.messageError('评论至少4个字')
+          return
+        }
+        let commentInfo = {
+          product_id: this.product.id,
+          content: this.commentContent
+        }
+        this._submitCommentInfo(commentInfo)
+      },
+      // 提交评论请求
+      _submitCommentInfo (commentInfo) {
+        saveCommentsInfo(commentInfo).then(res => {
+          if (res.code === 200) {
+            this.commentContent = ''
+            let newComment = res.data
+            let userInfo = this.userInfo.info
+            newComment.user_id = userInfo.id
+            newComment.username = userInfo.username
+            newComment.nickname = userInfo.nickname
+            newComment.icon_url = userInfo.icon_url
+            newComment.created_at = Date.now()
+            if (this.product.seller_id === userInfo.id) {
+              newComment.is_seller = true
+            }
+            console.log(newComment)
+            this.commentData.unshift(newComment)
+          }
+        }
+        )
       }
     },
     components: {
