@@ -585,6 +585,17 @@ ul.box {
     border-bottom: 1px solid #efefef;
     width: 50%;
     height: 430px;
+    transition: all 0.5s;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 1px 1px 10px #999;
+      .good-price .price {
+        display: none;
+      }
+      .ds {
+        display: flex;
+      }
+    }
     .cover-link {
       cursor: pointer;
       display: block;

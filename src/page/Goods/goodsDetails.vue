@@ -111,8 +111,28 @@
           <!-- <div slot="right">
           </div> -->
           <div slot="content"
-               style="padding:25px">
-            <!-- TODO 项目发起人 -->
+               class="sellerInfo"
+               style="padding:25px; ">
+            <el-row>
+              <el-col :span="8">
+                <img :src="IconUrlConvert(seller_info.icon_url)"
+                     style="width:80px;height:80px;"
+                     alt="">
+              </el-col>
+              <el-col :span="16">
+                <div class="sellerInfo-text">
+                  <p style="font-size:18px;">
+                    {{seller_info.nickname}}
+                  </p>
+                  <p>
+                    {{seller_info.email}}
+                  </p>
+                  <p>
+                    {{seller_license.description}}
+                  </p>
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </y-shelf>
       </div>
@@ -178,8 +198,23 @@
       <div class="info-card">
         <y-shelf title="联系我们">
           <div slot="content"
+               class="licenseInfo"
                style="padding:25px">
-            <!-- TODO 联系我们 -->
+            <el-row>
+
+              <div class="sellerInfo-text">
+                <p>
+                  公司名称: {{seller_license.company_name}}
+                </p>
+                <p>
+                  联系地址: {{seller_license.address}}
+                </p>
+                <p>
+                  官方电话: {{seller_license.phone}}
+                </p>
+              </div>
+
+            </el-row>
           </div>
         </y-shelf>
       </div>
@@ -242,6 +277,8 @@
 </template>
 <script>
   import { productDet, addCart, getCommentInfoByProductId, saveCommentsInfo } from '/api/goods'
+  import { getInfoById, getLicenseByUserId } from '/api/index'
+
   import { mapMutations, mapState } from 'vuex'
   import YShelf from '/components/shelf'
   import YPopup from '/components/popup'
@@ -272,7 +309,11 @@
         commentData: [],
         commentContent: '',
         // 选项卡
-        tabsName: 'productDetail'
+        tabsName: 'productDetail',
+        // 卖家信息
+        seller_info: {},
+        // 卖家执照信息
+        seller_license: {}
   
       }
     },
@@ -317,10 +358,42 @@
         this.popupOpen = true
         this.selectedItem = item
       },
+      // 空白头像转换成默认头像链接
+      IconUrlConvert (url) {
+        if (!url) {
+          url = 'static/images/defaultIcon.png'
+        }
+        return url
+      },
+      // 获取产品信息
       _productDet (id) {
         productDet({params: {id}}).then(res => {
-          let result = res.data
-          this.product = result
+          if (res.code === 200) {
+            let result = res.data
+            this.product = result
+            this._getInfoById(result.user_id)
+            this._getLicenseByUserId(result.user_id)
+          } else {
+            this.messageError('产品信息获取失败' + res.message)
+          }
+        }).catch(error => {
+          this.messageError('产品信息获取失败' + error)
+        })
+      },
+      // 获取卖家信息（获取产品信息成功后获取）
+      _getInfoById (seller_id) {
+        getInfoById({params: {id: seller_id}}).then(res => {
+          if (res.code === 200) {
+            this.seller_info = res.data
+          }
+        })
+      },
+      // 获取执照信息 （获取产品信息成功后获取）
+      _getLicenseByUserId (seller_id) {
+        getLicenseByUserId({params: {user_id: seller_id}}).then(res => {
+          if (res.code === 200) {
+            this.seller_license = res.data
+          }
         })
       },
       addToCart (item) {
@@ -453,6 +526,11 @@
 <style lang="scss" scoped>
   @import "../../assets/style/mixin";
   @import "../../assets/style/comment.scss";
+  .sellerInfo-text{
+    p {
+      margin-bottom: 6px;
+    }
+  }
 
   .store-content {
     clear: both;

@@ -69,15 +69,14 @@
     </div>
   </div>
 </template>
-// <script src="../../../static/geetest/gt.js"></script>
+ 
 <script>
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
-import { userLogin, geetest } from '/api/index.js'
+import { userLogin } from '/api/index.js'
 import { addCart } from '/api/goods.js'
 import { setStore, getStore, removeStore } from '/utils/storage.js'
-// require('../../../static/geetest/gt.js')
-// var captcha
+
 export default {
   data () {
     return {
@@ -199,33 +198,12 @@ export default {
           return false
         }
       })
-    },
-    // 验证码，暂时不用
-    init_geetest () {
-      geetest().then(res => {
-        this.statusKey = res.statusKey
-        window.initGeetest({
-          gt: res.gt,
-          challenge: res.challenge,
-          new_captcha: res.new_captcha,
-          offline: !res.success,
-          product: 'popup',
-          width: '100%'
-        }, function (captchaObj) {
-          // captcha = captchaObj
-          captchaObj.appendTo('#captcha')
-          captchaObj.onReady(function () {
-            document.getElementById('wait').style.display = 'none'
-          })
-        })
-      })
     }
+
   },
   mounted () {
     this.getRemembered()
     this.login_addCart()
-    // this.init_geetest()
-    // this.open('登录提示', '测试体验账号密码：test1 | 123456')
   },
   components: {
     YFooter,

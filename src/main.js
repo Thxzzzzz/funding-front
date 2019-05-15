@@ -32,9 +32,13 @@ import {
   Upload,
   Option,
   Tabs,
-  TabPane
+  TabPane,
+  Row,
+  Col
 } from 'element-ui'
 import VueContentPlaceholders from 'vue-content-placeholders'
+Vue.use(Row)
+Vue.use(Col)
 Vue.use(TabPane)
 Vue.use(Tabs)
 Vue.use(Form)
