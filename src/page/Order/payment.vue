@@ -76,6 +76,9 @@
             <a @click="goodsDetails(item.product_id)"
                title=""
                target="_blank">{{item.product_name}}</a>
+            <ul class="attribute">
+              <li>{{item.description}}</li>
+            </ul>
           </div>
         </div>
         <div class="n-b">
@@ -106,6 +109,9 @@
     data () {
       return {
         payType: 1,
+        address: '',
+        phone: '',
+        name: '',
         addList: {},
         cartList: [],
         addressId: 0,
@@ -113,9 +119,6 @@
         num: '',
         userId: '',
         orderTotal: 0,
-        userName: '',
-        tel: '',
-        streetName: '',
         payNow: '立刻支付',
         submit: false,
         nickName: '',
@@ -427,4 +430,15 @@
     padding-left: 10px;
     margin-bottom: 1vw;
   }
+  .attribute {
+    color: #999;
+    font-size: 12px;
+    padding-top: 4px;
+    line-height: 17px;
+    width: 300px;
+    white-space:normal;
+    word-break:break-all;
+    word-wrap:break-word; 
+  }
+
 </style>
