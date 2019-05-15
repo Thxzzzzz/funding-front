@@ -13,7 +13,7 @@
                 :key="i"
                 class="address pr"
                 :class="{checked:addressId === item.id}"
-                @click="chooseAddress(item.id, item.name, item.phone, item.name)">
+                @click="chooseAddress(item)">
               <span v-if="addressId === item.id"
                     class="pa">
                 <svg viewBox="0 0 1473 1024"
@@ -167,7 +167,7 @@
   </div>
 </template>
 <script>
-  import { getCartList, addressList, addressUpdate, addressAdd, addressDel, checkoutPkgInfo, submitOrder } from '/api/goods'
+  import { getCartList, addressList, addressUpdate, addressAdd, addressDel, checkoutPkgInfo, submitOrder, delCartChecked } from '/api/goods'
   import YShelf from '/components/shelf'
   import YButton from '/components/YButton'
   import YPopup from '/components/popup'
@@ -198,7 +198,9 @@
         userId: '',
         orderTotal: 0,
         submit: false,
-        submitOrder: '提交订单'
+        submitOrder: '提交订单',
+        // 是否来自购物车
+        isFromCartList: false
       }
     },
     computed: {
@@ -236,7 +238,7 @@
           this.cartList = res.data
         })
       },
-      _addressList () {
+      _addressList (chooseLast) {
         addressList().then(res => {
           let data = res.data
           if (data.length) {
@@ -245,6 +247,9 @@
             this.name = data[0].name
             this.phone = data[0].phone
             this.address = data[0].address
+            if (chooseLast) {
+              this.chooseAddress(data[data.length - 1])
+            }
           } else {
             this.addList = []
           }
@@ -258,7 +263,7 @@
       _addressAdd (params) {
         addressAdd(params).then(res => {
           if (res.code === 200) {
-            this._addressList()
+            this._addressList(true)
           } else {
             this.message(res.message)
           }
@@ -313,6 +318,10 @@
         }
         submitOrder(params).then(res => {
           if (res.code === 200) {
+            // 如果是从购物车结算，就删除购物车勾选的字段
+            if (this.isFromCartList) {
+              this._delCartChecked()
+            }
             this.payment(res.data)
           } else {
             this.message(res.message)
@@ -321,6 +330,14 @@
           }
         })
       },
+      _delCartChecked () {
+        delCartChecked().then(res => {
+          if (res.code !== 200) {
+              // this.message('删除失败')
+          }
+        })
+      },
+
       // 付款
       payment (orderId) {
         let olJson = JSON.stringify(orderId)
@@ -333,11 +350,11 @@
         })
       },
       // 选择地址
-      chooseAddress (id, name, phone, address) {
-        this.addressId = id
-        this.userName = name
-        this.phone = phone
-        this.address = address
+      chooseAddress (item) {
+        this.addressId = item.id
+        this.name = item.name
+        this.phone = item.phone
+        this.address = item.address
       },
       // 修改
       update (item) {
@@ -391,6 +408,7 @@
         this._productDet(this.product_package_id)
       } else {
         this._getCartList()
+        this.isFromCartList = true
       }
       this._addressList()
     },
