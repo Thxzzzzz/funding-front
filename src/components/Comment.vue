@@ -10,7 +10,9 @@
              width="36"
              height="36" />
         <div class="right">
-          <div class="name">{{item.nickname}}</div>
+          <div class="name">{{item.nickname}}
+            <span class="seller"
+                  v-if="item.is_seller">商家</span></div>
           <div class="date">{{_formatDate(item.created_at)}}</div>
         </div>
       </div>
@@ -31,7 +33,9 @@
              v-for="(reply,i) in item.replys"
              :key="i">
           <div class="reply-content">
-            <span class="from-name">{{reply.nickname}}</span><span>: </span>
+            <span class="from-name">{{reply.nickname}}
+              <span class="seller-reply"
+                    v-if="reply.is_seller">商家</span>: </span>
             <!-- <span class="to-name">@{{reply.toName}}</span> -->
             <span>{{reply.content}}</span>
           </div>
@@ -208,7 +212,29 @@
 <style scoped lang="scss">
 
   @import "../assets/style/comment.scss";
+  .seller{
+    margin: 1px;
+    margin-left:3px;
+    padding:1.5px 4px 1.5px 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    border-color: red;
+    color: red;
+    font-size: 14px;
+  }
 
+  .seller-reply{
+    margin: 0.5px;
+    margin-left:1px;
+    padding:0.75px 2.5px 0.75px 2px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    border-color: red;
+    color: red;
+    font-size: 8px;
+  }
   .container {
     padding: 0 10px;
     box-sizing: border-box;
