@@ -21,7 +21,7 @@
           <span class="like-num">{{item.likeNum > 0 ? item.likeNum + '人赞' : '赞'}}</span>
         </span> -->
         <span class="comment-reply"
-              @click="showCommentInput(item)">
+              @click="showCommentInput(item,i)">
           <i class="iconfont icon-comment"></i>
           <span>回复</span>
         </span>
@@ -51,7 +51,7 @@
           <span class="add-comment">添加新评论</span>
         </div>
         <input-component :show="showItemId === item.id"
-                         :value="inputComment"
+                         v-model="inputComment"
                          @cancel="cancelInput"
                          @confirm="commitComment">
         </input-component>
@@ -77,6 +77,7 @@
 
 <script>
   import { formatDate } from '/utils/dateUtil'
+  import { saveCommentsReply } from '/api/goods'
   import InputComponent from './InputComponent'
 
   export default {
@@ -84,6 +85,15 @@
       comments: {
         type: Array,
         required: true
+      },
+      login: {
+        type: Boolean,
+        default: true
+      },
+      userInfo: {type: Object},
+      seller_id: {
+        type: Number,
+        default: -1
       }
     },
     components: {
@@ -92,11 +102,23 @@
     data () {
       return {
         inputComment: '',
-        showItemId: ''
+        showItemId: '',
+        showItemIndex: -1
       }
     },
     computed: {},
     methods: {
+      messageSuccess (m) {
+        this.$message({
+          type: 'success',
+          message: m
+        })
+      },
+      messageError (m) {
+        this.$message.error({
+          message: m
+        })
+      },
       IconUrlConvert (url) {
         if (!url) {
           url = 'static/images/defaultIcon.png'
@@ -119,14 +141,28 @@
        */
       commitComment (value) {
         // let value = this.params.value;
+        console.log(this.userInfo.info.id)
+        console.log(this.showItemId)
         console.log(value)
+  
+        if (value.length < 4) {
+          console.log(value)
+          console.log(value)
+          this.messageError('评论至少4个字')
+          return
+        }
+        let reply = {
+          comment_id: this.showItemId,
+          content: this.inputComment
+        }
+        this._submitCommentReply(reply)
       },
             /**
        * 点击评论按钮显示输入框
        * item: 当前大评论
        * reply: 当前回复的评论
        */
-      showCommentInput (item, reply) {
+      showCommentInput (item, index) {
         // if (reply) {
         //   this.inputComment = "@" + reply.fromName + " "
         // } else {
@@ -134,6 +170,33 @@
         // }
         this.inputComment = ''
         this.showItemId = item.id
+        this.showItemIndex = index
+      },
+      // 提交评论回复
+      _submitCommentReply (reply) {
+        saveCommentsReply(reply).then(res => {
+          if (res.code === 200) {
+            if (res.code === 200) {
+              this.inputComment = ''
+              let newReplay = res.data
+              let userInfo = this.userInfo.info
+              newReplay.user_id = userInfo.id
+              newReplay.username = userInfo.username
+              newReplay.nickname = userInfo.nickname
+              newReplay.icon_url = userInfo.icon_url
+              newReplay.created_at = Date.now()
+              if (this.seller_id === userInfo.id) {
+                newReplay.is_seller = true
+              }
+              console.log(newReplay)
+              this.comments[this.showItemIndex].replys.unshift(newReplay)
+            } else {
+              this.messageError('回复提交失败' + res.message)
+            }
+          }
+        }).catch(error => {
+          this.messageError('回复提交失败' + error)
+        })
       }
     },
     created () {

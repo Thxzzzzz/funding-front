@@ -89,7 +89,9 @@
                        @confirm="commitComment"> -->
                 <div class="comment-num">{{commentData.length}} 条评论</div>
                 <div class="comment-content">
-                  <comment :comments="commentData"></comment>
+                  <comment :comments="commentData"
+                           :userInfo="userInfo"
+                           :seller_id="product.user_id"></comment>
                 </div>
               </div>
 
@@ -428,9 +430,13 @@
             }
             console.log(newComment)
             this.commentData.unshift(newComment)
+          } else {
+            this.messageError('评论提交失败' + res.message)
           }
         }
-        )
+        ).catch(error => {
+          this.messageError('评论提交失败' + error)
+        })
       }
     },
     components: {
