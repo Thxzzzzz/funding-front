@@ -17,6 +17,7 @@
                 <mall-goods :canEdit="true"
                             :hideDetailBt="true"
                             v-for="(item,i) in VerifyFailProducts"
+                            class="roductItem"
                             :key="i"
                             :msg="item"></mall-goods>
               </div>
@@ -28,6 +29,7 @@
               <div class="bottomLine"></div>
               <div class="productBox">
                 <mall-goods v-for="(item,i) in VerifyUnsubmitProducts"
+                            class="roductItem"
                             :key="i"
                             :hideDetailBt="true"
                             :canEdit="true"
@@ -41,6 +43,7 @@
               <div class="bottomLine"></div>
               <div class="productBox">
                 <mall-goods v-for="(item,i) in VerifyWaitProducts"
+                            class="roductItem"
                             :key="i"
                             :hideDetailBt="true"
                             :canEdit="true"
@@ -54,6 +57,7 @@
               <div class="bottomLine"></div>
               <div class="productBox">
                 <mall-goods v-for="(item,i) in FundingIngProducts"
+                            class="roductItem"
                             :key="i"
                             :msg="item"></mall-goods>
               </div>
@@ -65,6 +69,7 @@
               <div class="bottomLine"></div>
               <div class="productBox">
                 <mall-goods v-for="(item,i) in FundingSuccessProducts"
+                            class="roductItem"
                             :key="i"
                             :msg="item"></mall-goods>
               </div>
@@ -76,6 +81,7 @@
               <div class="bottomLine"></div>
               <div class="productBox">
                 <mall-goods v-for="(item,i) in FundingFailProducts"
+                            class="roductItem"
                             :key="i"
                             :msg="item"></mall-goods>
               </div>
@@ -230,7 +236,13 @@
   }
 </script>
 <style lang="scss" scoped>
+  .roductItem{
+    width:30%;
+    margin-left:10px;
+    margin-bottom: 5px;
+  }
   .productBox{
+    margin-left:20px;
     > div {
       float: left;
       border: 1px solid #efefef;

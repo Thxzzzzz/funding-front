@@ -84,7 +84,6 @@
                                  @confirm="commitComment"
                                  type="end">
                 </input-component>
-                <!-- TODO -->
                 <!-- @cancel="cancelInput"
                        @confirm="commitComment"> -->
                 <div class="comment-num">{{commentData.length}} 条评论</div>
