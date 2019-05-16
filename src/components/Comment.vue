@@ -50,7 +50,7 @@
         </div>
         <div class="write-reply"
              v-if="item.replys && item.replys.length > 0"
-             @click="showCommentInput(item)">
+             @click="showCommentInput(item,i)">
           <i class="el-icon-edit"></i>
           <span class="add-comment">添加新评论</span>
         </div>
@@ -59,21 +59,6 @@
                          @cancel="cancelInput"
                          @confirm="commitComment">
         </input-component>
-        <!--<transition name="fade">-->
-        <!--<div class="input-wrapper" v-if="showItemId === item.id">-->
-        <!--<el-input class="gray-bg-input"-->
-        <!--v-model="inputComment"-->
-        <!--type="textarea"-->
-        <!--:rows="3"-->
-        <!--autofocus-->
-        <!--placeholder="写下你的评论">-->
-        <!--</el-input>-->
-        <!--<div class="btn-control">-->
-        <!--<span class="cancel" @click="cancel">取消</span>-->
-        <!--<el-button class="btn" type="success" round @click="commitComment">确定</el-button>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</transition>-->
       </div>
     </div>
   </div>
@@ -161,10 +146,10 @@
         }
         this._submitCommentReply(reply)
       },
-            /**
+      /**
        * 点击评论按钮显示输入框
        * item: 当前大评论
-       * reply: 当前回复的评论
+       * index: 当前大评论的下标
        */
       showCommentInput (item, index) {
         // if (reply) {
@@ -192,7 +177,10 @@
               if (this.seller_id === userInfo.id) {
                 newReplay.is_seller = true
               }
-              console.log(newReplay)
+              if (!this.comments[this.showItemIndex].replys) {
+                this.comments[this.showItemIndex].replys = []
+              }
+              // 向对应评论的回复列表的前方插入新的回复
               this.comments[this.showItemIndex].replys.unshift(newReplay)
             } else {
               this.messageError('回复提交失败' + res.message)
