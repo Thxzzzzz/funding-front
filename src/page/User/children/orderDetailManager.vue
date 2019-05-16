@@ -59,11 +59,12 @@
               </li> -->
             </ul>
             <p class="realtime">
-              <span>在众筹结束前您都可以付款 还有:</span>
+              <span>对方暂未付款 </span>
+              <!-- <span>在众筹结束前您都可以付款 还有:</span>
               <span class="red">
                 <countDown v-bind:endTime="getTimestamp(orderItem.end_time)"
                            endText="已结束"></countDown>
-              </span>
+              </span> -->
               <span> 该订单对应产品库存还有：</span> <span class="red">{{orderItem.stock}}</span> <span> 件</span>
 
             </p>
@@ -119,7 +120,7 @@
               </li>
             </ul>
             <p class="realtime">
-              <span>您的订单已关闭。</span>
+              <span>订单已关闭。</span>
             </p>
           </div>
           <div class="status-now"
@@ -130,7 +131,7 @@
               </li>
             </ul>
             <p class="realtime">
-              <span>您的订单已交易成功，感谢您的支持！</span>
+              <span>订单已交易成功！</span>
             </p>
           </div>
           <div class="gray-sub-title cart-title">
