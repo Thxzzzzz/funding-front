@@ -1,5 +1,5 @@
 <template>
- 
+
 </template>
 <script>
 export default {
@@ -7,7 +7,7 @@ export default {
     this.$router.push({
       path: '/goods',
       query: {
-        cid: this.$route.query.cid
+        name: this.$route.query.name
       }
     })
     return {

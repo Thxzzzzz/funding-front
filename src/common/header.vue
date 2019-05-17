@@ -11,18 +11,18 @@
           </div>
           <div class="right-box">
             <div class="nav-list">
-              <el-autocomplete placeholder="请输入商品信息"
-                               v-model="input"
-                               :minlength=1
-                               :maxlength=100
-                               :fetch-suggestions="querySearchAsync"
-                               @select="handleSelect"
-                               @keydown.enter.native="handleIconClick">
+              <el-input placeholder="请输入商品信息"
+                        v-model="input"
+                        :minlength=1
+                        :maxlength=100
+                        @keydown.enter.native="handleIconClick">
+                <!-- :fetch-suggestions="querySearchAsync"
+                               @select="handleSelect" -->
                 <i class="el-icon-search el-input__icon"
                    slot="suffix"
                    @click="handleIconClick">
                 </i>
-              </el-autocomplete>
+              </el-input>
               <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
 
             </div>
@@ -242,18 +242,18 @@
         return show
       },
       handleIconClick (ev) {
-        if (this.$route.path === '/search') {
+        if (this.$route.path === '/goods') {
           this.$router.push({
-            path: '/refreshsearch',
+            path: '/refreshgoods',
             query: {
-              key: this.input
+              name: this.input
             }
           })
         } else {
           this.$router.push({
-            path: '/search',
+            path: '/goods',
             query: {
-              key: this.input
+              name: this.input
             }
           })
         }

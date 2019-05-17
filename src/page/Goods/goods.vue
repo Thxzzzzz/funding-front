@@ -89,7 +89,7 @@
   </div>
 </template>
 <script>
-  import { getAllGoods } from '/api/goods.js'
+  import { productList } from '/api/goods.js'
   import { recommend } from '/api/index.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
@@ -111,7 +111,9 @@
         sort: '',
         currentPage: 1,
         total: 0,
-        pageSize: 20
+        pageSize: 20,
+        queryName: '',
+        queryType: 0
       }
     },
     methods: {
@@ -126,7 +128,7 @@
         this.loading = true
       },
       _getAllGoods () {
-        let cid = this.$route.query.cid
+        // let cid = this.$route.query.cid
         if (this.min !== '') {
           this.min = Math.floor(this.min)
         }
@@ -137,14 +139,14 @@
           params: {
             page: this.currentPage,
             page_size: this.pageSize,
-            type: 0,
+            name: this.queryName,
+            type: this.queryType,
             sort: this.sort,
             price_gt: this.min,
-            price_lt: this.max,
-            cid: cid
+            price_lt: this.max
           }
         }
-        getAllGoods(params).then(res => {
+        productList(params).then(res => {
           if (res.code === 200) {
             this.total = res.data.total
             this.goods = res.data.product_contents
@@ -189,6 +191,7 @@
     mounted () {
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
+      this.queryName = this.$route.query.name
       this._getAllGoods()
       recommend().then(res => {
         let data = res.data

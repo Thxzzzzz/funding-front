@@ -3,7 +3,7 @@ import http from './public'
 //          商品信息相关        //
 
 // 商品列表
-export const getAllGoods = (params) => {
+export const productList = (params) => {
   return http.fetchGet('/product/productList', params)
 }
 // 获取用户订单
