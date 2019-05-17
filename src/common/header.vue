@@ -23,7 +23,8 @@
                    @click="handleIconClick">
                 </i>
               </el-input>
-              <router-link to="/goods"><a @click="changePage(2)">全部商品</a></router-link>
+              <a style="width:200px;"
+                 @click="allProduct()">全部商品</a>
 
             </div>
             <div class="nav-aside"
@@ -180,7 +181,7 @@
 <script>
   import YButton from '/components/YButton'
   import { mapMutations, mapState } from 'vuex'
-  import { getCartList, cartDel, getQuickSearch } from '/api/goods'
+  import { getCartList, cartDel } from '/api/goods'
   import { loginOut } from '/api/index'
   import { getStore, removeStore } from '/utils/storage'
   // import store from '../store/'
@@ -263,6 +264,17 @@
           message: m
         })
       },
+      allProduct () {
+        if (this.$route.path === '/goods') {
+          this.$router.push({
+            path: '/refreshgoods'
+          })
+        } else {
+          this.$router.push({
+            path: '/goods'
+          })
+        }
+      },
       // 导航栏文字样式改变
       changePage (v) {
         this.choosePage = v
@@ -287,38 +299,7 @@
           }
         }
       },
-      // 搜索框提示
-      loadAll () {
-        let params = {
-          params: {
-            key: this.input
-          }
-        }
-        getQuickSearch(params).then(res => {
-          if (res === null || res === '') {
-            return
-          }
-          if (res.error) {
-            this.showError(res.message)
-            return
-          }
-          var array = []
-          var maxSize = 5
-          if (res.hits.hits.length <= 5) {
-            maxSize = res.hits.hits.length
-          }
-          for (var i = 0; i < maxSize; i++) {
-            var obj = {}
-            obj.value = res.hits.hits[i]._source.product_name
-            array.push(obj)
-          }
-          if (array.length !== 0) {
-            this.searchResults = array
-          } else {
-            this.searchResults = []
-          }
-        })
-      },
+
       querySearchAsync (queryString, cb) {
         if (this.input === undefined) {
           cb([])
