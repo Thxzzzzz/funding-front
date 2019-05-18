@@ -52,12 +52,13 @@
           {name: '我的订单', path: 'orderList', role: buyer},
           {name: '订单管理', path: 'orderManager', role: seller},
           {name: '我的众筹', path: 'fundingManager', role: seller},
-          {name: '资质认证', path: 'licenseManager', role: allrole},
           {name: '账户资料', path: 'information', role: allrole},
           {name: '收货地址', path: 'addressList', role: buyer},
           {name: '我的优惠', path: 'coupon', role: buyer},
           {name: '售后服务', path: 'support', role: buyer},
-          {name: '以旧换新', path: 'aihuishou', role: buyer}
+          {name: '以旧换新', path: 'aihuishou', role: buyer},
+          {name: '资质认证', path: 'licenseManager', role: allrole}
+
         ],
         editAvatar: true
       }
