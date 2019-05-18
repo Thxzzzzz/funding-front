@@ -286,7 +286,7 @@ export default {
       productTypeList: [],
         // 产品信息 对应数据库  products
       productForm: {
-        id: '',
+        id: 0,
         name: '', // 产品名称
         big_img: '', // 大图
         small_img: '', // 小图
