@@ -14,8 +14,8 @@
       <h6 class="good-title"
           v-html="msg.name">{{msg.name}}</h6>
 
-      <!-- 副标题 （简介，暂时没有）  -->
-      <h3 class="sub-title ellipsis">{{msg.name}}</h3>
+      <!-- 副标题 （简介，暂时没有） {{msg.name}} -->
+      <h3 class="sub-title ellipsis"></h3>
 
       <!-- 查看详情按钮  -->
       <div class="good-price pr">
@@ -151,7 +151,6 @@ export default {
   border: none;
   border-right: 1px solid #efefef;
   border-bottom: 1px solid #efefef;
-  width: 25%;
   transition: all 0.5s;
   height: 430px;
   &:hover {

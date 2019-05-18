@@ -102,6 +102,7 @@
             <div slot="content"
                  class="hot">
               <mall-goods :msg="iitem"
+                          class="product-item"
                           v-for="(iitem,j) in item.product_contents"
                           :key="j"></mall-goods>
             </div>
@@ -125,6 +126,7 @@
               </div>
               <!-- 小图 -->
               <mall-goods :msg="iitem"
+                          class="product-item"
                           v-for="(iitem,j) in item.product_contents"
                           :key="j+'key'"
                           v-if="j !== 0"></mall-goods>
@@ -283,9 +285,13 @@ export default {
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
+.product-item {
+  width: 25%;
+}
 .home {
   display: flex;
   flex-direction: column;
+
 }
 
 .no-info {

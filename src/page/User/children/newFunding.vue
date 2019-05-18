@@ -234,6 +234,7 @@
                style="font-size:24px; margin:10px auto;text-align:center;color:black;width:500px">{{verify_message}} 请修改后重新提交审核</p>
 
           </div>
+
           <div class="stepControl">
             <el-button type="normal"
                        @click="switchStep(step - 1)"

@@ -15,7 +15,6 @@
               <div class="bottomLine"></div>
               <div class="productBox">
                 <mall-goods :canEdit="true"
-                            :hideDetailBt="true"
                             v-for="(item,i) in VerifyFailProducts"
                             class="roductItem"
                             :key="i"
@@ -31,12 +30,11 @@
                 <mall-goods v-for="(item,i) in VerifyUnsubmitProducts"
                             class="roductItem"
                             :key="i"
-                            :hideDetailBt="true"
                             :canEdit="true"
                             :msg="item"></mall-goods>
               </div>
             </div>
-
+            <!--    :hideDetailBt="true" -->
             <!-- 待审核众筹 -->
             <div class="typeZone">
               <h1>待审核众筹</h1>
@@ -45,7 +43,6 @@
                 <mall-goods v-for="(item,i) in VerifyWaitProducts"
                             class="roductItem"
                             :key="i"
-                            :hideDetailBt="true"
                             :canEdit="true"
                             :msg="item"></mall-goods>
               </div>
@@ -237,7 +234,7 @@
 </script>
 <style lang="scss" scoped>
   .roductItem{
-    width:30%;
+    width: 31%;
     margin-left:10px;
     margin-bottom: 5px;
   }

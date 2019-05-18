@@ -37,6 +37,7 @@
         <!--商品-->
         <div class="goods-box w">
           <mall-goods v-for="(item,i) in goods"
+                      class="product-item"
                       :key="i"
                       :msg="item"></mall-goods>
         </div>
@@ -90,7 +91,7 @@
 </template>
 <script>
   import { productList } from '/api/goods.js'
-  import { recommend } from '/api/index.js'
+  // import { recommend } from '/api/index.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
   import YShelf from '/components/shelf'
@@ -191,12 +192,15 @@
     mounted () {
       this.windowHeight = window.innerHeight
       this.windowWidth = window.innerWidth
+      // 从路由获取商品名
       this.queryName = this.$route.query.name
+      this.queryType = this.$route.query.type
       this._getAllGoods()
-      recommend().then(res => {
-        let data = res.data
-        this.recommendPanel = data.product_contents[0]
-      })
+      // TODO 推荐
+      // recommend().then(res => {
+      //   let data = res.data
+      //   this.recommendPanel = data.product_contents[0]
+      // })
     },
     components: {
       mallGoods,
@@ -209,6 +213,9 @@
   @import "../../assets/style/mixin";
   @import "../../assets/style/theme";
 
+  .product-item {
+    width: 25%;
+  }
   .nav {
     height: 60px;
     line-height: 60px;
