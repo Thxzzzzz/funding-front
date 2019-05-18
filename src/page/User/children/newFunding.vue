@@ -200,7 +200,7 @@
                             type="number"></el-input>
                 </el-form-item>
                 <el-form-item label="套餐图片"
-                              prop="image_rul">
+                              prop="image_url">
                   <img :src="editPkgForm.image_url"
                        alt=""
                        style="max-height:100px;">

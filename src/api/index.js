@@ -51,3 +51,8 @@ export const getProductCountInfo = (params) => {
 export const recommend = (params) => {
   return http.fetchGet('/goods/recommend', params)
 }
+
+// //  执照相关 ///
+export const saveLicense = (params) => {
+  return http.fetchPost('/user/license/save', params)
+}

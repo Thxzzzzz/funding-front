@@ -34,9 +34,11 @@ import {
   Tabs,
   TabPane,
   Row,
-  Col
+  Col,
+  Card
 } from 'element-ui'
 import VueContentPlaceholders from 'vue-content-placeholders'
+Vue.use(Card)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(TabPane)
