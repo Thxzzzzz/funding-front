@@ -102,10 +102,7 @@
           address: '',
           default: false
         },
-        userId: '',
-        isDefaultAddress: function (addressId) {
-          return this.userInfo.info.default_address_id === addressId
-        }
+        userId: ''
       }
     },
     computed: {
@@ -116,6 +113,9 @@
       }
     },
     methods: {
+      isDefaultAddress: function (addressId) {
+        return this.userInfo.info.default_address_id === addressId
+      },
       message (m) {
         this.$message.error({
           message: m

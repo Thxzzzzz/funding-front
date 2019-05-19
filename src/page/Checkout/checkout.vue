@@ -243,10 +243,15 @@
           let data = res.data
           if (data.length) {
             this.addList = data
-            this.addressId = data[0].id || 1
-            this.name = data[0].name
-            this.phone = data[0].phone
-            this.address = data[0].address
+            for (let i in data) {
+              if (this.isDefaultAddress(data[i].id)) {
+                this.addressId = data[i].id || 1
+                this.name = data[i].name
+                this.phone = data[i].phone
+                this.address = data[i].address
+                break
+              }
+            }
             if (chooseLast) {
               this.chooseAddress(data[data.length - 1])
             }
@@ -258,6 +263,9 @@
       _addressUpdate (params) {
         addressUpdate(params).then(res => {
           this._addressList()
+          if (params.default) {
+            this.userInfo.info.default_address_id = params.id
+          }
         })
       },
       _addressAdd (params) {
@@ -364,7 +372,7 @@
           this.msg.name = item.name
           this.msg.phone = item.phone
           this.msg.address = item.address
-          this.msg.default = item.default
+          this.msg.default = this.isDefaultAddress(item.id)
           this.msg.id = item.id
         } else {
           this.popupTitle = '新增收货地址'

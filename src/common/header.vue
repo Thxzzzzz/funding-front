@@ -55,9 +55,6 @@
                       <li v-if="showTab(2)">
                         <router-link to="/user/fundingManager">我的众筹</router-link>
                       </li>
-                      <li v-if="showTab(2)">
-                        <router-link to="/user/licenseManager">资质认证</router-link>
-                      </li>
                       <li>
                         <router-link to="/user/information">账号资料</router-link>
                       </li>
@@ -69,6 +66,9 @@
                       </li>
                       <li v-if="showTab(0)">
                         <router-link to="/user/coupon">我的优惠</router-link>
+                      </li>
+                      <li v-if="showTab(0)">
+                        <router-link to="/user/licenseManager">资质认证</router-link>
                       </li>
                       <li>
                         <a href="javascript:;"
