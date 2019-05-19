@@ -206,21 +206,13 @@
   export default {
     data () {
       return {
+        // 后端返回的订单数据
         orderItem: {},
         userId: '',
-        orderStatus: 0,
         orderId: [],
-        userName: '',
-        tel: '',
-        streetName: '',
+        // 订单标题，最上面显示订单号
         orderTitle: '',
-        createTime: '',
-        payTime: '',
-        closeTime: '',
-        finishTime: '',
-        orderTotal: '',
-        loading: true,
-        countTime: 0
+        loading: true
       }
     },
     methods: {
@@ -247,6 +239,7 @@
       goodsDetails (id) {
         window.open(window.location.origin + '#/goodsDetails?productId=' + id)
       },
+            // 获取订单详情
       _getOrderDet () {
         let params = {
           params: {
@@ -270,9 +263,10 @@
           this.loading = false
         })
       },
+      // TODO 取消订单，未完成
       _cancelOrder () {
         cancelOrder({orderId: this.orderId}).then(res => {
-          if (res.success === true) {
+          if (res.code === 200) {
             this._getOrderDet()
           } else {
             this.message('取消失败')
