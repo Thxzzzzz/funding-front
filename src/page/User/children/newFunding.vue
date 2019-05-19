@@ -428,9 +428,7 @@ export default {
     },
       // 大图
     bigImgUploadSuccess (response, file, fileList) {
-      if (response.code === 200) {
-        this.productForm.big_img = response.data
-      }
+      this.productForm.big_img = response.data
     },
       // 大图
     bigImgRemove (file, fileList) {
@@ -442,9 +440,7 @@ export default {
     },
       // 小图
     smallImgUploadSuccess (response, file, fileList) {
-      if (response.code === 200) {
-        this.productForm.small_img = response.data
-      }
+      this.productForm.small_img = response.data
     },
       // 小图
     smallImgRemove (file, fileList) {
@@ -538,9 +534,7 @@ export default {
     // 套餐相关
      // 套餐图
     pkgImgUploadSuccess (response, file, fileList) {
-      if (response.code === 200) {
-        this.editPkgForm.image_url = response.data
-      }
+      this.editPkgForm.image_url = response.data
     },
       // 套餐图
     pkgImgRemove (file, fileList) {

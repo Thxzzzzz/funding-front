@@ -196,9 +196,7 @@
       },
         // 执照图
       licenseImgUploadSuccess (response, file, fileList) {
-        if (response.code === 200) {
-          this.licenseForm.license_image_url = response.data
-        }
+        this.licenseForm.license_image_url = response.data
       },
       // 执照图
       licenseImgRemove (file, fileList) {

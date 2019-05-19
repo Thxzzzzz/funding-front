@@ -67,7 +67,7 @@
                       <li v-if="showTab(0)">
                         <router-link to="/user/coupon">我的优惠</router-link>
                       </li>
-                      <li v-if="showTab(0)">
+                      <li>
                         <router-link to="/user/licenseManager">资质认证</router-link>
                       </li>
                       <li>
