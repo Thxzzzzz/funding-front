@@ -19,15 +19,6 @@ export const productTypeList = (params) => {
   return http.fetchGet('/product/typeList', params)
 }
 
-// TODO 商品列表
-export const getSearch = (params) => {
-  return http.fetchGet('/product/search', params)
-}
-// TODO 快速搜索
-export const getQuickSearch = (params) => {
-  return http.fetchGet('/product/quickSearch', params)
-}
-
 // / 产品评论相关   ///
 
 // 获取产品评论

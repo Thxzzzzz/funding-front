@@ -20,8 +20,6 @@ const support = () => import('/page/User/children/support.vue')
 const checkout = () => import('/page/Checkout/checkout.vue')
 const payment = () => import('/page/Order/payment.vue')
 const paysuccess = () => import('/page/Order/paysuccess.vue')
-const Search = () => import('/page/Search/search.vue')
-const RefreshSearch = () => import('/page/Refresh/refreshsearch.vue')
 const RefreshGoods = () => import('/page/Refresh/refreshgoods.vue')
 const orderDetail = () => import('/page/User/children/orderDetail.vue')
 
@@ -37,10 +35,6 @@ const orderDetailManager = () => import('/page/User/children/orderDetailManager.
 // 发起众筹
 const newFunding = () => import('/page/User/children/newFunding.vue')
 
-
-// const Alipay = () => import('/page/Order/alipay.vue')
-// const Wechat = () => import('/page/Order/wechat.vue')
-// const QQpay = () => import('/page/Order/qqpay.vue')
 Vue.use(Router)
 export default new Router({
   routes: [{
@@ -85,11 +79,6 @@ export default new Router({
       component: Cart
     },
     {
-      path: '/refreshsearch',
-      name: 'refreshsearch',
-      component: RefreshSearch
-    },
-    {
       path: '/order',
       name: 'order',
       component: order,
@@ -102,15 +91,7 @@ export default new Router({
           path: 'payment',
           name: 'payment',
           component: payment
-        },
-        {
-          path: '/search',
-          name: 'search',
-          component: Search
         }
-        // {path: 'alipay', name: 'alipay', component: Alipay},
-        // {path: 'wechat', name: 'wechat', component: Wechat},
-        // {path: 'qqpay', name: 'qqpay', component: QQpay}
       ]
     },
     {

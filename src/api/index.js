@@ -49,7 +49,7 @@ export const getProductCountInfo = (params) => {
 
 // TODO 推荐板块
 export const recommend = (params) => {
-  return http.fetchGet('/goods/recommend', params)
+  return http.fetchGet('/pruduct/recommend', params)
 }
 
 // //  执照相关 ///
