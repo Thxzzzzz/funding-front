@@ -52,9 +52,18 @@
 
                 <el-form-item label="营业执照图片"
                               prop="license_image_url">
-                  <img :src="licenseForm.license_image_url"
-                       style="height:100px;"
-                       @click="showLiceseImage(licenseForm.license_image_url)"></img>
+                  <!-- <el-input v-model="licenseForm.license_image_url"
+                            v-show="false"></el-input> -->
+
+                  <el-image :src="licenseForm.license_image_url"
+                            style="height:100px;width:80px;"
+                            fit="scale-down"
+                            @click.native="showLiceseImage(licenseForm.license_image_url)">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
                   <el-upload :action="uploadImgUrl"
                              :limit="1"
                              style="width:300px;"
@@ -141,7 +150,7 @@
         seller_license: {},
         imgPreviewDialogShow: false,
         imgPreviewUrl: '',
-        licenseForm: {},
+        licenseForm: {company_name: '', description: '', address: '', phone: '', license_image_url: ''},
         licenseFormRule: {
           company_name: [
             { required: true, message: '不能为空', trigger: 'blur' },
@@ -160,7 +169,7 @@
             { min: 2, max: 128, message: '长度在 2 到 128个字符', trigger: 'blur' }
           ],
           license_image_url: [
-            { required: true, message: '请上传营业执照图片', trigger: 'blur' }
+            { required: true, message: '请上传营业执照图片', trigger: 'blur, change' }
           ]
 
         }
