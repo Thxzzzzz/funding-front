@@ -16,7 +16,7 @@
                  v-if="i === mark"
                  :key="item.product_id"
                  style="position:absolute"
-                 @click="linkTo(item)"
+                 @click="openProduct(item)"
                  @mouseover="stopTimer"
                  @mouseout="startTimer">
               <img class="img1"
@@ -107,7 +107,7 @@
             <li class="content"
                 v-for="(iitem,j) in item.product_contents"
                 :key="j"
-                @click="linkTo(iitem)">
+                @click="openProduct(iitem)">
               <img class="i"
                    :src="iitem.picUrl">
               <a class="cover-link"></a>
@@ -140,7 +140,7 @@
                    v-for="(iitem,j) in item.product_contents"
                    :key="j"
                    v-if="j === 0"
-                   @click="linkTo(iitem)">
+                   @click="openProduct(iitem)">
                 <img v-lazy="iitem.big_img">
                 <a class="cover-link"></a>
               </div>
@@ -221,7 +221,7 @@ export default {
       clearInterval(this.timer)
     },
     // 打开商品详情
-    linkTo (item) {
+    openProduct (item) {
       // 打开了产品，对应类型推荐计数累加 1
       addRecommendCount(item.product_type, 1)
       // 关联商品

@@ -183,7 +183,7 @@
   import { mapMutations, mapState } from 'vuex'
   import { getCartList, cartDel } from '/api/goods'
   import { loginOut } from '/api/index'
-  import { getStore, removeStore } from '/utils/storage'
+  import { getStore, removeStore, clearRecommendStorage } from '/utils/storage'
   // import store from '../store/'
   // import 'element-ui/lib/theme-default/index.css'
 
@@ -365,11 +365,8 @@
       },
       // 退出登陆
       _loginOut () {
-        // let params = {
-        //   params: {
-        //     token: this.token
-        //   }
-        // }
+        // 清理推荐计数
+        clearRecommendStorage()
         loginOut().then(res => {
           removeStore('buyCart')
           window.location.href = '/'

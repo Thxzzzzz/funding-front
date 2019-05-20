@@ -43,7 +43,7 @@
                 <div class="f-bc">
                   <span class="price">单价</span>
                   <span class="num">数量</span>
-                  <span class="operation">商品操作</span>
+                  <span class="operation">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </div>
               </div>
               <div class="last">
@@ -70,11 +70,11 @@
                     <div>¥ {{Number(item.unit_price).toFixed(2)}}</div>
                     <div class="num">{{item.nums}}</div>
                     <div class="type">
-                      <el-button style="margin-left:10px"
+                      <!-- <el-button style="margin-left:10px"
                                  @click="_delOrder(item.order_id,i)"
                                  type="danger"
                                  size="small"
-                                 class="del-order">删除此订单</el-button>
+                                 class="del-order">删除此订单</el-button> -->
                       <!-- <a @click="_delOrder(item.orderId,i)"
                          href="javascript:;"
                          class="del-order">删除此订单</a> -->

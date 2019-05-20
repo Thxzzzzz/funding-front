@@ -31,7 +31,14 @@ export const removeStore = name => {
 //     count: Number
 //   }
 // ]
+
+// 对应产品类型点击次数保存在 Local Storage 中的 字段名
 const recommendStroeKey = 'fProductRecommend'
+/**
+ * 给对应类型增加点击数量
+ * @param {商品类型} type
+ * @param {增加的计数值} count
+ */
 export const addRecommendCount = (type, count) => {
   // 从浏览器 Local Storage 取出类型推荐计数的数组
   let recommend = getStore(recommendStroeKey)
@@ -39,6 +46,7 @@ export const addRecommendCount = (type, count) => {
   if (!recommend) {
     recommend = []
   } else {
+    // 因为  Local Storage 只能存字符串，所以要将 Json 字符串反序列化成 JavaScript 对象
     recommend = JSON.parse(recommend)
   }
   let typeIndex = -1
@@ -64,11 +72,15 @@ export const addRecommendCount = (type, count) => {
   setStore(recommendStroeKey, recommend)
 }
 
+/**
+ * 获取点击次数最多的类型
+ */
 export const getRecommendType = () => {
   // 从浏览器 Local Storage 取出类型推荐计数的数组
   let recommend = getStore(recommendStroeKey)
   // 如果没有就返回 0 后端将从所有类型中推荐
   if (!recommend) return 0
+  // 因为  Local Storage 只能存字符串，所以要将 Json 字符串反序列化成 JavaScript 对象
   recommend = JSON.parse(recommend)
   let type = 0
   let maxCount = 0
@@ -82,4 +94,11 @@ export const getRecommendType = () => {
   }
   // 返回对应类型
   return type
+}
+
+/**
+ * 清理推荐计数（注销时清理）
+ */
+export const clearRecommendStorage = () => {
+  removeStore(recommendStroeKey)
 }
