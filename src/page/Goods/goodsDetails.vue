@@ -240,6 +240,29 @@
       </div>
     </div>
 
+    <!-- 猜你喜欢 -->
+    <el-card class="w clearfix"
+             body-style="padding:0px;"
+             v-if="recommendProducts">
+      <div slot="header"
+           class="clearfix">
+        <span style="font-size:18px;color:gray">猜你喜欢</span>
+        <el-button style="float: right; padding: 3px 0"
+                   icon="el-icon-refresh"
+                   @click="getRecommendProducts()"
+                   type="text">刷新推荐</el-button>
+      </div>
+      <div class="floors"
+           style="margin:0px;">
+        <!-- 小图 -->
+        <mall-goods :msg="iitem"
+                    class="product-item"
+                    style="margin:0 11px;"
+                    v-for="(iitem,j) in recommendProducts"
+                    :key="j+'key'"></mall-goods>
+      </div>
+    </el-card>
+
     <!-- 加入购物车弹框 -->
     <y-popup :open="popupOpen"
              @close='popupOpen=false'
@@ -275,8 +298,9 @@
   </div>
 </template>
 <script>
-  import { productDet, addCart, getCommentInfoByProductId, saveCommentsInfo } from '/api/goods'
+  import { productDet, addCart, getCommentInfoByProductId, saveCommentsInfo, getProductsRand } from '/api/goods'
   import { getInfoById, getLicenseByUserId } from '/api/index'
+  // import { recommend } from '/api/index.js'
 
   import { mapMutations, mapState } from 'vuex'
   import YShelf from '/components/shelf'
@@ -285,8 +309,9 @@
   import YButton from '/components/YButton'
   import comment from '/components/Comment'
   import InputComponent from '/components/InputComponent'
+  import mallGoods from '/components/mallGoods'
 
-  import { getStore } from '/utils/storage'
+  import { getStore, getRecommendType } from '/utils/storage'
   import { calcDayBetween } from '/utils/dateUtil'
   import dayjs from 'dayjs'
 
@@ -312,7 +337,9 @@
         // 卖家信息
         seller_info: {},
         // 卖家执照信息
-        seller_license: {}
+        seller_license: {},
+        // 猜你喜欢列表
+        recommendProducts: []
   
       }
     },
@@ -509,22 +536,47 @@
         ).catch(error => {
           this.messageError('评论提交失败' + error)
         })
+      },
+      // 获取推荐商品列表（猜你喜欢）
+      getRecommendProducts () {
+      // 从Local Storage 获取统计到的商品类型
+        let type = getRecommendType()
+        let params = {product_type: type, num: 4}
+        getProductsRand({params: params}).then(res => {
+          if (res.code === 200) {
+            this.recommendProducts = res.data
+          }
+        })
       }
     },
     components: {
-      YShelf, BuyNum, YButton, YPopup, comment, InputComponent
+      YShelf, BuyNum, YButton, YPopup, comment, InputComponent, mallGoods
     },
     created () {
       let id = this.$route.query.productId
       this._productDet(id)
       this._getCommentInfoByProductId(id)
       this.userId = getStore('userId')
+      // 获取猜你喜欢列表
+      this.getRecommendProducts()
     }
   }
 </script>
 <style lang="scss" scoped>
   @import "../../assets/style/mixin";
   @import "../../assets/style/comment.scss";
+
+  .mt30 {
+    margin-top: 30px;
+  }
+  .floors {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+  }
+
   .sellerInfo-text{
     p {
       margin-bottom: 6px;
@@ -646,6 +698,7 @@
   }
 
   .info-card{
+    
     width:100%;
     .gray-box {
       padding: 0;

@@ -70,6 +70,7 @@ import YButton from '/components/YButton'
 import { mapMutations, mapState } from 'vuex'
 // import { getStore } from '/utils/storage'
 import { calcDayBetween } from '/utils/dateUtil'
+import { addRecommendCount } from '/utils/storage'
 const template = {
   product_id: 11118,
   name: '鑫乐迪运动手环蓝牙耳机二合一7',
@@ -101,6 +102,9 @@ export default {
     },
     openProduct (id) {
       if (this.hideDetailBt) return
+      // 打开了产品，对应类型推荐计数累加 1
+      addRecommendCount(this.msg.product_type, 1)
+      // console.log('Type: ' + getRecommendType())
       window.open(
         '//' + window.location.host + '/#/goodsDetails?productId=' + id
       )

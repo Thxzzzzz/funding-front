@@ -55,6 +55,10 @@ export const saveProductPackage = (params) => {
 export const allProductBySellerId = (params) => {
   return http.fetchGet('/pm/allProductBySellerId', params)
 }
+// 根据类型和数量随机获取一组产品信息（用来做推荐）
+export const getProductsRand = (params) => {
+  return http.fetchGet('/product/getProductsRand', params)
+}
 
 //           购物车相关          //
 

@@ -86,15 +86,39 @@
           </y-shelf>
         </section>
       </div>
+
+      <!-- 猜你喜欢 -->
+      <el-card class="w mt30 clearfix"
+               body-style="padding:0px;"
+               v-if="recommendProducts">
+        <div slot="header"
+             class="clearfix">
+          <span style="font-size:18px;color:gray">猜你喜欢</span>
+          <el-button style="float: right; padding: 3px 0"
+                     icon="el-icon-refresh"
+                     @click="getRecommendProducts()"
+                     type="text">刷新推荐</el-button>
+        </div>
+        <div class="floors"
+             style="margin:0px;">
+          <!-- 小图 -->
+          <mall-goods :msg="iitem"
+                      class="product-item"
+                      v-for="(iitem,j) in recommendProducts"
+                      :key="j+'key'"></mall-goods>
+        </div>
+      </el-card>
+
     </div>
   </div>
 </template>
 <script>
-  import { productList } from '/api/goods.js'
+  import { productList, getProductsRand } from '/api/goods.js'
   // import { recommend } from '/api/index.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
   import YShelf from '/components/shelf'
+  import { getRecommendType } from '/utils/storage'
   export default {
     data () {
       return {
@@ -114,7 +138,9 @@
         total: 0,
         pageSize: 20,
         queryName: '',
-        queryType: 0
+        queryType: 0,
+        // 猜你喜欢列表
+        recommendProducts: []
       }
     },
     methods: {
@@ -162,21 +188,16 @@
           this.loading = false
         })
       },
-      // 默认排序
-      reset () {
-        this.sortType = 1
-        this.sort = ''
-        this.currentPage = 1
-        this.loading = true
-        this._getAllGoods()
-      },
-      // 价格排序
-      sortByPrice (v) {
-        v === 1 ? this.sortType = 2 : this.sortType = 3
-        this.sort = v
-        this.currentPage = 1
-        this.loading = true
-        this._getAllGoods()
+          // 获取推荐商品列表（猜你喜欢）
+      getRecommendProducts () {
+      // 从Local Storage 获取统计到的商品类型
+        let type = getRecommendType()
+        let params = {product_type: type, num: 4}
+        getProductsRand({params: params}).then(res => {
+          if (res.code === 200) {
+            this.recommendProducts = res.data
+          }
+        })
       }
     },
     watch: {
@@ -196,11 +217,8 @@
       this.queryName = this.$route.query.name
       this.queryType = this.$route.query.type
       this._getAllGoods()
-      // TODO 推荐
-      // recommend().then(res => {
-      //   let data = res.data
-      //   this.recommendPanel = data.product_contents[0]
-      // })
+       // 获取猜你喜欢列表
+      this.getRecommendProducts()
     },
     components: {
       mallGoods,
@@ -212,6 +230,17 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   @import "../../assets/style/mixin";
   @import "../../assets/style/theme";
+
+  .mt30 {
+    margin-top: 30px;
+  }
+  .floors {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+  }
 
   .product-item {
     width: 25%;

@@ -21,8 +21,6 @@
                  @mouseout="startTimer">
               <img class="img1"
                    :src="item.big_img" />
-              <!-- <img v-if="item.picUrl2"  class="img2 a" :src="item.picUrl2"/>
-            <img v-if="item.picUrl3"  class="img3 b" :src="item.picUrl3"/> -->
             </div>
           </transition>
         </div>
@@ -37,7 +35,7 @@
         </div>
       </div>
 
-      <!-- 活动板块  -->
+      <!-- 统计板块  -->
       <div class="activity-panel">
         <ul class="box"
             style="height:100px">
@@ -77,11 +75,33 @@
         </ul>
       </div>
 
+      <!-- 猜你喜欢 -->
+      <el-card class="w mt30 clearfix"
+               body-style="padding:0px;"
+               v-if="recommendProducts">
+        <div slot="header"
+             class="clearfix">
+          <span style="font-size:18px;color:gray">猜你喜欢</span>
+          <el-button style="float: right; padding: 3px 0"
+                     icon="el-icon-refresh"
+                     @click="getRecommendProducts()"
+                     type="text">刷新推荐</el-button>
+        </div>
+        <div class="floors"
+             style="margin:0px;">
+          <!-- 小图 -->
+          <mall-goods :msg="iitem"
+                      class="product-item"
+                      v-for="(iitem,j) in recommendProducts"
+                      :key="j+'key'"></mall-goods>
+        </div>
+      </el-card>
+
       <div v-for="(item,i) in home"
            :key="i">
 
         <!-- 活动板块  -->
-        <div class="activity-panel"
+        <!-- <div class="activity-panel"
              v-if="item.type === 1">
           <ul class="box">
             <li class="content"
@@ -93,10 +113,10 @@
               <a class="cover-link"></a>
             </li>
           </ul>
-        </div>
+        </div> -->
 
         <!-- 热门商品 -->
-        <section class="w mt30 clearfix"
+        <!-- <section class="w mt30 clearfix"
                  v-if="item.type === 2">
           <y-shelf :title="item.name">
             <div slot="content"
@@ -107,7 +127,7 @@
                           :key="j"></mall-goods>
             </div>
           </y-shelf>
-        </section>
+        </section> -->
 
         <!-- xx精选 -->
         <section class="w mt30 clearfix"
@@ -149,10 +169,13 @@
 </template>
 <script>
 import { productHome, getProductCountInfo } from '/api/index.js'
+import { getProductsRand } from '/api/goods.js'
 import YShelf from '/components/shelf'
 import product from '/components/product'
 import mallGoods from '/components/mallGoods'
 import { setStore, getStore } from '/utils/storage.js'
+import { addRecommendCount, getRecommendType } from '/utils/storage'
+
 export default {
   data () {
     return {
@@ -168,6 +191,8 @@ export default {
       home: [],
       // 统计信息
       productCountInfo: {},
+      // 猜你喜欢列表
+      recommendProducts: [],
       loading: true,
       notify: '1',
       dialogVisible: false,
@@ -195,7 +220,10 @@ export default {
     stopTimer () {
       clearInterval(this.timer)
     },
+    // 打开商品详情
     linkTo (item) {
+      // 打开了产品，对应类型推荐计数累加 1
+      addRecommendCount(item.product_type, 1)
       // 关联商品
       this.$router.push({
         path: '/goodsDetails',
@@ -203,18 +231,6 @@ export default {
           productId: item.product_id
         }
       })
-      // if (item.type === 0 || item.type === 2) {
-      //   // 关联商品
-      //   this.$router.push({
-      //     path: '/goodsDetails',
-      //     query: {
-      //       productId: item.product_id
-      //     }
-      //   })
-      // } else {
-      //   // 完整链接
-      //   window.location.href = item.fullUrl
-      // }
     },
     bgOver (e) {
       this.bgOpt.px = e.offsetLeft
@@ -250,6 +266,17 @@ export default {
         this.dialogVisible = true
         setStore('notify', this.notify)
       }
+    },
+    // 获取推荐商品列表（猜你喜欢）
+    getRecommendProducts () {
+      //  从Local Storage 获取统计到的商品类型
+      let type = getRecommendType()
+      let params = {product_type: type, num: 4}
+      getProductsRand({params: params}).then(res => {
+        if (res.code === 200) {
+          this.recommendProducts = res.data
+        }
+      })
     }
   },
   mounted () {
@@ -272,6 +299,8 @@ export default {
         this.productCountInfo = res.data
       }
     })
+    // 获取猜你喜欢列表
+    this.getRecommendProducts()
     this.showNotify()
   },
   created () {

@@ -102,7 +102,7 @@
                 <p>
                   营业执照: <img :src="seller_license.license_image_url"
                        style="height:100px;"
-                       @click="showLiceseImage(seller_license.license_image_url)"></img>
+                       @click="showLiceseImage(seller_license.license_image_url)" />
                 </p>
               </div>
             </el-card>
