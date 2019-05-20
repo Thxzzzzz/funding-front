@@ -32,3 +32,18 @@ export const getOrderStatus = (status) => {
     return '交易关闭'
   }
 }
+
+/**
+ *
+ * @param {众筹状态码} status
+ */
+export const getFundingStatusStr = (status) => {
+  if (status === 1) {
+    return '众筹成功'
+  } else if (status === 2) {
+    return '众筹失败'
+  } else if (status === 3) {
+    return '正在众筹'
+  }
+  return '正在众筹'
+}

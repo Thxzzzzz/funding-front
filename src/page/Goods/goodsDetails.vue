@@ -45,10 +45,13 @@
             </span>
 
           </p>
-          <p v-if="dayLeft <= 0"
+          <div class="funding-status">
+            {{fundingStatusStr}}
+          </div>
+          <!-- <p v-if="dayLeft <= 0"
              style="font-size:20px;margin-top:20px;">
             已结束！
-          </p>
+          </p> -->
         </div>
       </div>
     </div>
@@ -300,6 +303,8 @@
 <script>
   import { productDet, addCart, getCommentInfoByProductId, saveCommentsInfo, getProductsRand } from '/api/goods'
   import { getInfoById, getLicenseByUserId } from '/api/index'
+  import { getFundingStatusStr } from '/utils/consts'
+
   // import { recommend } from '/api/index.js'
 
   import { mapMutations, mapState } from 'vuex'
@@ -362,6 +367,10 @@
         let date1 = new Date()
         let date2 = new Date(this.product.end_time)
         return calcDayBetween(date1, date2)
+      },
+          // 众筹状态文字
+      fundingStatusStr: function () {
+        return getFundingStatusStr(this.product.funding_status)
       }
     },
     methods: {
@@ -566,6 +575,19 @@
   @import "../../assets/style/mixin";
   @import "../../assets/style/comment.scss";
 
+  .funding-status{
+    margin: 40px auto;
+    font-size: 26px;
+    font-weight: bold;
+    border: rgb(236, 103, 103);
+    border-width: 3px;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    line-height: 45px;
+    border-style: solid;
+    color: rgb(236, 103, 103);
+  }
   .mt30 {
     margin-top: 30px;
   }

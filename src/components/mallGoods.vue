@@ -1,14 +1,20 @@
 // TODO 众筹结束或过期提示等
 <template>
   <div class="good-item">
+
     <div style="">
+
       <!-- 图片 -->
       <div class="good-img">
+        <div style=" position: relative;">
+          <div class="left-top-tag">{{fundingStatusStr}}</div>
+        </div>
         <a @click="openProduct(msg.product_id)">
           <img v-lazy="msg.small_img"
                :alt="msg.name"
                :key="msg.small_img">
         </a>
+
       </div>
       <!-- 标题 （产品名） -->
       <h6 class="good-title"
@@ -59,10 +65,13 @@
           </div>
 
         </div>
+
       </div>
 
     </div>
+
   </div>
+
 </template>
 <script>
 import YButton from '/components/YButton'
@@ -71,6 +80,7 @@ import { mapMutations, mapState } from 'vuex'
 // import { getStore } from '/utils/storage'
 import { calcDayBetween } from '/utils/dateUtil'
 import { addRecommendCount } from '/utils/storage'
+import { getFundingStatusStr } from '/utils/consts'
 const template = {
   product_id: 11118,
   name: '鑫乐迪运动手环蓝牙耳机二合一7',
@@ -138,6 +148,10 @@ export default {
       let percent = this.progressPercent
       if (percent > 100) percent = 100
       return Number(percent)
+    },
+    // 众筹状态文字
+    fundingStatusStr: function () {
+      return getFundingStatusStr(this.msg.funding_status)
     }
   },
   mounted () {},
@@ -150,6 +164,24 @@ export default {
 @import "../assets/style/mixin";
 @import "../assets/style/theme";
 
+
+.left-top-tag  {
+    position: absolute;
+    background: #92b7bd;
+    z-index: 999;
+    border-radius: 3px;
+    position: absolute;
+    width: 100px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    // transform: rotate(-40deg);
+    top: 6px;
+    left: 5px;
+}
+ 
 .good-item {
   background: #fff;
   border: none;
