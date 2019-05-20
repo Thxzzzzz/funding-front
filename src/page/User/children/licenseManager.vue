@@ -8,7 +8,7 @@
           <span class="support">{{verifyStatusStr(seller_license.verify_status)}}</span>
           <div class="message"
                v-if="seller_license.verify_status === 4">
-            原因：{{seller_license.verify_massage}} 请修改后重新提交审核
+            原因：{{seller_license.verify_message}} 请修改后重新提交审核
           </div>
           <!-- 上传执照相关 -->
           <div>
