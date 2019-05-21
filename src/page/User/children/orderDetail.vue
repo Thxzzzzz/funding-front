@@ -97,12 +97,20 @@
                v-if="orderItem.order_status === 4">
             <ul>
               <li class="status-title">
-                <h3>订单状态：已发货</h3>
+                <h3>订单状态：已发货
+                  <span style="margin-left:30px;">
+                    <el-button @click="_receivedProduct()"
+                               type="success"
+                               size="mini"
+                               round> 确认收货</el-button>
+                  </span>
+                </h3>
               </li>
             </ul>
             <p class="realtime">
               物流单号为 : {{orderItem.checking_number}}
               <el-button @click="queryShipping()"
+                         style="margin-left:10px;"
                          type="primary"
                          size="mini"
                          round> 点击查询</el-button>
@@ -266,6 +274,10 @@
           this.end_time = item.end_time
           this.loading = false
         })
+      },
+      // 确认收货
+      _receivedProduct () {
+  
       },
       // TODO 取消订单，未完成
       _cancelOrder () {
