@@ -368,6 +368,7 @@
         let date2 = new Date(this.product.end_time)
         return calcDayBetween(date1, date2)
       },
+  
           // 众筹状态文字
       fundingStatusStr: function () {
         // 1：已通过 2：待审核 3: 待提交 4: 未通过

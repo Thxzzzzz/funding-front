@@ -1,13 +1,12 @@
-// TODO 众筹结束或过期提示等
 <template>
   <div class="good-item">
-
     <div style="">
-
       <!-- 图片 -->
       <div class="good-img">
+
+        <!-- 左上角标签 -->
         <div style=" position: relative;">
-          <div class="left-top-tag">{{fundingStatusStr}}</div>
+          <div class="left-top-tag">{{productTypeStr}}</div>
         </div>
         <a @click="openProduct(msg.product_id)">
           <img v-lazy="msg.small_img"
@@ -144,6 +143,19 @@ export default {
       let percent = this.progressPercent
       if (percent > 100) percent = 100
       return Number(percent)
+    },
+        // 产品类型文字
+    productTypeStr: function () {
+      if (this.msg.product_type === 1) {
+        // 1：众筹成功 2：众筹失败 3：正在众筹
+        return '数码'
+      } else if (this.msg.product_type === 2) {
+        return '生活'
+      } else if (this.msg.product_type === 3) {
+        return '运动'
+      } else if (this.msg.product_type === 3) {
+        return '其他'
+      }
     },
     // 众筹状态文字
     fundingStatusStr: function () {
