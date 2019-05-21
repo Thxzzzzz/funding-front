@@ -8,7 +8,7 @@
              style="min-height: 10vw;"
              v-if="orderItem">
           <div class="orderStatus"
-               v-if="orderItem.order_status !== 7">
+               v-if="orderItem.order_status < 6">
             <el-steps :space="200"
                       :active="orderItem.order_status">
               <el-step title="下单"
@@ -25,10 +25,13 @@
           </div>
           <div class="orderStatus-close"
                v-if="orderItem.order_status  === 6">
-            <el-steps :space="780"
-                      :active="2">
+            <el-steps :space="267"
+                      :active="3">
               <el-step title="下单"
-                       v-bind:description="orderItem.created_at"></el-step>
+                       v-bind:description="_formatDate(orderItem.created_at)"></el-step>
+              <el-step title="付款"
+                       v-bind:description="_formatDate(orderItem.paid_at)"></el-step>
+              <el-step title="申请退款"></el-step>
               <el-step title="交易关闭"
                        v-bind:description="orderItem.close_at"></el-step>
             </el-steps>
@@ -110,13 +113,14 @@
                v-if="orderItem.order_status === 6">
             <ul>
               <li class="status-title">
-                <h3>订单状态：已关闭</h3>
+                <h3>订单状态：正在申请退款</h3>
               </li>
             </ul>
             <p class="realtime">
-              <span>您的订单已关闭。</span>
+              <span>正在申请退款，等待商家确认。</span>
             </p>
           </div>
+
           <div class="status-now"
                v-if="orderItem.order_status === 5">
             <ul>

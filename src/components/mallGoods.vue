@@ -81,24 +81,20 @@ import { mapMutations, mapState } from 'vuex'
 import { calcDayBetween } from '/utils/dateUtil'
 import { addRecommendCount } from '/utils/storage'
 import { getFundingStatusStr } from '/utils/consts'
-const template = {
-  product_id: 11118,
-  name: '鑫乐迪运动手环蓝牙耳机二合一7',
-  big_img:
-    'https://img30.360buyimg.com/cf/jfs/t1/21081/18/6891/106614/5c6639a2E4d110821/c5802dca70419338.jpg',
-  small_img:
-    'https://img30.360buyimg.com/cf/jfs/t1/28544/16/6906/44121/5c66399bE78db06bd/0b919fb33eaccc26.jpg',
-  product_type: 2,
-  current_price: 1098900,
-  target_price: 100000,
-  backers: 2897,
-  current_time: '2019-04-10T21:20:06.0493347+08:00',
-  end_time: '2019-04-09T19:43:04+08:00'
-}
 
 export default {
   props: {
-    msg: template,
+    msg: {
+      name: '',
+      big_img: '',
+      small_img: '',
+      product_type: 0,
+      current_price: 0,
+      target_price: 0,
+      backers: 0,
+      current_time: '',
+      end_time: ''
+    },
     canEdit: false,
     hideDetailBt: false
   },
@@ -151,7 +147,17 @@ export default {
     },
     // 众筹状态文字
     fundingStatusStr: function () {
-      return getFundingStatusStr(this.msg.funding_status)
+      // 1：已通过 2：待审核 3: 待提交 4: 未通过
+      if (this.msg.verify_status === 1) {
+        // 1：众筹成功 2：众筹失败 3：正在众筹
+        return getFundingStatusStr(this.msg.funding_status)
+      } else if (this.msg.verify_status === 2) {
+        return '待审核'
+      } else if (this.msg.verify_status === 3) {
+        return '待提交审核'
+      } else if (this.msg.verify_status === 3) {
+        return '未通过审核'
+      }
     }
   },
   mounted () {},
