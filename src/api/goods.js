@@ -134,9 +134,13 @@ export const getOrderDet = (params) => {
 }
 // TODO 取消订单
 export const cancelOrder = (params) => {
-  return http.fetchPost('/order/cancelOrder', params)
+  return http.fetchPost('/order/cancel', params)
 }
-// TODO 删除订单
+// TODO 申请退款
+export const refundOrder = (params) => {
+  return http.fetchPost('/order/refund', params)
+}
+// TODO 删除订单 这个暂时不做
 export const delOrder = (params) => {
   return http.fetchGet('/order/delOrder', params)
 }
@@ -153,4 +157,9 @@ export const orderListToSeller = (params) => {
 // 发货
 export const sendOutOrder = (params) => {
   return http.fetchPost('/order/sendOutOrder', params)
+}
+
+// 拒绝退款
+export const cantRefundOrder = (params) => {
+  return http.fetchPost('/order/cantRefund', params)
 }

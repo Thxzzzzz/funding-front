@@ -33,7 +33,7 @@
                        v-bind:description="_formatDate(orderItem.paid_at)"></el-step>
               <el-step title="申请退款"></el-step>
               <el-step title="交易关闭"
-                       v-bind:description="orderItem.close_at"></el-step>
+                       v-bind:description="_formatDate(orderItem.close_at)"></el-step>
             </el-steps>
           </div>
           <div class="orderStatus-close"
@@ -41,20 +41,21 @@
             <el-steps :space="780"
                       :active="2">
               <el-step title="下单"
-                       v-bind:description="orderItem.created_at"></el-step>
+                       v-bind:description="_formatDate(orderItem.created_at)"></el-step>
               <el-step title="交易关闭"
-                       v-bind:description="orderItem.close_at"></el-step>
+                       v-bind:description="_formatDate(orderItem.close_at)"></el-step>
             </el-steps>
           </div>
           <div class="status-now"
                v-if="orderItem.order_status === 1">
             <ul>
               <li class="status-title">
-                <h3>订单状态：待付款</h3>
+                <h3>订单状态：待付款
+                </h3>
               </li>
-              <li class="button"
-                  v-if="orderItem.funding_status === 3">
+              <li class="button">
                 <el-button @click="orderPayment(orderId)"
+                           v-if="orderItem.funding_status === 3"
                            type="primary"
                            size="small">现在付款</el-button>
                 <el-button @click="_cancelOrder()"
@@ -64,7 +65,7 @@
             <p class="realtime">
               <span>在众筹结束前您都可以付款 还有:</span>
               <span class="red">
-                <countDown v-bind:endTime="getTimestamp(orderItem.end_time)"
+                <countDown v-bind:endTime="String(getTimestamp(orderItem.end_time))"
                            endText="已结束"></countDown>
               </span>
               <span> 该订单对应产品库存还有：</span> <span class="red">{{orderItem.stock}}</span> <span> 件</span>
@@ -77,6 +78,10 @@
               <li class="status-title">
                 <h3>订单状态：已支付</h3>
               </li>
+              <li class="button">
+                <el-button @click="_cancelOrder()"
+                           size="small">退款并取消订单</el-button>
+              </li>
             </ul>
             <p class="realtime">
               <span>请耐心等待，产品将在众筹成功后一段时间内发出</span>
@@ -88,6 +93,10 @@
               <li class="status-title">
                 <h3>订单状态：配货</h3>
               </li>
+              <li class="button">
+                <el-button @click="refundDialogShow = true"
+                           size="small">申请退款</el-button>
+              </li>
             </ul>
             <p class="realtime">
               您的订单已经开始配货
@@ -97,14 +106,14 @@
                v-if="orderItem.order_status === 4">
             <ul>
               <li class="status-title">
-                <h3>订单状态：已发货
-                  <span style="margin-left:30px;">
-                    <el-button @click="_receivedProduct()"
-                               type="success"
-                               size="mini"
-                               round> 确认收货</el-button>
-                  </span>
-                </h3>
+                <h3>订单状态：已发货 </h3>
+              <li class="button">
+                <el-button @click="_receivedProduct()"
+                           type="success"
+                           size="mini"> 确认收货</el-button>
+                <el-button @click="refundDialogShow = true"
+                           size="small">申请退款</el-button>
+              </li>
               </li>
             </ul>
             <p class="realtime">
@@ -125,6 +134,7 @@
               </li>
             </ul>
             <p class="realtime">
+              <p>退款原因：{{orderItem.refund_reason}}</p>
               <span>正在申请退款，等待商家确认。</span>
             </p>
           </div>
@@ -140,6 +150,19 @@
               <span>您的订单已交易成功，感谢您的支持！</span>
             </p>
           </div>
+
+          <div class="status-now"
+               v-if="showCanRefundReason">
+            <ul>
+              <li class="status-title">
+                <h3>退款被拒绝</h3>
+              </li>
+            </ul>
+            <p class="realtime">
+              <span>拒绝原因：{{orderItem.refund_reason}}</span>
+            </p>
+          </div>
+
           <div class="gray-sub-title cart-title">
             <div class="first">
               <div>
@@ -204,11 +227,23 @@
         </div>
       </div>
     </y-shelf>
-
+    <el-dialog :visible.sync="refundDialogShow"
+               title="申请退款">
+      <el-input type="textarea"
+                v-model="refundReason"
+                placeholder="请输入退款原因，如有退货请输入订单号"> </el-input>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="refundDialogShow = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="_refundOrder()">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
   </div>
 </template>
 <script>
-  import { getOrderDet, cancelOrder } from '/api/goods'
+  import { getOrderDet, cancelOrder, receivedOrder, refundOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { getStore } from '/utils/storage'
   import { formatDate } from '/utils/dateUtil'
@@ -224,7 +259,20 @@
         orderId: [],
         // 订单标题，最上面显示订单号
         orderTitle: '',
-        loading: true
+        loading: true,
+        // 退款原因
+        refundReason: '',
+        // 申请退款对话框
+        refundDialogShow: false
+      }
+    },
+    computed: {
+      // 是否显示被拒绝退款原因
+      showCanRefundReason () {
+        return this.orderItem.order_status !== 6 &&
+                this.orderItem.order_status < 6 &&
+               this.orderItem.last_status !== 1 &&
+               this.orderItem.refund_reason.length > 1
       }
     },
     methods: {
@@ -275,23 +323,42 @@
           this.loading = false
         })
       },
-      // 确认收货
-      _receivedProduct () {
-  
+      // 申请退款
+      _refundOrder () {
+        let params = { id: this.orderItem.order_id, refund_reason: this.refundReason }
+        refundOrder(params).then(res => {
+          if (res.code === 200) {
+            this._getOrderDet()
+            this.refundDialogShow = false
+          } else {
+            this.message('申请退款出错' + res.message)
+          }
+        })
       },
-      // TODO 取消订单，未完成
-      _cancelOrder () {
-        cancelOrder({orderId: this.orderId}).then(res => {
+      // 确认收货
+      _receivedOrder () {
+        let params = { id: this.orderItem.order_id }
+        receivedOrder(params).then(res => {
           if (res.code === 200) {
             this._getOrderDet()
           } else {
-            this.message('取消失败')
+            this.message('确认收货出错' + res.message)
+          }
+        })
+      },
+      //  取消订单 未付款时可以直接取消
+      _cancelOrder () {
+        let params = {id: this.orderItem.order_id}
+        cancelOrder(params).then(res => {
+          if (res.code === 200) {
+            this._getOrderDet()
+          } else {
+            this.message('取消失败' + res.message)
           }
         })
       }
     },
     created () {
-      this.userId = getStore('userId')
       this.userId = getStore('userId')
       let olJson = JSON.parse(this.$route.query.orderId)
       this.orderId = olJson
