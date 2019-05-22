@@ -100,35 +100,6 @@
       <div v-for="(item,i) in home"
            :key="i">
 
-        <!-- 活动板块  -->
-        <!-- <div class="activity-panel"
-             v-if="item.type === 1">
-          <ul class="box">
-            <li class="content"
-                v-for="(iitem,j) in item.product_contents"
-                :key="j"
-                @click="openProduct(iitem)">
-              <img class="i"
-                   :src="iitem.picUrl">
-              <a class="cover-link"></a>
-            </li>
-          </ul>
-        </div> -->
-
-        <!-- 热门商品 -->
-        <!-- <section class="w mt30 clearfix"
-                 v-if="item.type === 2">
-          <y-shelf :title="item.name">
-            <div slot="content"
-                 class="hot">
-              <mall-goods :msg="iitem"
-                          class="product-item"
-                          v-for="(iitem,j) in item.product_contents"
-                          :key="j"></mall-goods>
-            </div>
-          </y-shelf>
-        </section> -->
-
         <!-- xx精选 -->
         <section class="w mt30 clearfix"
                  v-if="item.type === 3">
