@@ -147,7 +147,6 @@ export default {
         // 产品类型文字
     productTypeStr: function () {
       if (this.msg.product_type === 1) {
-        // 1：众筹成功 2：众筹失败 3：正在众筹
         return '数码'
       } else if (this.msg.product_type === 2) {
         return '生活'
