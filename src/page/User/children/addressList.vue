@@ -146,6 +146,9 @@
       _addressAdd (params) {
         addressAdd(params).then(res => {
           if (res.code === 200) {
+            if (params.default) {
+              this.userInfo.info.default_address_id = res.data.id
+            }
             this._addressList()
           } else {
             this.message(res.message)
