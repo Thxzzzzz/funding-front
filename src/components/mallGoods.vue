@@ -152,7 +152,7 @@ export default {
         return '生活'
       } else if (this.msg.product_type === 3) {
         return '运动'
-      } else if (this.msg.product_type === 3) {
+      } else if (this.msg.product_type === 99) {
         return '其他'
       }
     },
@@ -166,7 +166,7 @@ export default {
         return '待审核'
       } else if (this.msg.verify_status === 3) {
         return '待提交审核'
-      } else if (this.msg.verify_status === 3) {
+      } else if (this.msg.verify_status === 4) {
         return '未通过审核'
       }
     }
