@@ -245,7 +245,7 @@
             this.addList = data
             for (let i in data) {
               if (this.isDefaultAddress(data[i].id)) {
-                this.addressId = data[i].id || 1
+                this.addressId = data[i].id
                 this.name = data[i].name
                 this.phone = data[i].phone
                 this.address = data[i].address
@@ -262,15 +262,18 @@
       },
       _addressUpdate (params) {
         addressUpdate(params).then(res => {
-          this._addressList()
           if (params.default) {
             this.userInfo.info.default_address_id = params.id
           }
+          this._addressList()
         })
       },
       _addressAdd (params) {
         addressAdd(params).then(res => {
           if (res.code === 200) {
+            if (params.default) {
+              this.userInfo.info.default_address_id = res.data.id
+            }
             this._addressList(true)
           } else {
             this.message(res.message)
