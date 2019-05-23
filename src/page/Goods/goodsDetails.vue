@@ -372,16 +372,17 @@
           // 众筹状态文字
       fundingStatusStr: function () {
         // 1：已通过 2：待审核 3: 待提交 4: 未通过
-        if (this.msg.verify_status === 1) {
+        if (this.product.verify_status === 1) {
         // 1：众筹成功 2：众筹失败 3：正在众筹
-          return getFundingStatusStr(this.msg.funding_status)
-        } else if (this.msg.verify_status === 2) {
+          return getFundingStatusStr(this.product.funding_status)
+        } else if (this.product.verify_status === 2) {
           return '待审核'
-        } else if (this.msg.verify_status === 3) {
+        } else if (this.product.verify_status === 3) {
           return '待提交审核'
-        } else if (this.msg.verify_status === 4) {
+        } else if (this.product.verify_status === 4) {
           return '未通过审核'
         }
+        return '正在众筹'
       }
     },
     methods: {
