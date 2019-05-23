@@ -58,8 +58,8 @@
           </div>
           <!-- 众筹剩余时间 -->
           <div class="price price-left">
-            <p v-if="dayLeft>=0">{{dayLeft}} 天 </p>
-            <p v-else-if="dayLeft<0">已结束 </p>
+            <p v-if="dayLeft>0">{{dayLeft}} 天 </p>
+            <p v-else-if="dayLeft<=0">已结束 </p>
             <p class="price-des-text">剩余时间</p>
           </div>
 

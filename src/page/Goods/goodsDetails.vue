@@ -38,7 +38,7 @@
             <span>前得到</span>
             <span>￥{{product.target_price}}</span>
             <span> 的支持才可成功！</span>
-            <span v-if="dayLeft > 0">
+            <span v-if="dayLeft>0">
               <span> 剩余</span>
               <span style="color:red"> {{dayLeft}} </span>
               <span> 天!</span>
