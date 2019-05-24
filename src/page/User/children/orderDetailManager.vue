@@ -116,14 +116,14 @@
             </ul>
             <div class="realtime">
               <p v-if="orderItem.checking_number">
-                已发货，物流单号为 : {{orderItem.checking_number}}
+                订单已发货，物流单号为 : {{orderItem.checking_number}}
                 <el-button @click="queryShipping()"
                            type="primary"
                            size="mini"
                            round> 点击查询</el-button>
               </p>
               <p>申请退款原因：{{orderItem.refund_reason}}</p>
-              <span>正在申请退款，等待商家确认。</span>
+              <span>用户正在申请退款，请尽快处理。</span>
             </div>
           </div>
           <div class="status-now"
