@@ -446,7 +446,7 @@
       addToCart (item) {
         let product_package_id = item.id
         if (!this.showMoveImg) {     // 动画是否在运动
-          if (this.login) { // 登录了 直接存在用户名下
+          if (this.login) { // 登录了 直接存在账号下
             addCart({userId: this.userInfo.info.userId,
               product_package_id: product_package_id,
               nums: this.nums,

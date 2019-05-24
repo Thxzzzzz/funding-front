@@ -13,7 +13,7 @@
                      class="input">
                   <input type="text"
                          v-model="registered.username"
-                         placeholder="用户名"
+                         placeholder="账号"
                          @keyup="registered.username=registered.username.replace(/[^\w\.\/]/ig,'')">
                 </div>
               </li>
