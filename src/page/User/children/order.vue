@@ -27,6 +27,9 @@
             </el-option>
           </el-select>
         </div>
+        <div class="flitter">
+          <el-checkbox v-model="showUnSendOrders">显示未发货订单</el-checkbox>
+        </div>
         <div v-loading="loading"
              element-loading-text="加载中..."
              v-if="orderList.length"
@@ -148,10 +151,6 @@
             value: 2,
             label: '已支付'
           },
-          // {
-          //   value: 3,
-          //   label: '正在配货'
-          // },
           {
             value: 4,
             label: '已发货'
@@ -193,6 +192,27 @@
         currentPage: 1,
         pageSize: 5,
         total: 0
+      }
+    },
+    computed: {
+      // 显示需要发货的订单
+      showUnSendOrders: {
+    // getter
+        get: function () {
+          return this.order_status === 2 && this.funding_status === 1
+        },
+    // setter
+        set: function (newValue) {
+          if (newValue) {
+            this.order_status = 2
+            this.funding_status = 1
+          } else {
+            this.order_status = ''
+            this.funding_status = ''
+          }
+          // 更新订单列表
+          this.flitterChange()
+        }
       }
     },
     methods: {
