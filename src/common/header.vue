@@ -169,6 +169,7 @@
                   <a @click="changGoods(i, item)"
                      :class="{active:i===choosePage}">{{item.picUrl}}</a>
                 </li>
+
               </ul>
               <div></div>
             </div>
@@ -230,9 +231,6 @@
     methods: {
       ...mapMutations(['ADD_CART', 'INIT_BUYCART', 'ADD_ANIMATION', 'SHOW_CART', 'REDUCE_CART', 'RECORD_USERINFO', 'EDIT_CART']),
       showTab (role) {
-        // let allrole = -1
-        // let buyer = 0
-        // let seller = 2
         let show = true
         if (!this.userInfo) {
           return show
@@ -250,6 +248,7 @@
               name: this.input
             }
           })
+          this.changePage(-2)
         } else {
           this.$router.push({
             path: '/goods',
@@ -257,6 +256,7 @@
               name: this.input
             }
           })
+          this.changePage(-2)
         }
       },
       showError (m) {

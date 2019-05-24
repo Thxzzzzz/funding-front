@@ -31,6 +31,7 @@
 
         <div class="flitter">
           <el-checkbox v-model="showNeedSendOrders">显示需要发货的订单</el-checkbox>
+          <el-checkbox v-model="showNeedReturnpay">显示需要退款的订单</el-checkbox>
         </div>
         <div v-loading="loading"
              element-loading-text="加载中..."
@@ -163,10 +164,6 @@
             value: 2,
             label: '已支付'
           },
-          // {
-          //   value: 3,
-          //   label: '待发货'
-          // },
           {
             value: 4,
             label: '已发货'
@@ -223,6 +220,25 @@
         set: function (newValue) {
           if (newValue) {
             this.order_status = 2
+            this.funding_status = 1
+          } else {
+            this.order_status = ''
+            this.funding_status = ''
+          }
+          // 更新订单列表
+          this.flitterChange()
+        }
+      },
+       // 需要退款的订单
+      showNeedReturnpay: {
+    // getter
+        get: function () {
+          return this.order_status === 6 && this.funding_status === 1
+        },
+    // setter
+        set: function (newValue) {
+          if (newValue) {
+            this.order_status = 6
             this.funding_status = 1
           } else {
             this.order_status = ''
