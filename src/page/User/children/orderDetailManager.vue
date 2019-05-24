@@ -231,7 +231,6 @@
 <script>
   import { getOrderDet, cancelOrder, sendOutOrder, cantRefundOrder } from '/api/goods'
   import YShelf from '/components/shelf'
-  import { getStore } from '/utils/storage'
   import { formatDate } from '/utils/dateUtil'
 
   import countDown from '/components/countDown'
@@ -241,7 +240,6 @@
       return {
         // 后端返回的订单数据
         orderItem: {},
-        userId: '',
         orderId: [],
         // 订单标题，最上面显示订单号
         orderTitle: '',
@@ -354,7 +352,6 @@
   
     },
     created () {
-      this.userId = getStore('userId')
       let olJson = JSON.parse(this.$route.query.orderId)
       this.orderId = olJson
       this.orderTitle = '订单号：' + olJson
