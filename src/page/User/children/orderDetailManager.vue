@@ -114,10 +114,17 @@
                            size="small">拒绝退款</el-button>
               </li>
             </ul>
-            <p class="realtime">
-              <!-- TODO 退款确认 -->
+            <div class="realtime">
+              <p v-if="orderItem.checking_number">
+                已发货，物流单号为 : {{orderItem.checking_number}}
+                <el-button @click="queryShipping()"
+                           type="primary"
+                           size="mini"
+                           round> 点击查询</el-button>
+              </p>
+              <p>申请退款原因：{{orderItem.refund_reason}}</p>
               <span>正在申请退款，等待商家确认。</span>
-            </p>
+            </div>
           </div>
           <div class="status-now"
                v-if="orderItem.order_status === 5">
@@ -130,6 +137,19 @@
               <span>订单已交易成功！</span>
             </p>
           </div>
+
+          <div class="status-now"
+               v-if="showCanRefundReason">
+            <ul>
+              <li class="status-title">
+                <h3>退款被拒绝</h3>
+              </li>
+            </ul>
+            <p class="realtime">
+              <span>拒绝原因：{{orderItem.refund_reason}}</span>
+            </p>
+          </div>
+
           <div class="gray-sub-title cart-title">
             <div class="first">
               <div>
@@ -231,6 +251,15 @@
         checking_number: '',
         // 拒绝退款对话框
         refundDialogShow: false
+      }
+    },
+    computed: {
+      // 是否显示被拒绝退款原因
+      showCanRefundReason () {
+        return this.orderItem.order_status !== 6 &&
+                this.orderItem.order_status < 6 &&
+               this.orderItem.last_status !== 1 &&
+               this.orderItem.refund_reason.length > 1
       }
     },
     methods: {

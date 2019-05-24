@@ -107,13 +107,14 @@
             <ul>
               <li class="status-title">
                 <h3>订单状态：已发货 </h3>
+
+              </li>
               <li class="button">
                 <el-button @click="_receivedProduct()"
                            type="success"
                            size="mini"> 确认收货</el-button>
                 <el-button @click="refundDialogShow = true"
                            size="small">申请退款</el-button>
-              </li>
               </li>
             </ul>
             <p class="realtime">
@@ -133,10 +134,10 @@
                 <h3>订单状态：正在申请退款</h3>
               </li>
             </ul>
-            <p class="realtime">
-              <p>退款原因：{{orderItem.refund_reason}}</p>
+            <div class="realtime">
+              <p>申请退款原因：{{orderItem.refund_reason}}</p>
               <span>正在申请退款，等待商家确认。</span>
-            </p>
+            </div>
           </div>
 
           <div class="status-now"
@@ -239,7 +240,6 @@
                    @click="_refundOrder()">确 定</el-button>
       </span>
     </el-dialog>
-  </div>
   </div>
 </template>
 <script>
