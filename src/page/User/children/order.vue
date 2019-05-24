@@ -73,11 +73,13 @@
                     <div>¥ {{Number(item.unit_price).toFixed(2)}}</div>
                     <div class="num">{{item.nums}}</div>
                     <div class="type">
-                      <!-- <el-button style="margin-left:10px"
-                                 @click="_delOrder(item.order_id,i)"
+                      <!-- 关闭和成功的订单才显示删除按钮 -->
+                      <el-button style="margin-left:10px"
+                                 v-if="item.order_status == 5 || item.order_status == 7"
+                                 @click="openDelOrderDialog(item,i)"
                                  type="danger"
                                  size="small"
-                                 class="del-order">删除此订单</el-button> -->
+                                 class="del-order">删除此订单</el-button>
                       <!-- <a @click="_delOrder(item.orderId,i)"
                          href="javascript:;"
                          class="del-order">删除此订单</a> -->
@@ -131,6 +133,19 @@
                      :total="total">
       </el-pagination>
     </div>
+    <el-dialog title="删除订单"
+               width="30%"
+               :visible.sync="delOrderDialogShow">
+      <p>订单号：{{seletedItem.order_id}}</p>
+      <p>产品：{{seletedItem.product_name}}</p>
+      <p>确认要删除该订单吗？</p>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="delOrderDialogShow = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="_delOrder(seletedItem.order_id,seletedIndex)">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -141,6 +156,9 @@
   export default {
     data () {
       return {
+        delOrderDialogShow: false,
+        seletedItem: {},
+        seletedIndex: -1,
         // 订单状态选项
         order_status_op: [
           {
@@ -291,15 +309,19 @@
           this.loading = false
         })
       },
+      openDelOrderDialog (item, i) {
+        this.seletedItem = item
+        this.seletedIndex = i
+        this.delOrderDialogShow = true
+      },
       _delOrder (orderId, i) {
         let params = {
-          params: {
-            id: orderId
-          }
+          id: orderId
         }
         delOrder(params).then(res => {
           if (res.code === 200) {
             this.orderList.splice(i, 1)
+            this.delOrderDialogShow = false
           } else {
             this.message('删除失败')
           }

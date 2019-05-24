@@ -142,7 +142,7 @@ export const refundOrder = (params) => {
 }
 // TODO 删除订单 这个暂时不做
 export const delOrder = (params) => {
-  return http.fetchGet('/order/delOrder', params)
+  return http.fetchPost('/order/delOrder', params)
 }
 // TODO 确认收货
 export const receivedOrder = (params) => {
