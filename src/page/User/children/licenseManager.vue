@@ -166,7 +166,7 @@
           ],
           phone: [
             { required: true, message: '不能为空', trigger: 'blur' },
-            { min: 2, max: 128, message: '长度在 2 到 128个字符', trigger: 'blur' }
+            { min: 11, max: 11, message: '请输入11位数联系方式（座机要加区号）', trigger: 'blur' }
           ],
           license_image_url: [
             { required: true, message: '请上传营业执照图片', trigger: 'blur, change' }

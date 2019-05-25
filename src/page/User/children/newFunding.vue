@@ -309,7 +309,7 @@ export default {
         ],
         target_price: [
             { required: true, message: '请输入目标金额', trigger: 'blur' },
-            { type: 'number', min: 100, max: 100000000, message: '目标金额需要在 100 ~ 100000000 元之间', trigger: 'blur' }
+            { type: 'number', min: 10000, max: 100000000, message: '目标金额需要在 10000 ~ 100000000 元之间', trigger: 'blur' }
         ],
         end_time: [
             { required: true, message: '选择截止日期', trigger: 'blur' }
