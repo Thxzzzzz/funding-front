@@ -122,7 +122,7 @@
                            size="small">我要投诉</el-button>
               </li>
               <li class="button">
-                <el-button @click="_receivedProduct()"
+                <el-button @click="_receivedOrder()"
                            type="success"
                            size="mini"> 确认收货</el-button>
                 <el-button @click="refundDialogShow = true"

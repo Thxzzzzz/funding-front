@@ -132,25 +132,25 @@ export const orderList = (params) => {
 export const getOrderDet = (params) => {
   return http.fetchGet('/order/orderInIds', params)
 }
-// TODO 取消订单
+//  取消订单
 export const cancelOrder = (params) => {
   return http.fetchPost('/order/cancel', params)
 }
-// TODO 申请退款
+//  申请退款
 export const refundOrder = (params) => {
   return http.fetchPost('/order/refund', params)
 }
-// TODO 发起投诉
+//  发起投诉
 export const complaintOrder = (params) => {
   return http.fetchPost('/order/complaint', params)
 }
-// TODO 删除订单 这个暂时不做
+//  删除订单
 export const delOrder = (params) => {
   return http.fetchPost('/order/delOrder', params)
 }
-// TODO 确认收货
+//  确认收货
 export const receivedOrder = (params) => {
-  return http.fetchGet('/order/receivedOrder', params)
+  return http.fetchPost('/order/receivedOrder', params)
 }
 
 //          TODO 订单 商家相关            //
