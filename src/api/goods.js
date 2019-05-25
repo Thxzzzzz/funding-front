@@ -140,6 +140,10 @@ export const cancelOrder = (params) => {
 export const refundOrder = (params) => {
   return http.fetchPost('/order/refund', params)
 }
+// TODO 发起投诉
+export const complaintOrder = (params) => {
+  return http.fetchPost('/order/complaint', params)
+}
 // TODO 删除订单 这个暂时不做
 export const delOrder = (params) => {
   return http.fetchPost('/order/delOrder', params)

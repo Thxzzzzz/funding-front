@@ -79,9 +79,14 @@
                 <h3>订单状态：已支付</h3>
               </li>
               <li class="button">
+                <el-button @click="complaintDialogShow = true"
+                           size="small">我要投诉</el-button>
+              </li>
+              <li class="button">
                 <el-button @click="_cancelOrder()"
                            size="small">退款并取消订单</el-button>
               </li>
+
             </ul>
             <p class="realtime">
               <span>请耐心等待，产品将在众筹成功后一段时间内发出</span>
@@ -92,6 +97,10 @@
             <ul>
               <li class="status-title">
                 <h3>订单状态：配货</h3>
+              </li>
+              <li class="button">
+                <el-button @click="complaintDialogShow = true"
+                           size="small">我要投诉</el-button>
               </li>
               <li class="button">
                 <el-button @click="refundDialogShow = true"
@@ -107,7 +116,10 @@
             <ul>
               <li class="status-title">
                 <h3>订单状态：已发货 </h3>
-
+              </li>
+              <li class="button">
+                <el-button @click="complaintDialogShow = true"
+                           size="small">我要投诉</el-button>
               </li>
               <li class="button">
                 <el-button @click="_receivedProduct()"
@@ -133,6 +145,10 @@
               <li class="status-title">
                 <h3>订单状态：正在申请退款</h3>
               </li>
+              <li class="button">
+                <el-button @click="complaintDialogShow = true"
+                           size="small">我要投诉</el-button>
+              </li>
             </ul>
             <div class="realtime">
               <p v-if="orderItem.checking_number">
@@ -152,6 +168,10 @@
             <ul>
               <li class="status-title">
                 <h3>订单状态：已完成</h3>
+              </li>
+              <li class="button">
+                <el-button @click="complaintDialogShow = true"
+                           size="small">我要投诉</el-button>
               </li>
             </ul>
             <p class="realtime">
@@ -247,10 +267,22 @@
                    @click="_refundOrder()">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog :visible.sync="complaintDialogShow"
+               title="发起投诉">
+      <el-input type="textarea"
+                v-model="complaintReason"
+                placeholder="请输入投诉原因"> </el-input>
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="complaintDialogShow = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="_complaintOrder()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-  import { getOrderDet, cancelOrder, receivedOrder, refundOrder } from '/api/goods'
+  import { getOrderDet, cancelOrder, receivedOrder, refundOrder, complaintOrder } from '/api/goods'
   import YShelf from '/components/shelf'
   import { formatDate } from '/utils/dateUtil'
   import countDown from '/components/countDown'
@@ -266,8 +298,12 @@
         loading: true,
         // 退款原因
         refundReason: '',
+        // 申诉原因
+        complaintReason: '',
         // 申请退款对话框
-        refundDialogShow: false
+        refundDialogShow: false,
+        // 发起对话框
+        complaintDialogShow: false
       }
     },
     computed: {
@@ -331,6 +367,18 @@
       _refundOrder () {
         let params = { id: this.orderItem.order_id, refund_reason: this.refundReason }
         refundOrder(params).then(res => {
+          if (res.code === 200) {
+            this._getOrderDet()
+            this.refundDialogShow = false
+          } else {
+            this.message('申请退款出错' + res.message)
+          }
+        })
+      },
+      // 发起投诉
+      _complaintOrder () {
+        let params = { id: this.orderItem.order_id, complaint_reason: this.complaintReason }
+        complaintOrder(params).then(res => {
           if (res.code === 200) {
             this._getOrderDet()
             this.refundDialogShow = false
