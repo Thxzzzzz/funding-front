@@ -2,17 +2,30 @@
   <div>
     <y-shelf title="账户资料">
       <div slot="content">
-        <div class="avatar-box">
-          <div class=img-box><img :src="userInfo.info.file"
-                 alt=""></div>
-          <div class="r-box">
-            <h3 style="margin-left: 13px;">修改头像</h3>
-            <y-button text="上传头像"
-                      classStyle="main-btn"
-                      style="margin: 0;"
-                      @btnClick="editAvatar()"></y-button>
-          </div>
-        </div>
+
+        <el-tabs v-model="activeName"
+                 type="card"
+                 @tab-click="handleClick">
+          <el-tab-pane label="修改头像"
+                       name="first">
+            <div class="avatar-box">
+              <div class=img-box><img :src="userInfo.info.file"
+                     alt=""></div>
+              <div class="r-box">
+                <h3 style="margin-left: 13px;">修改头像</h3>
+                <y-button text="上传头像"
+                          classStyle="main-btn"
+                          style="margin: 0;"
+                          @btnClick="editAvatar()"></y-button>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="修改资料"
+                       name="second">修改资料</el-tab-pane>
+          <el-tab-pane label="修改密码"
+                       name="third">修改密码</el-tab-pane>
+        </el-tabs>
+
         <div class="edit-avatar"
              v-if="editAvatarShow">
           <y-shelf title="设置头像">
