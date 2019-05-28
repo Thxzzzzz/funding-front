@@ -159,7 +159,7 @@
                 </y-shelf>
               </div>
             </div>
-            <el-button @click="editPkgDialogShow = true"
+            <el-button @click="newPkg()"
                        type="primary"
                        class="submitButto"> 新增套餐 </el-button>
 
@@ -544,8 +544,14 @@ export default {
     pkgImgPreview (file) {
       this.previewImg(this.editPkgForm.image_url)
     },
+    // 修改旧套餐
     editOldPkg (item) {
       this.editPkgForm = item
+      this.editPkgDialogShow = true
+    },
+    // 新增套餐
+    newPkg () {
+      this.editPkgForm = {}
       this.editPkgDialogShow = true
     },
     // 保存套餐信息
