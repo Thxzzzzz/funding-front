@@ -2,141 +2,136 @@
   <div>
     <y-shelf title="账户资料">
       <div slot="content">
-
-        <el-tabs v-model="activeName"
-                 type="card"
-                 @tab-click="handleClick">
+        <el-tabs v-model="tab"
+                 type="card">
           <el-tab-pane label="修改头像"
-                       name="first">
-            <div class="avatar-box">
-              <div class=img-box><img :src="userInfo.info.file"
-                     alt=""></div>
-              <div class="r-box">
-                <h3 style="margin-left: 13px;">修改头像</h3>
-                <y-button text="上传头像"
-                          classStyle="main-btn"
-                          style="margin: 0;"
-                          @btnClick="editAvatar()"></y-button>
+                       name="icon">
+            <div class="tab-content">
+              <h3 style="margin-left:50px;">点击虚线框内图片选择新的头像</h3>
+              <div class="icon-zone">
+                <el-upload class="avatar-uploader"
+                           :action="uploadImgUrl"
+                           :show-file-list="false"
+                           :on-success="imgUploadSuccess">
+                  <img v-if="iconUrl"
+                       :src="iconUrl"
+                       class="avatar">
+                  <i v-else
+                     class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </div>
+            </div>
+            <el-button type="primary"
+                       style="margin-left:130px;margin-bottom:50px;"
+                       @click="updateIcon(iconUrl)"
+                       :disabled="iconUrl === userInfo.info.icon_url">保存头像</el-button>
+          </el-tab-pane>
+          <el-tab-pane label="修改资料"
+                       name="info">
+            <div class="tab-content">
+              修改资料
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="修改密码"
+                       name="psw">
+            <div class="tab-content">
+
+              <div class="pswc">
+                <el-form :model="changPswForm"
+                         status-icon
+                         :rules="changPswRules"
+                         ref="changPswForm"
+                         label-width="100px"
+                         class="demo-ruleForm">
+                  <el-form-item label="原密码"
+                                prop="old_psw">
+                    <el-input type="password"
+                              v-model="changPswForm.old_psw"
+                              autocomplete="off"></el-input>
+                  </el-form-item>
+                  <el-form-item label="新密码"
+                                prop="new_psw">
+                    <el-input type="password"
+                              v-model="changPswForm.new_psw"
+                              autocomplete="off"></el-input>
+                  </el-form-item>
+                  <el-form-item label="确认密码"
+                                prop="new_psw_check">
+                    <el-input type="password"
+                              v-model="changPswForm.new_psw_check"
+                              autocomplete="off"></el-input>
+                  </el-form-item>
+
+                  <el-form-item>
+                    <el-button type="primary"
+                               @click="submitPswChange">提交</el-button>
+                    <el-button @click="resetForm('changPswForm')">重置</el-button>
+                  </el-form-item>
+                </el-form>
+
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="修改资料"
-                       name="second">修改资料</el-tab-pane>
-          <el-tab-pane label="修改密码"
-                       name="third">修改密码</el-tab-pane>
         </el-tabs>
 
-        <div class="edit-avatar"
-             v-if="editAvatarShow">
-          <y-shelf title="设置头像">
-            <span slot="right">
-              <span class="close"
-                    @click="editAvatarShow=false">
-                <svg t="1501234940517"
-                     class="icon"
-                     style=""
-                     viewBox="0 0 1024 1024"
-                     version="1.1"
-                     xmlns="http://www.w3.org/2000/svg"
-                     p-id="3014"
-                     xmlns:xlink="http://www.w3.org/1999/xlink"
-                     width="20"
-                     height="20">
-                  <path d="M941.576 184.248l-101.824-101.824L512 410.176 184.248 82.424 82.424 184.248 410.168 512l-327.744 327.752 101.824 101.824L512 613.824l327.752 327.752 101.824-101.824L613.832 512z"
-                        fill="#cdcdcd"
-                        p-id="3015"></path>
-                </svg>
-              </span>
-            </span>
-            <div slot="content"
-                 class="content">
-              <div class="edit-l">
-                <div style="width: 100px;height: 100px;border: 1px solid #ccc;margin-bottom: 20px;overflow: hidden;">
-                  <div class="show-preview"
-                       :style="{'width': previews.w + 'px','height': previews.h + 'px','overflow': 'hidden','zoom':option.zoom}">
-                    <div :style="previews.div">
-                      <img :src="option.img"
-                           :style="previews.img">
-                    </div>
-                  </div>
-                </div>
-                <div style="padding: 10px 0 ">头像预览</div>
-                <div class="btn">
-                  <a href="javascript:;">重新选择</a>
-                  <input type="file"
-                         value="上传头像"
-                         @change="upimg($event)"></div>
-              </div>
-              <div class="edit-r">
-                <div>
-                  <div class="big"
-                       id="cropper-target"
-                       v-if="option.img">
-                    <vueCropper :img="option.img"
-                                @realTime="realTime"
-                                ref="cropper"
-                                :outputSize="example2.size"
-                                :info="example2.info"
-                                :canScale="example2.canScale"
-                                :autoCrop="example2.autoCrop"
-                                :autoCropWidth="example2.width"
-                                :autoCropHeight="example2.height"
-                                :fixed="example2.fixed"></vueCropper>
-                  </div>
-                </div>
-
-              </div>
-              <div class="bootom-btn pa">
-                <y-button style="width: 140px;height: 40px;line-height: 40px"
-                          text="取消"
-                          @btnClick="editAvatarShow=false">
-                </y-button>
-                <y-button style="width: 140px;height: 40px;line-height: 40px"
-                          text="确定"
-                          classStyle="main-btn"
-                          @btnClick="cropper">
-                </y-button>
-              </div>
-            </div>
-          </y-shelf>
-        </div>
       </div>
     </y-shelf>
   </div>
 </template>
 <script>
   import YButton from '/components/YButton'
-  import { upload } from '/api/index'
+  import { updateInfo, userInfo, changePsw } from '/api/index'
   import YShelf from '/components/shelf'
   import vueCropper from 'vue-cropper'
   import { mapState, mapMutations } from 'vuex'
-  import { getStore } from '/utils/storage'
   export default {
+  
     data () {
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入新密码'))
+        } else {
+          if (this.changPswForm.new_psw_check !== '') {
+            this.$refs.changPswForm.validateField('new_psw_check')
+          }
+          callback()
+        }
+      }
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'))
+        } else if (value !== this.changPswForm.new_psw) {
+          callback(new Error('两次输入密码不一致!'))
+        } else {
+          callback()
+        }
+      }
       return {
-        imgSrc: '',
-        editAvatarShow: false,
-        cropContext: '',
-        cropperImg: '',
-        previews: {},
-        option: {
-          img: '',
-          zoom: 0
+        // 上传图片的 API 地址 本来是 http://127.0.0.1:8080/v1/user/uploadImage，但是这里做了转发
+        uploadImgUrl: 'http://localhost:9999/user/uploadImage',
+        tab: 'icon',
+        iconUrl: '',
+        changPswForm: {
+          old_psw: '',
+          new_psw: '',
+          new_psw_check: ''
         },
-        fixedNumber: [1, 1],
-        example2: {
-          info: true,
-          size: 1,
-          canScale: false,
-          autoCrop: true,
-          // 只有自动截图开启 宽度高度才生效
-          autoCropWidth: 300,
-          autoCropHeight: 250,
-          // 开启宽度和高度比例
-          fixed: true
-        },
-        userId: '',
-        token: ''
+        changPswRules: {
+          old_psw: [
+             { required: true, message: '请输入原密码', trigger: 'blur' },
+             { min: 6, max: 18, message: '长度在 6 到 18个字符', trigger: 'change' }
+          ],
+          new_psw: [
+            { required: true, message: '请输入新密码', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18个字符', trigger: 'change' },
+            { validator: validatePass, trigger: 'change' }
+          ],
+          new_psw_check: [
+            { required: true, message: '请输入再次输入新密码', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18个字符', trigger: 'change' },
+            { validator: validatePass2, trigger: 'change' }
+          ]
+        }
       }
     },
     computed: {
@@ -146,6 +141,10 @@
       ...mapMutations([
         'RECORD_USERINFO'
       ]),
+      // 重置表单
+      resetForm (formName) {
+        this.$refs[formName].resetFields()
+      },
       message (m) {
         this.$message(m)
       },
@@ -160,56 +159,75 @@
           message: m
         })
       },
-      upimg (e) {
-        var file = e.target.files[0]
-        if (file.size > 1048576) {
-          this.messageFail('图片大小不得超过1Mb')
-          return false
-        }
-        if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
-          this.messageFail('图片类型仅支持.gif,jpeg,jpg,png,bmp')
-          return false
-        }
-        var reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = (e) => {
-          this.option.img = e.target.result
-        }
+      // 校验表单
+      validForm (formName) {
+        let result = false
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            result = true
+          } else {
+            console.log('error submit!!')
+            result = false
+          }
+        })
+        return result
       },
-      cropper () {
-        this.message('上传中...')
-        if (this.option.img) {
-          this.$refs.cropper.getCropData((data) => {
-            this.imgSrc = data
-            upload({userId: this.userId, token: this.token, imgData: data}).then(res => {
-              if (res.success === true) {
-                let path = res.result
-                let info = this.userInfo
-                info.file = path
-                this.RECORD_USERINFO({info: info})
-                this.editAvatarShow = false
-                this.messageSuccess('上传成功')
-              } else {
-                this.messageFail(res.message)
-              }
-            })
-          })
+      // 上传成功
+      imgUploadSuccess (response, file, fileList) {
+        if (response.code === 200) {
+          this.iconUrl = response.data
         } else {
-          this.messageFail('别玩我啊 先选照骗')
+          this.messageFail('头像上传失败：' + response.message)
         }
       },
-      editAvatar () {
-        this.editAvatarShow = true
+      // 更新头像
+      updateIcon (iconUrl) {
+        let params = {icon_url: iconUrl}
+        this._updateInfo(params)
       },
-      realTime (data) {
-        this.previews = data
-        let w = 100 / data.w
-        this.option.zoom = w
+      // 更新资料
+      _updateInfo (params) {
+        updateInfo(params).then(res => {
+          if (res.code === 200) {
+            this.messageSuccess('资料更新成功')
+            this._getUserInfo()
+          } else {
+            this.messageFail('资料更新失败:' + res.message)
+          }
+        })
+      },
+      // 修改密码
+      submitPswChange () {
+        if (!this.validForm('changPswForm')) return
+        let params = {
+          old_psw: this.changPswForm.old_psw,
+          new_psw: this.changPswForm.new_psw
+        }
+        this._changePsw(params)
+      },
+      // 修改密码
+      _changePsw (params) {
+        changePsw(params).then(res => {
+          if (res.code === 200) {
+            this.messageSuccess('密码修改成功')
+            this.changPswForm.old_psw = ''
+            this.changPswForm.new_psw = ''
+            this.changPswForm.new_psw_check = ''
+          } else {
+            this.messageFail('修改失败:' + res.message)
+          }
+        })
+      },
+      _getUserInfo () {
+        userInfo().then(res => {
+          if (res.code === 200) {
+            this.RECORD_USERINFO({info: res.data})
+          }
+        })
       }
     },
     created () {
-      this.userId = getStore('userId')
-      this.token = getStore('token')
+      this.iconUrl = this.userInfo.info.icon_url
     },
     components: {
       YButton,
@@ -221,139 +239,41 @@
 <style lang="scss" scoped>
   @import "../../../assets/style/mixin";
 
-  .avatar-box {
-    height: 124px;
-    display: flex;
-    margin: 0 30px 30px;
-    border-bottom: #dadada solid 1px;
-    line-height: 30px;
-    display: flex;
-    align-items: center;
-    .img-box {
-      @include wh(80px);
-      border-radius: 5px;
-      overflow: hidden;
-    }
-    img {
-      display: block;
-      @include wh(100%)
-    }
-    .r-box {
-      margin-left: 20px;
-      h3 {
-        font-size: 18px;
-        font-weight: 400;
-        color: #333;
-      }
-    }
+  .tab-content{
+    margin:15px;
   }
 
-  // 修改头像
-  .edit-avatar {
-    z-index: 9999;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    @include wh(100%);
-    background-color: rgba(0, 0, 0, .5);
-    @extend %block-center;
-    .content {
-      display: flex;
-      padding: 45px 100px 0;
-    }
-    > div {
-      box-sizing: content-box;
-      @include wh(700px, 500px);
-      margin: 0;
-    }
-    .btn {
-      width: 80px;
-      height: 30px;
-      margin-left: 10px;
-      position: relative;
-      text-align: center;
-      line-height: 30px;
-      text-shadow: rgba(255, 255, 255, .496094) 0 1px 0;
-      border: 1px solid #E6E6E6;
-      border-radius: 10px;
-      &:hover {
-      }
-      a {
-        color: #666;
-        display: block;
-        @include wh(100%);
-      }
-    }
-    input[type=file] {
-      position: absolute;
-      right: 0;
-      left: 0;
-      top: 0;
-      opacity: 0;
-      width: 80px;
-      height: 30px;
-      cursor: pointer;
-      box-sizing: border-box;
-      border: 15px solid #000;
-      overflow: hidden;
-    }
-    .edit-l {
-      width: 100px;
-      text-align: center;
-    }
-    .edit-r {
-      margin-left: 20px;
-      flex: 1;
-      > div {
-        border: 1px solid #ccc;
-        width: 320px;
-        height: 320px;
-      }
-    }
+   .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
-
-  .image-container {
-    width: 100px;
-    height: 100px;
-    border: 1px solid #ccc;
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
   }
-
-  .close {
-    position: absolute;
-    right: 10px;
-    top: 0;
-    bottom: 0;
-    padding: 0 10px;
-    @extend %block-center;
-    &:hover {
-      svg {
-        transition: all 1s;
-        transform: rotate(360deg);
-        transform-origin: 50% 50%;
-      }
-      path {
-        fill: #8a8a8a;
-      }
-    }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
   }
-
-  .big {
+  .avatar {
+    width: 178px;
+    height: 178px;
     display: block;
-    width: 320px;
-    height: 320px;
   }
-
-  .bootom-btn {
-    padding: 0 15px;
-    border-top: 1px solid #E6E6E6;
-    bottom: 0;
-    height: 60px;
-    right: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .icon-zone {
+    margin:50px;
+    border:dashed;
+    border-radius: 15px;
+    padding: 20px;
+    width: 228px;
+  }
+  .pswc{
+    width: 500px;
   }
 </style>

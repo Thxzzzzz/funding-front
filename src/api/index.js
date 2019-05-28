@@ -29,15 +29,14 @@ export const register = (params) => {
 export const uploadImage = (params, OnUploadProgress) => {
   return http.Upload('/user/uploadImage', params, OnUploadProgress)
 }
-// 上传图片
-export const upload = (params) => {
-  return http.fetchPost('/member/imgaeUpload', params)
+// 更新资料
+export const updateInfo = (params) => {
+  return http.fetchPost('/user/updateInfo', params)
 }
-// TODO 修改头像
-export const updateheadimage = (params) => {
-  return http.fetchPost('/member/updateheadimage', params)
+// 修改密码
+export const changePsw = (params) => {
+  return http.fetchPost('/user/changePsw', params)
 }
-
 // 首页接口
 export const productHome = (params) => {
   return http.fetchGet('/product/home', params)
@@ -47,7 +46,7 @@ export const getProductCountInfo = (params) => {
   return http.fetchGet('/product/getProductCountInfo', params)
 }
 
-// TODO 推荐板块
+// 猜你喜欢
 export const recommend = (params) => {
   return http.fetchGet('/pruduct/recommend', params)
 }
