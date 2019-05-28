@@ -40,9 +40,10 @@
                       <!--头像-->
                       <li class="nav-user-avatar">
                         <div>
-                          <span class="avatar"
-                                :style="{backgroundImage:'url('+userInfo.info.icon_url+')'}">
-                          </span>
+                          <img :src="userInfo.info.icon_url"
+                               alt=""
+                               class="avatar"
+                               style="border-radius:50%">
                         </div>
                         <p class="name">{{userInfo.info.nickname}}</p>
                       </li>
