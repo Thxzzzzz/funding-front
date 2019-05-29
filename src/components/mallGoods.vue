@@ -185,7 +185,7 @@ export default {
 .left-top-tag  {
     position: absolute;
     background: #92b7bd;
-    z-index: 999;
+    // z-index: 999;
     border-radius: 3px;
     position: absolute;
     width: 100px;
