@@ -156,6 +156,9 @@ export default {
   },
   // 记录用户信息
   [RECORD_USERINFO] (state, info) {
+    if (!info.info.icon_url) {
+      info.info.icon_url = 'static/images/defaultIcon.png'
+    }
     state.userInfo = info
     state.login = true
     setStore('userInfo', info)

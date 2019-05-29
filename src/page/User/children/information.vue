@@ -29,7 +29,35 @@
           <el-tab-pane label="修改资料"
                        name="info">
             <div class="tab-content">
-              修改资料
+              <div class="pswc">
+                <el-form :model="changeInfoForm"
+                         status-icon
+                         :rules="changeInfoRules"
+                         ref="changeInfoForm"
+                         label-width="100px"
+                         class="demo-ruleForm">
+                  <el-form-item label="昵称"
+                                prop="nickname">
+                    <el-input v-model="changeInfoForm.nickname"
+                              autocomplete="off"></el-input>
+                  </el-form-item>
+                  <el-form-item label="邮箱"
+                                prop="email">
+                    <el-input v-model="changeInfoForm.email"
+                              autocomplete="off"></el-input>
+                  </el-form-item>
+                  <el-form-item label="手机号"
+                                prop="phone">
+                    <el-input v-model="changeInfoForm.phone"
+                              autocomplete="off"></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary"
+                               @click="submitInfoChange">提交</el-button>
+                    <el-button @click="resetForm('changeInfoForm')">重置</el-button>
+                  </el-form-item>
+                </el-form>
+              </div>
             </div>
           </el-tab-pane>
           <el-tab-pane label="修改密码"
@@ -85,7 +113,6 @@
   import vueCropper from 'vue-cropper'
   import { mapState, mapMutations } from 'vuex'
   export default {
-  
     data () {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
@@ -111,11 +138,35 @@
         uploadImgUrl: 'http://localhost:9999/user/uploadImage',
         tab: 'icon',
         iconUrl: '',
+        // 修改资料表单
+        changeInfoForm: {
+          nickname: '',
+          email: '',
+          phone: ''
+
+        },
+        // 修改资料表单校验
+        changeInfoRules: {
+          nickname: [
+             { required: true, message: '昵称不能为空', trigger: 'blur' },
+             { min: 2, max: 18, message: '长度在 2 到 18个字符', trigger: 'change' }
+          ],
+          email: [
+            { required: true, message: '邮箱不能为空', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ],
+          phone: [
+            { required: true, message: '手机号不能为空', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18个字符', trigger: 'change' }
+          ]
+        },
+        // 修改密码表单
         changPswForm: {
           old_psw: '',
           new_psw: '',
           new_psw_check: ''
         },
+        // 修改密码表单校验
         changPswRules: {
           old_psw: [
              { required: true, message: '请输入原密码', trigger: 'blur' },
@@ -196,6 +247,16 @@
           }
         })
       },
+      // 更新资料 - 提交按钮事件
+      submitInfoChange () {
+        if (!this.validForm('changeInfoForm')) return
+        let params = {
+          nickname: this.changeInfoForm.nickname,
+          email: this.changeInfoForm.email,
+          phone: this.changeInfoForm.phone
+        }
+        this._updateInfo(params)
+      },
       // 修改密码
       submitPswChange () {
         if (!this.validForm('changPswForm')) return
@@ -222,12 +283,20 @@
         userInfo().then(res => {
           if (res.code === 200) {
             this.RECORD_USERINFO({info: res.data})
+            this.updateChangeInfoForm(this.userInfo.info)
           }
         })
+      },
+      // 更新用户信息表单
+      updateChangeInfoForm (info) {
+        this.changeInfoForm.nickname = this.userInfo.info.nickname
+        this.changeInfoForm.email = this.userInfo.info.email
+        this.changeInfoForm.phone = this.userInfo.info.phone
       }
     },
     created () {
       this.iconUrl = this.userInfo.info.icon_url
+      this.updateChangeInfoForm(this.userInfo.info)
     },
     components: {
       YButton,
