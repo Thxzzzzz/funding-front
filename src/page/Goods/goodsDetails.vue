@@ -404,6 +404,7 @@
       buy (item) {
         this.popupOpen = true
         this.selectedItem = item
+        this.nums = 1
       },
       // 空白头像转换成默认头像链接
       IconUrlConvert (url) {
