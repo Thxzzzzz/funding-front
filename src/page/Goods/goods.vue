@@ -6,15 +6,15 @@
         <a href="javascript:;"
            :class="{active:(sort === 'created_at' && asc === false)|| !sort}"
            @click="sortQuery('created_at', false)">最新发起的众筹</a>
-        <a href="javascript:;"
+        <!--<a href="javascript:;"
            @click="sortQuery('created_at', true)"
-           :class="{active:sort === 'created_at' && asc === true}">最早发起的众筹</a>
+           :class="{active:sort === 'created_at' && asc === true}">最早发起的众筹</a>-->
         <a href="javascript:;"
            @click="sortQuery('current_price', false)"
-           :class="{active:sort === 'current_price' && asc === false}">已筹金额从高到低</a>
-        <a href="javascript:;"
+           :class="{active:sort === 'current_price' && asc === false}">筹金从高到低</a>
+        <!--<a href="javascript:;"
            @click="sortQuery('current_price', true)"
-           :class="{active:sort === 'current_price' && asc === true}">已筹金额从低到高</a>
+           :class="{active:sort === 'current_price' && asc === true}">已筹金额从低到高</a>-->
         <el-select v-model="queryType"
                    class="mediumInput"
                    clearable
@@ -223,7 +223,7 @@
       this.queryType = this.$route.query.type
       this.sort = this.$route.query.sort
       this.asc = this.$route.query.asc
-      this.currentPage = this.$route.query.page
+    //  this.currentPage = this.$route.query.page
      // 获取产品类型列表
       this._getProductTypeList()
       this._getAllGoods()
