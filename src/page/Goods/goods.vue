@@ -2,31 +2,30 @@
   <div class="goods">
     <div class="nav">
       <!-- 排序先暂时注释掉，做好了再另外写 -->
-      <!-- <div class="w">
+      <div class="w">
         <a href="javascript:;"
-           :class="{active:sortType===1}"
-           @click="reset()">综合排序</a>
+           :class="{active:(sort === 'created_at' && asc === false)|| !sort}"
+           @click="sortQuery('created_at', false)">最新发起的众筹</a>
         <a href="javascript:;"
-           @click="sortByPrice(1)"
-           :class="{active:sortType===2}">价格从低到高</a>
+           @click="sortQuery('created_at', true)"
+           :class="{active:sort === 'created_at' && asc === true}">最早发起的众筹</a>
         <a href="javascript:;"
-           @click="sortByPrice(-1)"
-           :class="{active:sortType===3}">价格从高到低</a>
-        <div class="price-interval">
-          <input type="number"
-                 class="input"
-                 placeholder="价格"
-                 v-model="min">
-          <span style="margin: 0 5px"> - </span>
-          <input type="number"
-                 placeholder="价格"
-                 v-model="max">
-          <y-button text="确定"
-                    classStyle="main-btn"
-                    @btnClick="reset"
-                    style="margin-left: 10px;"></y-button>
-        </div>
-      </div> -->
+           @click="sortQuery('current_price', false)"
+           :class="{active:sort === 'current_price' && asc === false}">已筹金额从高到低</a>
+        <a href="javascript:;"
+           @click="sortQuery('current_price', true)"
+           :class="{active:sort === 'current_price' && asc === true}">已筹金额从低到高</a>
+        <el-select v-model="queryType"
+                   class="mediumInput"
+                   clearable
+                   @change="filtByType"
+                   placeholder="按产品类型筛选">
+          <el-option v-for="(item) in productTypeList"
+                     :key="item.id"
+                     :value="item.id"
+                     :label="item.name"></el-option>
+        </el-select>
+      </div>
     </div>
 
     <div v-loading="loading"
@@ -58,16 +57,7 @@
           <img src="/static/images/no-search.png">
           <br> 抱歉！暂时还没有商品
         </div>
-        <section class="section">
-          <y-shelf :title="recommendPanel.name">
-            <div slot="content"
-                 class="recommend">
-              <mall-goods :msg="item"
-                          v-for="(item,i) in recommendPanel.panelContents"
-                          :key="i"></mall-goods>
-            </div>
-          </y-shelf>
-        </section>
+
       </div>
       <div class="no-info"
            v-if="error">
@@ -75,16 +65,6 @@
           <img src="/static/images/error.png">
           <br> 抱歉！出错了...
         </div>
-        <section class="section">
-          <y-shelf :title="recommendPanel.name">
-            <div slot="content"
-                 class="recommend">
-              <mall-goods :msg="item"
-                          v-for="(item,i) in recommendPanel.panelContents"
-                          :key="i"></mall-goods>
-            </div>
-          </y-shelf>
-        </section>
       </div>
 
       <!-- 猜你喜欢 -->
@@ -113,7 +93,7 @@
   </div>
 </template>
 <script>
-  import { productList, getProductsRand } from '/api/goods.js'
+  import { productList, getProductsRand, productTypeList } from '/api/goods.js'
   // import { recommend } from '/api/index.js'
   import mallGoods from '/components/mallGoods'
   import YButton from '/components/YButton'
@@ -129,21 +109,35 @@
         max: '',
         loading: true,
         timer: null,
-        sortType: 1,
         windowHeight: null,
         windowWidth: null,
         recommendPanel: [],
-        sort: '',
+        // 根据那个字段排序
+        sort: 'created_at',
+        // 是否升序
+        asc: false,
         currentPage: 1,
         total: 0,
         pageSize: 20,
         queryName: '',
         queryType: 0,
+                // 产品类型列表
+        productTypeList: [],
         // 猜你喜欢列表
         recommendProducts: []
       }
     },
     methods: {
+      // 排序方式
+      sortQuery (sort, asc) {
+        this.sort = sort
+        this.asc = asc
+        this._getAllGoods()
+      },
+      // 按类型过滤
+      filtByType () {
+        this._getAllGoods()
+      },
       handleSizeChange (val) {
         this.pageSize = val
         this._getAllGoods()
@@ -156,12 +150,12 @@
       },
       _getAllGoods () {
         // let cid = this.$route.query.cid
-        if (this.min !== '') {
-          this.min = Math.floor(this.min)
-        }
-        if (this.max !== '') {
-          this.max = Math.floor(this.max)
-        }
+        // if (this.min !== '') {
+        //   this.min = Math.floor(this.min)
+        // }
+        // if (this.max !== '') {
+        //   this.max = Math.floor(this.max)
+        // }
         let params = {
           params: {
             page: this.currentPage,
@@ -169,8 +163,9 @@
             name: this.queryName,
             type: this.queryType,
             sort: this.sort,
-            price_gt: this.min,
-            price_lt: this.max
+            asc: this.asc
+            // price_gt: this.min,
+            // price_lt: this.max
           }
         }
         productList(params).then(res => {
@@ -198,6 +193,16 @@
             this.recommendProducts = res.data
           }
         })
+      },
+            // 获取产品类型列表
+      _getProductTypeList () {
+        productTypeList().then(res => {
+          if (res.code === 200) {
+            this.productTypeList = res.data
+          } else {
+            this.messageError(res.message + '获取产品类型列表失败，请刷新重试')
+          }
+        })
       }
     },
     watch: {
@@ -216,6 +221,11 @@
       // 从路由获取商品名
       this.queryName = this.$route.query.name
       this.queryType = this.$route.query.type
+      this.sort = this.$route.query.sort
+      this.asc = this.$route.query.asc
+      this.currentPage = this.$route.query.page
+     // 获取产品类型列表
+      this._getProductTypeList()
       this._getAllGoods()
        // 获取猜你喜欢列表
       this.getRecommendProducts()
