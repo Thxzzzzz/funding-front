@@ -136,7 +136,7 @@ export default {
     },
     messageSuccess () {
       this.$message({
-        message: '恭喜您，注册成功！赶紧登录体验吧',
+        message: '恭喜您，注册成功！开始您的购物体验吧',
         type: 'success'
       })
     },
