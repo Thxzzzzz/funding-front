@@ -1,7 +1,6 @@
 <template>
   <div class="goods">
     <div class="nav">
-      <!-- 排序先暂时注释掉，做好了再另外写 -->
       <div class="w">
         <a href="javascript:;"
            :class="{active:(sort === 'created_at' && asc === false)|| !sort}"
