@@ -88,14 +88,13 @@
     </div>
   </div>
 </template>
-// <script src="../../../static/geetest/gt.js"></script>
+ 
 <script>
 import YFooter from '/common/footer'
 import YButton from '/components/YButton'
 import { register } from '/api/index.js'
-// import { register, geetest } from '/api/index.js'
-// require('../../../static/geetest/gt.js')
-// var captcha
+import { getStore, removeStore } from '/utils/storage.js'
+import { addCart } from '/api/goods.js'
 export default {
   data () {
     return {
@@ -135,7 +134,7 @@ export default {
     },
     messageSuccess () {
       this.$message({
-        message: '恭喜您，注册成功！赶紧登录体验吧',
+        message: '恭喜您，注册成功！',
         type: 'success'
       })
     },
@@ -169,15 +168,21 @@ export default {
         this.registxt = '注册'
         return false
       }
-      // var result = captcha.getValidate()
-      // if (!result) {
-      //   this.message('请完成验证')
-      //   this.registxt = '注册'
-      //   return false
-      // }
+
       register(this.registered).then(res => {
         if (res.code === 200) {
           this.messageSuccess()
+          // setStore('userId', res.data.id)
+          // 登录后添加当前缓存中的购物车
+          if (this.cart.length) {
+            for (var i = 0; i < this.cart.length; i++) {
+              addCart(this.cart[i]).then(res => {
+                if (res.code === 200) {
+                }
+              })
+            }
+          }
+          removeStore('buyCart')
           this.toLogin()
         } else {
           this.message(res.message)
@@ -187,28 +192,24 @@ export default {
         }
       })
     },
-    init_geetest () {
-      // geetest().then(res => {
-      //   this.statusKey = res.statusKey
-      //   window.initGeetest({
-      //     gt: res.gt,
-      //     challenge: res.challenge,
-      //     new_captcha: res.new_captcha,
-      //     offline: !res.success,
-      //     product: 'popup',
-      //     width: '100%'
-      //   }, function (captchaObj) {
-      //     captcha = captchaObj
-      //     captchaObj.appendTo('#captcha')
-      //     captchaObj.onReady(function () {
-      //       document.getElementById('wait').style.display = 'none'
-      //     })
-      //   })
-      // })
+        // 登陆时将本地的添加到用户购物车
+    login_addCart () {
+      let cartArr = []
+      let locaCart = JSON.parse(getStore('buyCart'))
+      if (locaCart && locaCart.length) {
+        locaCart.forEach(item => {
+          cartArr.push({
+            product_package_id: item.product_package_id,
+            nums: item.nums,
+            checked: item.checked
+          })
+        })
+      }
+      this.cart = cartArr
     }
   },
   mounted () {
-    // this.init_geetest()
+    this.login_addCart()
   },
   components: {
     YFooter,
