@@ -144,6 +144,7 @@
           <div>
             <input type="number"
                    placeholder="手机号码"
+                   oninput="if(value.length > 11)value = value.slice(0, 11)"
                    v-model="msg.phone">
           </div>
           <div>

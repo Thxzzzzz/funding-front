@@ -110,12 +110,6 @@ export default {
         message: m
       })
     },
-    messageSuccess () {
-      this.$message({
-        message: '恭喜您，注册成功！赶紧登录体验吧',
-        type: 'success'
-      })
-    },
     message (m) {
       this.$message.error({
         message: m

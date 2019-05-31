@@ -49,6 +49,7 @@
                 <div class="input">
                   <input type="text"
                          v-model="registered.phone"
+                         oninput="if(value.length > 11)value = value.slice(0, 11)"
                          placeholder="手机号">
                 </div>
               </li>
@@ -129,7 +130,7 @@ export default {
     },
     messageSuccess () {
       this.$message({
-        message: '恭喜您，注册成功！',
+        message: '注册成功,开始您的众筹体验吧！',
         type: 'success'
       })
     },
