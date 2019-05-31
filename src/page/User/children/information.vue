@@ -108,10 +108,11 @@
 </template>
 <script>
   import YButton from '/components/YButton'
-  import { updateInfo, userInfo, changePsw } from '/api/index'
+  import { updateInfo, userInfo, changePsw, loginOut } from '/api/index'
   import YShelf from '/components/shelf'
   import vueCropper from 'vue-cropper'
   import { mapState, mapMutations } from 'vuex'
+  import { removeStore, clearRecommendStorage } from '/utils/storage'
   export default {
     data () {
       var validatePass = (rule, value, callback) => {
@@ -272,9 +273,20 @@
           if (res.code === 200) {
             this.messageSuccess('密码修改成功')
             this.resetForm('changPswForm')
+            this._loginOut()
           } else {
             this.messageFail('修改失败:' + res.message)
           }
+        })
+      },
+      _loginOut () {
+        // 清理推荐计数
+        clearRecommendStorage()
+        loginOut().then(res => {
+          removeStore('buyCart')
+          this.$router.push({
+            path: '/login'
+          })
         })
       },
       _getUserInfo () {
