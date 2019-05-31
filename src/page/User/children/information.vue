@@ -271,9 +271,7 @@
         changePsw(params).then(res => {
           if (res.code === 200) {
             this.messageSuccess('密码修改成功')
-            this.changPswForm.old_psw = ''
-            this.changPswForm.new_psw = ''
-            this.changPswForm.new_psw_check = ''
+            this.resetForm('changPswForm')
           } else {
             this.messageFail('修改失败:' + res.message)
           }
