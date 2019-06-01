@@ -381,10 +381,17 @@
         complaintOrder(params).then(res => {
           if (res.code === 200) {
             this._getOrderDet()
-            this.refundDialogShow = false
+            this.complaintDialogShow = false
+            this.messageSuccess()
           } else {
-            this.message('申请退款出错' + res.message)
+            this.message('发起投诉出错' + res.message)
           }
+        })
+      },
+      messageSuccess () {
+        this.$message({
+          message: '投诉信息已成功发送至管理员处！',
+          type: 'success'
         })
       },
       // 确认收货
