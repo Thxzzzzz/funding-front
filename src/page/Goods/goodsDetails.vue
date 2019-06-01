@@ -36,7 +36,7 @@
             <span>此项目必须在</span>
             <span style="color:red">{{formatDate(product.end_time)}}</span>
             <span>前得到</span>
-            <span>￥{{product.target_price}}</span>
+            <span style="color:red">￥{{product.target_price}}</span>
             <span> 的支持才可成功！</span>
             <span v-if="dayLeft>0">
               <span> 剩余</span>
