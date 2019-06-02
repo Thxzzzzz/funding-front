@@ -15,3 +15,8 @@ export const formatDate = (date) => {
   if (!date) return ''
   return dayjs(date).format('YYYY年MM月DD日 HH:mm:ss') // 展示
 }
+
+export const sendpDay = (date3, day) => {
+  console.log(day)
+  return dayjs(date3).add(day, 'day').format('YYYY年MM月DD日 HH:mm:ss')
+}

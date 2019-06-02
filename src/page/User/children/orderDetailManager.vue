@@ -16,7 +16,7 @@
               <el-step title="付款"
                        v-bind:description="_formatDate(orderItem.paid_at)"></el-step>
               <el-step title="配货"
-                       description=""></el-step>
+                       v-bind:description="_sendpDay(orderItem.end_time,orderItem.delivery_day)"></el-step>
               <el-step title="出库"
                        description=""></el-step>
               <el-step title="交易成功"
@@ -231,7 +231,7 @@
 <script>
   import { getOrderDet, cancelOrder, sendOutOrder, cantRefundOrder } from '/api/goods'
   import YShelf from '/components/shelf'
-  import { formatDate } from '/utils/dateUtil'
+  import { formatDate, sendpDay } from '/utils/dateUtil'
 
   import countDown from '/components/countDown'
   import dayjs from 'dayjs'
@@ -284,6 +284,9 @@
       },
       _formatDate (date) {
         return formatDate(date)
+      },
+      _sendpDay (date3, day) {
+        return sendpDay(date3, day)
       },
       getTimestamp (dateStr) {
         let value = dayjs(dateStr).valueOf()
