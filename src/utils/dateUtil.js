@@ -18,5 +18,5 @@ export const formatDate = (date) => {
 
 export const sendpDay = (date3, day) => {
   console.log(day)
-  return dayjs(date3).add(day, 'day').format('YYYY年MM月DD日 HH:mm:ss')
+  return dayjs(date3).add(day, 'day').format('YYYY年MM月DD日')
 }

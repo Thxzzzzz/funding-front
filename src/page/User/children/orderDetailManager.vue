@@ -16,7 +16,7 @@
               <el-step title="付款"
                        v-bind:description="_formatDate(orderItem.paid_at)"></el-step>
               <el-step title="配货"
-                       v-bind:description="_sendpDay(orderItem.end_time,orderItem.delivery_day)"></el-step>
+                       description=""></el-step>
               <el-step title="出库"
                        description=""></el-step>
               <el-step title="交易成功"
@@ -75,6 +75,8 @@
               <li class="status-title">
                 <h3>订单状态：配货</h3>
               </li>
+              <span> 请于</span>
+              <span class="red">{{_sendpDay(orderItem.end_time,orderItem.delivery_day)}}</span><span> 前发送产品回报！</span>
             </ul>
             <p class="realtime">
               <!-- 发货 -->
