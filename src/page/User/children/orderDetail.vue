@@ -79,10 +79,6 @@
                 <h3>订单状态：已支付</h3>
               </li>
               <li class="button">
-                <el-button @click="complaintDialogShow = true"
-                           size="small">我要投诉</el-button>
-              </li>
-              <li class="button">
                 <el-button @click="_cancelOrder()"
                            size="small">退款并取消订单</el-button>
               </li>
