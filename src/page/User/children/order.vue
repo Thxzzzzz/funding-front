@@ -301,6 +301,9 @@
         } else if (status === 6) {
           return '正在退款'
         } else if (status === 7) {
+          if (fstatus === 2) {
+            return '已退款'
+          }
           return '交易关闭'
         }
       },

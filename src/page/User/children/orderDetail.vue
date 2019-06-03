@@ -45,6 +45,7 @@
               <el-step title="交易关闭"
                        v-bind:description="_formatDate(orderItem.close_at)"></el-step>
             </el-steps>
+
           </div>
           <div class="status-now"
                v-if="orderItem.order_status === 1">
