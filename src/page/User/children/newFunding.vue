@@ -203,8 +203,10 @@
                               prop="image_url">
                   <img :src="editPkgForm.image_url"
                        alt=""
-                       style="max-height:100px;">
+                       style="max-height:100px;" />
+
                   <el-upload :action="uploadImgUrl"
+                             ref="pkgImgUpload"
                              :limit="1"
                              style="width:300px;"
                              :on-success="pkgImgUploadSuccess"
@@ -535,6 +537,7 @@ export default {
      // 套餐图
     pkgImgUploadSuccess (response, file, fileList) {
       this.editPkgForm.image_url = response.data
+      this.$refs.pkgImgUpload.clearFiles()
     },
       // 套餐图
     pkgImgRemove (file, fileList) {
@@ -546,13 +549,37 @@ export default {
     },
     // 修改旧套餐
     editOldPkg (item) {
-      this.editPkgForm = item
-      this.editPkgDialogShow = true
+      this.editPkgForm = {
+        id: item.id,
+        product_id: item.product_id,
+        description: item.description,
+        image_url: item.image_url,
+        price: item.price,
+        stock: item.stock,
+        total: item.total,
+        freight: item.freight,
+        delivery_day: item.delivery_day
+      }
+      this.showEditPkgDialog()
     },
     // 新增套餐
     newPkg () {
-      this.editPkgForm = {}
+      this.editPkgForm = {
+        id: 0,
+        product_id: 0,
+        description: '',
+        image_url: '',
+        price: '',
+        stock: 0,
+        total: 0,
+        freight: 0,
+        delivery_day: ''
+      }
+      this.showEditPkgDialog()
+    },
+    showEditPkgDialog () {
       this.editPkgDialogShow = true
+      // this.$refs.pkgImgUpload.clearFiles()
     },
     // 保存套餐信息
     _saveProductPkg (params) {
