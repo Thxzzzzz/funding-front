@@ -108,7 +108,12 @@
                   </div>
                 </div>
                 <div class="status"
-                     v-if="item.order_status !== 1"> {{getOrderStatus(item.order_status)}} </div>
+                     v-if="item.order_status !== 1 "> {{getOrderStatus(item.order_status,item.funding_status)}}
+                  <div v-if="item.order_status===2 && item.funding_status ===2">
+                    <p>&nbsp;&nbsp;&nbsp;请申请退款</p>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -275,10 +280,13 @@
           }
         })
       },
-      getOrderStatus (status) {
+      getOrderStatus (status, fstatus) {
         if (status === 1) {
           return '待支付'
         } else if (status === 2) {
+          if (fstatus === 2) {
+            return '众筹失败'
+          }
           return '已支付'
         } else if (status === 3) {
           return '正在配货'
