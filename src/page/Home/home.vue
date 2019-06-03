@@ -142,7 +142,6 @@
 import { productHome, getProductCountInfo } from '/api/index.js'
 import { getProductsRand } from '/api/goods.js'
 import YShelf from '/components/shelf'
-import product from '/components/product'
 import mallGoods from '/components/mallGoods'
 import { setStore, getStore } from '/utils/storage.js'
 import { addRecommendCount, getRecommendType } from '/utils/storage'
@@ -204,6 +203,7 @@ export default {
       })
     },
     bgOver (e) {
+      // 获取轮播图控件的坐标和长宽信息
       this.bgOpt.px = e.offsetLeft
       this.bgOpt.py = e.offsetTop
       this.bgOpt.w = e.offsetWidth
@@ -279,7 +279,6 @@ export default {
   },
   components: {
     YShelf,
-    product,
     mallGoods
   }
 }
