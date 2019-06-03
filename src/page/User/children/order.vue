@@ -107,10 +107,14 @@
                     <p>众筹已结束</p>
                   </div>
                 </div>
+
                 <div class="status"
                      v-if="item.order_status !== 1 "> {{getOrderStatus(item.order_status,item.funding_status)}}
                   <div v-if="item.order_status===2 && item.funding_status ===2">
                     <p>&nbsp;&nbsp;&nbsp;请申请退款</p>
+                  </div>
+                  <div v-if="item.order_status===7 && item.funding_status ===2">
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;众筹失败</p>
                   </div>
                 </div>
 
