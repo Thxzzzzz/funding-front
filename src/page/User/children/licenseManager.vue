@@ -257,7 +257,7 @@
         saveLicense(params).then(res => {
           if (res.code === 200) {
             this.seller_license = res.data
-            this.messageSuccess('保存成功')
+            this.messageSuccess('审核信息提交成功')
             this.licenseDialogShow = false
             this._getLicenseByUserId(this.userInfo.info.id)
           } else {
