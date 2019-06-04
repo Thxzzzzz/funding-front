@@ -47,6 +47,7 @@
                 <el-form-item label="联系电话"
                               prop="phone">
                   <el-input v-model="licenseForm.phone"
+                            oninput="if(value.length > 11)value = value.slice(0, 11)"
                             placeholder="请输入公司联系电话"></el-input>
                 </el-form-item>
 

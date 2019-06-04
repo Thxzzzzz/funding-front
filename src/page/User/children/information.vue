@@ -158,7 +158,7 @@
           ],
           phone: [
             { required: true, message: '手机号不能为空', trigger: 'blur' },
-            { min: 6, max: 18, message: '长度在 6 到 18个字符', trigger: 'change' }
+            { min: 11, max: 11, message: '请输入11位手机号码', trigger: 'change' }
           ]
         },
         // 修改密码表单
