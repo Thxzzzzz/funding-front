@@ -68,7 +68,7 @@
       </div>
 
       <div class="copyright">
-        <h4 class="content-c2">Copyright ©2019 1500310307 韦谷叶, Funding Co., Ltd. All Rights Reserved.</h4>
+        <h4 class="content-c2">Copyright ©2019 Thxzzzzz, Funding Co., Ltd. All Rights Reserved.</h4>
         <ul class="privacy">
           <li class="content-c1"><a class="content-c0"
                @click="open1">法律声明</a></li>
@@ -103,7 +103,7 @@
       open3 () {
         this.$notify({
           title: '离线帮助',
-          message: '暂不支持在线客服,请将您的困惑发送至 852004392@qq.com',
+          message: '暂不支持在线客服,请将您的困惑发送至 379809513@qq.com',
           type: 'warning'
         })
       },
